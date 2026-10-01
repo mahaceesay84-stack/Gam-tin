@@ -5,10 +5,29 @@ const REFRESH_KEY = "utg_refresh";
 
 export class ApiError extends Error {
   status: number;
-  constructor(message: string, status: number) {
+  fieldErrors?: Record<string, string[]>;
+  constructor(message: string, status: number, fieldErrors?: Record<string, string[]>) {
     super(message);
     this.status = status;
+    this.fieldErrors = fieldErrors;
   }
+}
+
+/** Extract DRF `{ field: ["msg"] }` entries (anything other than `detail`). */
+function parseFieldErrors(data: unknown): Record<string, string[]> | undefined {
+  if (!data || typeof data !== "object" || Array.isArray(data)) return undefined;
+  const out: Record<string, string[]> = {};
+  for (const [k, v] of Object.entries(data as Record<string, unknown>)) {
+    if (k === "detail") continue;
+    if (Array.isArray(v)) out[k] = v.map(String);
+    else if (typeof v === "string") out[k] = [v];
+  }
+  return Object.keys(out).length ? out : undefined;
+}
+
+/** First backend message for a field, if any. */
+export function fieldError(err: unknown, field: string): string | undefined {
+  return err instanceof ApiError ? err.fieldErrors?.[field]?.[0] : undefined;
 }
 
 export const tokens = {
@@ -59,7 +78,14 @@ async function parse<T>(res: Response): Promise<T> {
   if (res.status === 204) return undefined as T;
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new ApiError(data?.detail ?? `Request failed (${res.status})`, res.status);
+    const fieldErrors = parseFieldErrors(data);
+    const general = fieldErrors?.non_field_errors?.[0];
+    if (fieldErrors) delete fieldErrors.non_field_errors;
+    const message =
+      data?.detail ??
+      general ??
+      (fieldErrors && Object.keys(fieldErrors).length ? "Please correct the highlighted fields." : `Request failed (${res.status})`);
+    throw new ApiError(message, res.status, fieldErrors && Object.keys(fieldErrors).length ? fieldErrors : undefined);
   }
   return data as T;
 }

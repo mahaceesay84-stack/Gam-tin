@@ -61,8 +61,8 @@ export default function NotificationList() {
       )}
       <ul className="space-y-3">
         {items.map((n) => (
-          <li key={n.id} className={`card flex items-start gap-4 p-4 transition hover:shadow-pop ${n.is_read ? "" : "border-brand-200 dark:border-brand-900 bg-brand-50/40 dark:bg-brand-900/40"}`}>
-            <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${n.is_read ? "bg-slate-100 dark:bg-slate-800 text-slate-500" : "bg-brand-600 text-white"}`}>
+          <li key={n.id} className={`card flex items-start gap-4 p-4 transition hover:shadow-pop ${n.is_read ? "" : "border-slate-300 dark:border-slate-600"}`}>
+            <span className={`mt-0.5 shrink-0 ${n.is_read ? "text-slate-400" : "text-ink"}`}>
               {KIND_ICON[n.kind] ?? <Bell className="h-4 w-4" />}
             </span>
             <div className="min-w-0 flex-1">

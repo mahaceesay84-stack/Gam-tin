@@ -1,11 +1,11 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, CheckCircle2, FileCheck2, Loader2, Paperclip, Send, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, CheckCircle2, FileCheck2, Loader2, Paperclip, Send, Trash2, Upload } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import StatusBadge from "@/components/StatusBadge";
-import { Alert, DefRow, Spinner } from "@/components/ui";
-import { api } from "@/lib/api";
+import { Alert, DefRow, errorProps, FieldError, Spinner } from "@/components/ui";
+import { api, fieldError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { formatMoney } from "@/lib/format";
 import type { Application, Requirement } from "@/lib/types";
@@ -63,6 +63,7 @@ function Wizard({
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [notesError, setNotesError] = useState("");
   const [submitted, setSubmitted] = useState<Application | null>(null);
   if (!user?.student) return <Spinner />;
   const student = user.student;
@@ -71,12 +72,10 @@ function Wizard({
   if (submitted) {
     return (
       <div className="animate-in card mx-auto max-w-lg space-y-4 p-8 text-center">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400">
-          <CheckCircle2 className="h-8 w-8" />
-        </span>
+        <CheckCircle2 className="mx-auto h-12 w-12 text-slate-400" />
         <h1 className="text-2xl font-bold">Clearance submitted</h1>
         <p className="text-sm text-muted">Your reference number</p>
-        <p className="rounded-xl bg-brand-50 dark:bg-brand-900/30 py-4 font-mono text-3xl font-bold tracking-wide text-brand-700 dark:text-brand-200">{submitted.reference}</p>
+        <p className="rounded-xl border border-line bg-surface py-4 font-mono text-3xl font-bold tracking-wide text-ink">{submitted.reference}</p>
         <p className="text-sm text-muted">
           Next, pay the digital service fee of {formatMoney(submitted.fee_amount, submitted.fee_currency)} so staff can review it.
         </p>
@@ -115,6 +114,7 @@ function Wizard({
   async function saveCategories(): Promise<Application | null> {
     setBusy(true);
     setError("");
+    setNotesError("");
     try {
       const saved = current
         ? await api.patch<Application>(`/clearance/applications/${current.id}/`, { requirements: selected, student_notes: notes })
@@ -122,7 +122,11 @@ function Wizard({
       setApp(saved);
       return saved;
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not save");
+      const fe = fieldError(e, "student_notes");
+      if (fe) {
+        setNotesError(fe);
+        setStep(0);
+      } else setError(e instanceof Error ? e.message : "Could not save");
       return null;
     } finally {
       setBusy(false);
@@ -176,8 +180,8 @@ function Wizard({
     <ol className="flex flex-wrap items-center gap-2 text-sm">
       {STEPS.map((s, i) => (
         <li key={s} className="flex items-center gap-2">
-          <span className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition ${i < step ? "bg-brand-600 text-white" : i === step ? "bg-brand-600 text-white ring-4 ring-brand-100 dark:ring-brand-900" : "bg-slate-100 dark:bg-slate-800 text-slate-400"}`}>
-            {i < step ? "✓" : i + 1}
+          <span className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition ${i < step ? "bg-slate-700 dark:bg-slate-300 text-white dark:text-slate-900" : i === step ? "border-2 border-slate-900 dark:border-slate-200 text-ink" : "border border-line text-muted"}`}>
+            {i < step ? <Check className="h-3.5 w-3.5" /> : i + 1}
           </span>
           <span className={`hidden sm:inline ${i === step ? "font-semibold text-ink" : "text-muted"}`}>{s}</span>
           {i < STEPS.length - 1 && <span className="mx-1 hidden h-px w-6 bg-line sm:block" />}
@@ -214,7 +218,8 @@ function Wizard({
             </dl>
             <div>
               <label htmlFor="notes" className="label">Notes for the reviewer (optional)</label>
-              <textarea id="notes" className="input" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} />
+              <textarea id="notes" className="input" rows={3} value={notes} {...errorProps("notes", notesError)} onChange={(e) => { setNotes(e.target.value); setNotesError(""); }} />
+              <FieldError id="notes" message={notesError} />
             </div>
           </>
         )}

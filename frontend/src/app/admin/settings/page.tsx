@@ -2,8 +2,8 @@
 
 import { Save, ScrollText } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Alert, PageHeader } from "@/components/ui";
-import { api } from "@/lib/api";
+import { Alert, errorProps, FieldError, PageHeader } from "@/components/ui";
+import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { formatDate } from "@/lib/format";
 
@@ -28,6 +28,7 @@ export default function SettingsPage() {
   const [settings, setSettings] = useState<Setting[]>([]);
   const [logs, setLogs] = useState<Log[]>([]);
   const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (user?.role !== "super_admin") return;
@@ -40,11 +41,19 @@ export default function SettingsPage() {
   }
 
   async function save(s: Setting) {
+    setMessage("");
+    if (!s.value.trim()) {
+      setErrors((p) => ({ ...p, [s.key]: "A value is required." }));
+      return;
+    }
+    setErrors((p) => ({ ...p, [s.key]: "" }));
     try {
       await api.put(`/admin/settings/${s.key}/`, { value: s.value });
       setMessage(`Saved ${s.key}.`);
     } catch (e) {
-      setMessage(e instanceof Error ? e.message : "Save failed");
+      const fe = e instanceof ApiError ? (e.fieldErrors?.value?.[0] ?? e.fieldErrors?.[s.key]?.[0]) : undefined;
+      if (fe) setErrors((p) => ({ ...p, [s.key]: fe }));
+      else setMessage(e instanceof Error ? e.message : "Save failed");
     }
   }
 
@@ -54,16 +63,17 @@ export default function SettingsPage() {
       {message && <Alert tone="success">{message}</Alert>}
       <div className="card space-y-5">
         {settings.map((s) => (
-          <div key={s.key}>
+          <form key={s.key} noValidate onSubmit={(e) => { e.preventDefault(); save(s); }}>
             <label htmlFor={s.key} className="label">
               <span className="font-mono">{s.key}</span>
               <span className="ml-2 font-normal text-muted">{s.description}</span>
             </label>
             <div className="flex gap-2">
-              <input id={s.key} className="input" value={s.value} onChange={(e) => setSettings(settings.map((x) => (x.key === s.key ? { ...x, value: e.target.value } : x)))} />
-              <button className="btn btn-primary" onClick={() => save(s)}><Save className="h-4 w-4" /> Save</button>
+              <input id={s.key} className="input" value={s.value} {...errorProps(s.key, errors[s.key])} onChange={(e) => { setSettings(settings.map((x) => (x.key === s.key ? { ...x, value: e.target.value } : x))); setErrors((p) => ({ ...p, [s.key]: "" })); }} />
+              <button type="submit" className="btn btn-primary"><Save className="h-4 w-4" /> Save</button>
             </div>
-          </div>
+            <FieldError id={s.key} message={errors[s.key]} />
+          </form>
         ))}
       </div>
       <section className="card">

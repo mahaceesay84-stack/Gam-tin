@@ -50,9 +50,7 @@ export default function StudentDashboard() {
       {app?.handoff && (
         <section className="relative overflow-hidden rounded-card border border-emerald-200 dark:border-emerald-900 bg-gradient-to-br from-emerald-50 dark:from-emerald-950/40 to-brand-50 dark:to-brand-900/30 p-6 shadow-card">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-600 text-white">
-              <PartyPopper className="h-6 w-6" />
-            </span>
+            <PartyPopper className="h-8 w-8 shrink-0 text-slate-400" />
             <div className="flex-1">
               <h2 className="text-lg font-bold text-brand-900 dark:text-brand-200">Clearance approved — your next step</h2>
               <p className="mt-1 text-sm leading-relaxed text-brand-900/80 dark:text-brand-200">{app.handoff.instructions}</p>

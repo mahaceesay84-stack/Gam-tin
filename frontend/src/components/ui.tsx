@@ -47,15 +47,32 @@ export function PageHeader({
   );
 }
 
+/** Inline error shown directly beneath an input. Pair with `errorProps`. */
+export function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
+  return (
+    <p id={`${id}-error`} role="alert" aria-live="polite" className="mt-1.5 text-xs font-medium text-rose-600 dark:text-rose-400">
+      {message}
+    </p>
+  );
+}
+
+/** Spread onto an input to wire aria-invalid / aria-describedby to its FieldError. */
+export function errorProps(id: string, message?: string) {
+  return message ? { "aria-invalid": true as const, "aria-describedby": `${id}-error` } : {};
+}
+
 export function Field({
   label,
   htmlFor,
   hint,
+  error,
   children,
 }: {
   label: string;
   htmlFor: string;
   hint?: string;
+  error?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -64,6 +81,7 @@ export function Field({
         {label}
       </label>
       {children}
+      <FieldError id={htmlFor} message={error} />
       {hint && <p className="mt-1 text-xs text-muted">{hint}</p>}
     </div>
   );

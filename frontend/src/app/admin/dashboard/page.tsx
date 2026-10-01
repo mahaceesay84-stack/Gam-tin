@@ -15,10 +15,10 @@ interface Faculty {
 }
 
 const STAT_CARDS = [
-  { key: "submitted", label: "Awaiting review", icon: Clock, tone: "bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400" },
-  { key: "correction_requested", label: "Correction requested", icon: AlertTriangle, tone: "bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400" },
-  { key: "approved", label: "Approved", icon: CheckCircle2, tone: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400" },
-  { key: "rejected", label: "Rejected", icon: XCircle, tone: "bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400" },
+  { key: "submitted", label: "Awaiting review", icon: Clock },
+  { key: "correction_requested", label: "Correction requested", icon: AlertTriangle },
+  { key: "approved", label: "Approved", icon: CheckCircle2 },
+  { key: "rejected", label: "Rejected", icon: XCircle },
 ] as const;
 
 export default function AdminDashboard() {
@@ -63,11 +63,9 @@ export default function AdminDashboard() {
       <PageHeader title="Clearance submissions" subtitle="Review, approve or return student clearance applications." />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {STAT_CARDS.map(({ key, label, icon: Icon, tone }) => (
+        {STAT_CARDS.map(({ key, label, icon: Icon }) => (
           <div key={key} className="card flex items-center gap-4 p-5">
-            <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${tone}`}>
-              <Icon className="h-5 w-5" />
-            </span>
+            <Icon className="h-6 w-6 text-slate-400" />
             <div>
               <p className="text-2xl font-bold leading-none">{stats[key] ?? 0}</p>
               <p className="mt-1 text-xs font-medium text-muted">{label}</p>

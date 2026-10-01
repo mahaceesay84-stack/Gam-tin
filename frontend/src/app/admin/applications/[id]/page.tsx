@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import StatusBadge from "@/components/StatusBadge";
-import { Alert, DefRow, Spinner } from "@/components/ui";
-import { api } from "@/lib/api";
+import { Alert, DefRow, errorProps, FieldError, Spinner } from "@/components/ui";
+import { api, fieldError } from "@/lib/api";
 import { formatDate, formatMoney, METHOD_LABELS } from "@/lib/format";
 import type { Application } from "@/lib/types";
 
@@ -17,6 +17,7 @@ export default function ApplicationReview() {
   const [app, setApp] = useState<Application | null>(null);
   const [error, setError] = useState("");
   const [reason, setReason] = useState("");
+  const [reasonError, setReasonError] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -32,16 +33,19 @@ export default function ApplicationReview() {
 
   async function decide(decision: Decision) {
     if (decision !== "approve" && !reason.trim()) {
-      setError("Please give a reason.");
+      setReasonError("A reason is required to reject or request a correction.");
       return;
     }
     setBusy(true);
     setError("");
+    setReasonError("");
     try {
       setApp(await api.post<Application>(`/clearance/admin/applications/${id}/${decision}/`, { reason }));
       setReason("");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Action failed");
+      const fe = fieldError(e, "reason");
+      if (fe) setReasonError(fe);
+      else setError(e instanceof Error ? e.message : "Action failed");
     } finally {
       setBusy(false);
     }
@@ -104,7 +108,7 @@ export default function ApplicationReview() {
               <span className="flex flex-wrap items-center gap-3">
                 {i.documents.length === 0 && <span className="text-xs text-muted">no documents</span>}
                 {i.documents.map((d) => (
-                  <button key={d.id} className="inline-flex items-center gap-1.5 rounded-md bg-slate-50 dark:bg-slate-800/50 px-2.5 py-1 text-xs font-medium text-brand-700 dark:text-brand-200 transition hover:bg-brand-50 dark:hover:bg-brand-900/30" onClick={() => api.openFile(`/clearance/documents/${d.id}/download/`).catch((e) => setError(e.message))}>
+                  <button key={d.id} className="inline-flex items-center gap-1.5 rounded-md bg-slate-50 dark:bg-slate-800/50 px-2.5 py-1 text-xs font-medium text-brand-700 dark:text-brand-200 transition hover:bg-slate-100 dark:hover:bg-slate-800" onClick={() => api.openFile(`/clearance/documents/${d.id}/download/`).catch((e) => setError(e.message))}>
                     <Paperclip className="h-3 w-3" /> {d.original_name}
                   </button>
                 ))}
@@ -125,7 +129,8 @@ export default function ApplicationReview() {
           {!paid && <Alert tone="warn">Approval is disabled until the service fee is paid.</Alert>}
           <div>
             <label htmlFor="reason" className="label">Reason (required for reject / correction)</label>
-            <textarea id="reason" className="input" rows={3} value={reason} onChange={(e) => setReason(e.target.value)} />
+            <textarea id="reason" className="input" rows={3} value={reason} {...errorProps("reason", reasonError)} onChange={(e) => { setReason(e.target.value); setReasonError(""); }} />
+            <FieldError id="reason" message={reasonError} />
           </div>
           <div className="flex flex-wrap gap-3">
             <button className="btn btn-primary" disabled={busy || !paid} onClick={() => decide("approve")}><Check className="h-4 w-4" /> Approve</button>

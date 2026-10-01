@@ -4,8 +4,8 @@ import { CheckCircle2, Loader2, Lock, Smartphone } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import StatusBadge from "@/components/StatusBadge";
-import { Alert, DefRow, Field, Spinner } from "@/components/ui";
-import { api } from "@/lib/api";
+import { Alert, DefRow, errorProps, Field, Spinner } from "@/components/ui";
+import { api, fieldError } from "@/lib/api";
 import { formatDate, formatMoney, METHOD_LABELS } from "@/lib/format";
 import type { Payment } from "@/lib/types";
 import { useMyApplication } from "@/lib/useMyApplication";
@@ -18,6 +18,7 @@ export default function PaymentPage() {
   const [phone, setPhone] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [receipt, setReceipt] = useState<Payment | null>(null);
 
   if (loading) return <Spinner />;
@@ -35,14 +36,26 @@ export default function PaymentPage() {
   async function pay(e: React.FormEvent) {
     e.preventDefault();
     if (!app) return;
-    setBusy(true);
     setError("");
+    const digits = phone.replace(/[\s-]/g, "");
+    if (!digits) {
+      setPhoneError("Mobile number is required.");
+      return;
+    }
+    if (!/^(\+?220)?\d{7}$/.test(digits)) {
+      setPhoneError("Enter a valid 7-digit Gambian mobile number.");
+      return;
+    }
+    setPhoneError("");
+    setBusy(true);
     try {
       const p = await api.post<Payment>(`/payments/applications/${app.id}/pay/`, { method, phone });
       setReceipt(p);
       await reload();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Payment failed");
+      const fe = fieldError(err, "phone");
+      if (fe) setPhoneError(fe);
+      else setError(err instanceof Error ? err.message : "Payment failed");
       await reload();
     } finally {
       setBusy(false);
@@ -54,9 +67,7 @@ export default function PaymentPage() {
     return (
       <div className="animate-in card mx-auto max-w-lg space-y-5 p-8">
         <div className="text-center">
-          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400">
-            <CheckCircle2 className="h-8 w-8" />
-          </span>
+          <CheckCircle2 className="mx-auto h-12 w-12 text-slate-400" />
           <h1 className="mt-4 text-2xl font-bold">Payment successful</h1>
         </div>
         <dl className="divide-y divide-line rounded-lg border border-line px-4">
@@ -81,7 +92,7 @@ export default function PaymentPage() {
   }
 
   return (
-    <form onSubmit={pay} className="animate-in card mx-auto max-w-lg space-y-6 p-7">
+    <form onSubmit={pay} noValidate className="animate-in card mx-auto max-w-lg space-y-6 p-7">
       <div>
         <h1 className="text-2xl font-bold">Digital service fee</h1>
         <p className="mt-1 text-sm text-muted">Pay to send {app.reference} for staff review.</p>
@@ -106,8 +117,8 @@ export default function PaymentPage() {
           ))}
         </div>
       </fieldset>
-      <Field label="Mobile number" htmlFor="phone" hint="7-digit Gambian number, e.g. 7001001">
-        <input id="phone" required className="input" placeholder="7001001" value={phone} onChange={(e) => setPhone(e.target.value)} />
+      <Field label="Mobile number" htmlFor="phone" error={phoneError} hint="7-digit Gambian number, e.g. 7001001">
+        <input id="phone" inputMode="numeric" className="input" placeholder="7001001" value={phone} {...errorProps("phone", phoneError)} onChange={(e) => { setPhone(e.target.value); setPhoneError(""); }} />
       </Field>
       <button className="btn btn-primary w-full py-3" disabled={busy}>
         {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}

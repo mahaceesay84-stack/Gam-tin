@@ -52,9 +52,7 @@ export default function Toasts() {
           className="flex gap-3 rounded-xl border border-line bg-surface p-4 shadow-pop"
           style={{ animation: "slide-in 0.3s ease-out both" }}
         >
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600">
-            <BellRing className="h-4 w-4" />
-          </span>
+          <BellRing className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold">{n.title}</p>
             <p className="mt-0.5 text-sm text-muted">{n.message}</p>

@@ -52,7 +52,7 @@ export default function Home() {
       <section className="grid gap-5 sm:grid-cols-3">
         {FEATURES.map(({ icon: Icon, title, text }) => (
           <div key={title} className="card transition hover:-translate-y-0.5 hover:shadow-pop">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-900/40 dark:text-brand-200">
               <Icon className="h-5 w-5" />
             </span>
             <h3 className="mt-4 font-semibold">{title}</h3>
@@ -67,7 +67,7 @@ export default function Home() {
         <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {STEPS.map(({ icon: Icon, title, text }, i) => (
             <li key={title} className="card relative p-5">
-              <span className="absolute right-4 top-4 text-3xl font-extrabold text-slate-100">{i + 1}</span>
+              <span className="absolute right-4 top-4 text-3xl font-extrabold text-slate-100 dark:text-slate-800">{i + 1}</span>
               <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600 text-white">
                 <Icon className="h-5 w-5" />
               </span>

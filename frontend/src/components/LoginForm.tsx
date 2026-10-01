@@ -56,12 +56,12 @@ export default function LoginForm({ portal }: { portal: "student" | "admin" }) {
         </button>
         <p className="text-center text-sm text-muted">
           {staff ? (
-            <Link href="/login" className="font-medium text-brand-700 hover:underline">Student login</Link>
+            <Link href="/login" className="font-medium text-brand-700 dark:text-brand-200 hover:underline">Student login</Link>
           ) : (
             <>
-              New here? <Link href="/register" className="font-medium text-brand-700 hover:underline">Create an account</Link>
+              New here? <Link href="/register" className="font-medium text-brand-700 dark:text-brand-200 hover:underline">Create an account</Link>
               {" · "}
-              <Link href="/admin/login" className="font-medium text-brand-700 hover:underline">Staff login</Link>
+              <Link href="/admin/login" className="font-medium text-brand-700 dark:text-brand-200 hover:underline">Staff login</Link>
             </>
           )}
         </p>

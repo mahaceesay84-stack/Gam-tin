@@ -86,7 +86,7 @@ export default function RegisterPage() {
           {busy ? "Creating account…" : "Create account"}
         </button>
         <p className="text-center text-sm text-muted">
-          Already registered? <Link href="/login" className="font-medium text-brand-700 hover:underline">Log in</Link>
+          Already registered? <Link href="/login" className="font-medium text-brand-700 dark:text-brand-200 hover:underline">Log in</Link>
         </p>
       </form>
     </AuthShell>

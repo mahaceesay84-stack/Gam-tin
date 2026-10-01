@@ -71,8 +71,8 @@ export default function SettingsPage() {
         <ul className="mt-3 divide-y divide-line text-sm">
           {logs.slice(0, 30).map((l) => (
             <li key={l.id} className="flex flex-wrap items-center justify-between gap-2 py-2.5">
-              <span className="rounded bg-slate-100 px-2 py-0.5 font-mono text-xs">{l.action}</span>
-              <span className="text-slate-600">{l.actor_email ?? "system"} · {l.entity_type} {l.entity_id}</span>
+              <span className="rounded bg-slate-100 dark:bg-slate-800 px-2 py-0.5 font-mono text-xs">{l.action}</span>
+              <span className="text-slate-600 dark:text-slate-300">{l.actor_email ?? "system"} · {l.entity_type} {l.entity_id}</span>
               <span className="text-xs text-muted">{formatDate(l.created_at)}</span>
             </li>
           ))}

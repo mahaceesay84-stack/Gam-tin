@@ -54,7 +54,7 @@ export default function PaymentPage() {
     return (
       <div className="animate-in card mx-auto max-w-lg space-y-5 p-8">
         <div className="text-center">
-          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400">
             <CheckCircle2 className="h-8 w-8" />
           </span>
           <h1 className="mt-4 text-2xl font-bold">Payment successful</h1>
@@ -98,7 +98,7 @@ export default function PaymentPage() {
         <legend className="label">Pay with</legend>
         <div className="grid grid-cols-2 gap-3">
           {METHODS.map((m) => (
-            <label key={m} className={`flex cursor-pointer items-center gap-3 rounded-lg border-2 p-3.5 text-sm font-medium transition ${method === m ? "border-brand-600 bg-brand-50 text-brand-800" : "border-line hover:border-slate-300"}`}>
+            <label key={m} className={`flex cursor-pointer items-center gap-3 rounded-lg border-2 p-3.5 text-sm font-medium transition ${method === m ? "border-brand-600 bg-brand-50 dark:bg-brand-900/30 text-brand-800 dark:text-brand-200" : "border-line hover:border-slate-300 dark:hover:border-slate-600"}`}>
               <input type="radio" name="method" value={m} checked={method === m} onChange={() => setMethod(m)} className="sr-only" />
               <Smartphone className="h-4 w-4" />
               {METHOD_LABELS[m]}

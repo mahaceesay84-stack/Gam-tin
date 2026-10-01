@@ -29,12 +29,12 @@ export default function ProgressTracker({ user, app }: { user: User; app: Applic
         const active = i === current;
         const failed = active && rejected;
         const circle = failed
-          ? "border-rose-500 bg-rose-50 text-rose-600"
+          ? "border-rose-500 bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400"
           : done
             ? "border-brand-600 bg-brand-600 text-white"
             : active
-              ? "border-brand-600 bg-white text-brand-600 ring-4 ring-brand-100"
-              : "border-line bg-slate-50 text-slate-400";
+              ? "border-brand-600 bg-surface text-brand-600 ring-4 ring-brand-100 dark:ring-brand-900"
+              : "border-line bg-slate-50 dark:bg-slate-800 text-slate-400";
         return (
           <li key={label} className="relative flex items-center gap-3 sm:flex-col sm:gap-2 sm:text-center">
             {i > 0 && (

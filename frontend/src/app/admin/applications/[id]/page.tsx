@@ -76,7 +76,7 @@ export default function ApplicationReview() {
             <DefRow label="Term">{app.term_name}</DefRow>
             <DefRow label="Submitted">{formatDate(app.submitted_at)}</DefRow>
           </dl>
-          {app.student_notes && <p className="mt-3 rounded-lg bg-slate-50 p-3 text-sm text-slate-600">Student note: {app.student_notes}</p>}
+          {app.student_notes && <p className="mt-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 p-3 text-sm text-slate-600 dark:text-slate-300">Student note: {app.student_notes}</p>}
         </section>
 
         <section className="card">
@@ -104,7 +104,7 @@ export default function ApplicationReview() {
               <span className="flex flex-wrap items-center gap-3">
                 {i.documents.length === 0 && <span className="text-xs text-muted">no documents</span>}
                 {i.documents.map((d) => (
-                  <button key={d.id} className="inline-flex items-center gap-1.5 rounded-md bg-slate-50 px-2.5 py-1 text-xs font-medium text-brand-700 transition hover:bg-brand-50" onClick={() => api.openFile(`/clearance/documents/${d.id}/download/`).catch((e) => setError(e.message))}>
+                  <button key={d.id} className="inline-flex items-center gap-1.5 rounded-md bg-slate-50 dark:bg-slate-800/50 px-2.5 py-1 text-xs font-medium text-brand-700 dark:text-brand-200 transition hover:bg-brand-50 dark:hover:bg-brand-900/30" onClick={() => api.openFile(`/clearance/documents/${d.id}/download/`).catch((e) => setError(e.message))}>
                     <Paperclip className="h-3 w-3" /> {d.original_name}
                   </button>
                 ))}

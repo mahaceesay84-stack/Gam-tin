@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import ThemeToggle from "@/components/ThemeToggle";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import type { AppNotification, Paginated } from "@/lib/types";
@@ -59,14 +60,16 @@ export default function Navbar() {
 
   const linkClass = (href: string) =>
     `relative inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-      pathname.startsWith(href) ? "bg-brand-50 text-brand-700" : "text-slate-600 hover:bg-slate-100 hover:text-ink"
+      pathname.startsWith(href) ? "bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-200" : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-ink"
     }`;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-white/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-line bg-surface/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5">
-          <Image src="/utg-crest.jpg" alt="UTG crest" width={53} height={38} priority className="h-[38px] w-auto" />
+          <span className="flex rounded-lg bg-white px-1.5 py-1 ring-1 ring-black/5">
+            <Image src="/utg-crest.jpg" alt="UTG crest" width={53} height={38} priority className="h-[38px] w-auto" />
+          </span>
           <span className="leading-tight">
             <span className="block text-sm font-bold text-ink">UTG Digital</span>
             <span className="block text-xs font-medium text-muted">Student Services</span>
@@ -78,7 +81,7 @@ export default function Navbar() {
         </button>
 
         <nav
-          className={`${open ? "flex" : "hidden"} absolute inset-x-0 top-full flex-col items-stretch gap-1 border-b border-line bg-white p-4 shadow-pop md:static md:flex md:flex-row md:items-center md:border-0 md:bg-transparent md:p-0 md:shadow-none`}
+          className={`${open ? "flex" : "hidden"} absolute inset-x-0 top-full flex-col items-stretch gap-1 border-b border-line bg-surface p-4 shadow-pop md:static md:flex md:flex-row md:items-center md:border-0 md:bg-transparent md:p-0 md:shadow-none`}
           onClick={() => setOpen(false)}
         >
           {links.map((l) => (
@@ -90,9 +93,12 @@ export default function Navbar() {
               )}
             </Link>
           ))}
+          <div className="mt-2 flex items-center md:ml-2 md:mt-0">
+            <ThemeToggle />
+          </div>
           {user ? (
             <div className="mt-2 flex items-center gap-3 border-t border-line pt-3 md:ml-3 md:mt-0 md:border-0 md:border-l md:pl-4 md:pt-0">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-800">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 text-xs font-bold text-brand-800 dark:text-brand-200">
                 {user.full_name
                   .split(" ")
                   .map((p) => p[0])

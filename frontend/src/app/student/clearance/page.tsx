@@ -71,12 +71,12 @@ function Wizard({
   if (submitted) {
     return (
       <div className="animate-in card mx-auto max-w-lg space-y-4 p-8 text-center">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400">
           <CheckCircle2 className="h-8 w-8" />
         </span>
         <h1 className="text-2xl font-bold">Clearance submitted</h1>
         <p className="text-sm text-muted">Your reference number</p>
-        <p className="rounded-xl bg-brand-50 py-4 font-mono text-3xl font-bold tracking-wide text-brand-700">{submitted.reference}</p>
+        <p className="rounded-xl bg-brand-50 dark:bg-brand-900/30 py-4 font-mono text-3xl font-bold tracking-wide text-brand-700 dark:text-brand-200">{submitted.reference}</p>
         <p className="text-sm text-muted">
           Next, pay the digital service fee of {formatMoney(submitted.fee_amount, submitted.fee_currency)} so staff can review it.
         </p>
@@ -176,7 +176,7 @@ function Wizard({
     <ol className="flex flex-wrap items-center gap-2 text-sm">
       {STEPS.map((s, i) => (
         <li key={s} className="flex items-center gap-2">
-          <span className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition ${i < step ? "bg-brand-600 text-white" : i === step ? "bg-brand-600 text-white ring-4 ring-brand-100" : "bg-slate-100 text-slate-400"}`}>
+          <span className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition ${i < step ? "bg-brand-600 text-white" : i === step ? "bg-brand-600 text-white ring-4 ring-brand-100 dark:ring-brand-900" : "bg-slate-100 dark:bg-slate-800 text-slate-400"}`}>
             {i < step ? "✓" : i + 1}
           </span>
           <span className={`hidden sm:inline ${i === step ? "font-semibold text-ink" : "text-muted"}`}>{s}</span>
@@ -230,13 +230,13 @@ function Wizard({
                 const on = selected.includes(r.id);
                 return (
                   <li key={r.id}>
-                    <label className={`flex items-start gap-3 rounded-lg border-2 p-3.5 text-sm transition ${on ? "border-brand-500 bg-brand-50/60" : "border-line"} ${r.is_mandatory ? "cursor-default" : "cursor-pointer hover:border-slate-300"}`}>
+                    <label className={`flex items-start gap-3 rounded-lg border-2 p-3.5 text-sm transition ${on ? "border-brand-500 bg-brand-50/60 dark:bg-brand-900/60" : "border-line"} ${r.is_mandatory ? "cursor-default" : "cursor-pointer hover:border-slate-300 dark:hover:border-slate-600"}`}>
                       <input type="checkbox" className="mt-0.5 h-4 w-4 accent-brand-600" checked={on} disabled={r.is_mandatory} onChange={() => toggle(r)} />
                       <span className="flex-1">
                         <span className="font-medium">{r.name}</span>
                         <span className="ml-2 inline-flex gap-1.5 align-middle">
-                          {r.is_mandatory && <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-slate-600">Required</span>}
-                          {r.requires_document && <span className="inline-flex items-center gap-1 rounded bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-800"><Paperclip className="h-3 w-3" />Document</span>}
+                          {r.is_mandatory && <span className="rounded bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-300">Required</span>}
+                          {r.requires_document && <span className="inline-flex items-center gap-1 rounded bg-amber-50 dark:bg-amber-950/40 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-800 dark:text-amber-300"><Paperclip className="h-3 w-3" />Document</span>}
                         </span>
                       </span>
                     </label>
@@ -262,20 +262,20 @@ function Wizard({
                 <div key={r.id} className="rounded-lg border border-line p-4 text-sm">
                   <div className="flex items-center justify-between gap-2">
                     <p className="font-semibold">{r.name}</p>
-                    {docs.length > 0 ? <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700"><FileCheck2 className="h-3.5 w-3.5" />Uploaded</span> : <span className="text-xs font-medium text-rose-600">Required</span>}
+                    {docs.length > 0 ? <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 dark:text-emerald-300"><FileCheck2 className="h-3.5 w-3.5" />Uploaded</span> : <span className="text-xs font-medium text-rose-600 dark:text-rose-400">Required</span>}
                   </div>
                   {r.document_hint && <p className="mt-0.5 text-xs text-muted">{r.document_hint}</p>}
                   <ul className="my-3 space-y-1.5">
                     {docs.map((d) => (
-                      <li key={d.id} className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
+                      <li key={d.id} className="flex items-center justify-between rounded-md bg-slate-50 dark:bg-slate-800/50 px-3 py-2">
                         <span className="flex items-center gap-2 truncate"><Paperclip className="h-3.5 w-3.5 text-slate-400" />{d.original_name}</span>
-                        <button type="button" aria-label={`Remove ${d.original_name}`} className="text-slate-400 transition hover:text-rose-600" onClick={() => removeDoc(d.id)}>
+                        <button type="button" aria-label={`Remove ${d.original_name}`} className="text-slate-400 transition hover:text-rose-600 dark:hover:text-rose-400" onClick={() => removeDoc(d.id)}>
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </li>
                     ))}
                   </ul>
-                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-dashed border-line px-4 py-4 text-sm font-medium text-slate-600 transition hover:border-brand-500 hover:bg-brand-50/50 hover:text-brand-700">
+                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-dashed border-line px-4 py-4 text-sm font-medium text-slate-600 dark:text-slate-300 transition hover:border-brand-500 hover:bg-brand-50/50 dark:hover:bg-brand-900/50 hover:text-brand-700 dark:hover:text-brand-200">
                     <Upload className="h-4 w-4" /> Choose a file
                     <input
                       type="file"

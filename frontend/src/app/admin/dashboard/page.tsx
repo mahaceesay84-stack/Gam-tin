@@ -15,10 +15,10 @@ interface Faculty {
 }
 
 const STAT_CARDS = [
-  { key: "submitted", label: "Awaiting review", icon: Clock, tone: "bg-sky-50 text-sky-600" },
-  { key: "correction_requested", label: "Correction requested", icon: AlertTriangle, tone: "bg-amber-50 text-amber-600" },
-  { key: "approved", label: "Approved", icon: CheckCircle2, tone: "bg-emerald-50 text-emerald-600" },
-  { key: "rejected", label: "Rejected", icon: XCircle, tone: "bg-rose-50 text-rose-600" },
+  { key: "submitted", label: "Awaiting review", icon: Clock, tone: "bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400" },
+  { key: "correction_requested", label: "Correction requested", icon: AlertTriangle, tone: "bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400" },
+  { key: "approved", label: "Approved", icon: CheckCircle2, tone: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400" },
+  { key: "rejected", label: "Rejected", icon: XCircle, tone: "bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400" },
 ] as const;
 
 export default function AdminDashboard() {
@@ -104,7 +104,7 @@ export default function AdminDashboard() {
       <div className="card overflow-hidden p-0">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-line bg-slate-50/80 text-xs uppercase tracking-wide text-muted">
+            <thead className="border-b border-line bg-slate-50/80 dark:bg-slate-800/80 text-xs uppercase tracking-wide text-muted">
               <tr>
                 <th className="px-5 py-3 font-semibold">Reference</th>
                 <th className="px-5 py-3 font-semibold">Student</th>
@@ -117,18 +117,18 @@ export default function AdminDashboard() {
             </thead>
             <tbody className="divide-y divide-line">
               {apps.map((a) => (
-                <tr key={a.id} className="transition-colors hover:bg-slate-50/70">
+                <tr key={a.id} className="transition-colors hover:bg-slate-50/70 dark:hover:bg-slate-800/70">
                   <td className="px-5 py-4 font-mono text-xs">{a.reference}</td>
                   <td className="px-5 py-4">
                     <p className="font-medium">{a.student.full_name}</p>
                     <p className="text-xs text-muted">{a.student.student_number}</p>
                   </td>
-                  <td className="px-5 py-4 text-slate-600">{a.student.faculty}</td>
+                  <td className="px-5 py-4 text-slate-600 dark:text-slate-300">{a.student.faculty}</td>
                   <td className="px-5 py-4"><StatusBadge status={a.status} /></td>
                   <td className="px-5 py-4"><StatusBadge status={a.payment_status} /></td>
                   <td className="px-5 py-4 text-muted">{formatDate(a.submitted_at)}</td>
                   <td className="px-5 py-4 text-right">
-                    <Link href={`/admin/applications/${a.id}`} className="inline-flex items-center gap-1 font-medium text-brand-700 hover:underline">
+                    <Link href={`/admin/applications/${a.id}`} className="inline-flex items-center gap-1 font-medium text-brand-700 dark:text-brand-200 hover:underline">
                       Review <ArrowUpRight className="h-3.5 w-3.5" />
                     </Link>
                   </td>

@@ -61,18 +61,18 @@ export default function NotificationList() {
       )}
       <ul className="space-y-3">
         {items.map((n) => (
-          <li key={n.id} className={`card flex items-start gap-4 p-4 transition hover:shadow-pop ${n.is_read ? "" : "border-brand-200 bg-brand-50/40"}`}>
-            <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${n.is_read ? "bg-slate-100 text-slate-500" : "bg-brand-600 text-white"}`}>
+          <li key={n.id} className={`card flex items-start gap-4 p-4 transition hover:shadow-pop ${n.is_read ? "" : "border-brand-200 dark:border-brand-900 bg-brand-50/40 dark:bg-brand-900/40"}`}>
+            <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${n.is_read ? "bg-slate-100 dark:bg-slate-800 text-slate-500" : "bg-brand-600 text-white"}`}>
               {KIND_ICON[n.kind] ?? <Bell className="h-4 w-4" />}
             </span>
             <div className="min-w-0 flex-1">
               <p className="font-semibold">{n.title}</p>
-              <p className="mt-0.5 text-sm text-slate-600">{n.message}</p>
+              <p className="mt-0.5 text-sm text-slate-600 dark:text-slate-300">{n.message}</p>
               <p className="mt-1.5 text-xs text-muted">{formatDate(n.created_at)}</p>
             </div>
             {!n.is_read && (
               <button
-                className="shrink-0 text-xs font-medium text-brand-700 hover:underline"
+                className="shrink-0 text-xs font-medium text-brand-700 dark:text-brand-200 hover:underline"
                 onClick={async () => {
                   await api.post(`/notifications/${n.id}/read/`);
                   await reload();

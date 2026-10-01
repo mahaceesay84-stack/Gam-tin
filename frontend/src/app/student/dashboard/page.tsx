@@ -48,14 +48,14 @@ export default function StudentDashboard() {
       <ProgressTracker user={user} app={app} />
 
       {app?.handoff && (
-        <section className="relative overflow-hidden rounded-card border border-emerald-200 bg-gradient-to-br from-emerald-50 to-brand-50 p-6 shadow-card">
+        <section className="relative overflow-hidden rounded-card border border-emerald-200 dark:border-emerald-900 bg-gradient-to-br from-emerald-50 dark:from-emerald-950/40 to-brand-50 dark:to-brand-900/30 p-6 shadow-card">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-600 text-white">
               <PartyPopper className="h-6 w-6" />
             </span>
             <div className="flex-1">
-              <h2 className="text-lg font-bold text-brand-900">Clearance approved — your next step</h2>
-              <p className="mt-1 text-sm leading-relaxed text-brand-900/80">{app.handoff.instructions}</p>
+              <h2 className="text-lg font-bold text-brand-900 dark:text-brand-200">Clearance approved — your next step</h2>
+              <p className="mt-1 text-sm leading-relaxed text-brand-900/80 dark:text-brand-200">{app.handoff.instructions}</p>
             </div>
             <a href={app.handoff.portal_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary shrink-0">
               Go to official portal <ExternalLink className="h-4 w-4" />

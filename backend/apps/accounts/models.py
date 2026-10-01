@@ -69,7 +69,6 @@ class Student(models.Model):
     student_number = models.CharField(max_length=30, unique=True)
     programme = models.ForeignKey("academics.Programme", on_delete=models.PROTECT, related_name="students")
     level = models.PositiveSmallIntegerField(default=4, help_text="Year of study")
-    expected_graduation_year = models.PositiveSmallIntegerField(null=True, blank=True)
     verification_status = models.CharField(
         max_length=20, choices=VerificationStatus.choices, default=VerificationStatus.PENDING
     )

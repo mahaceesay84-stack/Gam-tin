@@ -4,7 +4,7 @@
 
 A student clearance workflow: students register, submit a clearance with documents, pay a small
 digital service fee (mock mobile money), and staff approve / reject / request corrections. Approved
-students are handed off to the official UTG portal.
+students are handed off to the official UTG Students' Portal to complete course registration.
 
 - `backend/` — Django + Django REST Framework + PostgreSQL, JWT auth (`djangorestframework-simplejwt`)
 - `frontend/` — Next.js (App Router) + TypeScript + Tailwind CSS

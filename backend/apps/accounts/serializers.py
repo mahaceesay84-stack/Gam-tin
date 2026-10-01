@@ -21,7 +21,6 @@ class StudentSerializer(serializers.ModelSerializer):
             "programme_name",
             "faculty_name",
             "level",
-            "expected_graduation_year",
             "verification_status",
             "verified_at",
         ]

@@ -7,7 +7,7 @@ managed by Django migrations (`backend/apps/*/migrations`). Database: PostgreSQL
 | Model | App | Key fields |
 | --- | --- | --- |
 | `User` | accounts | `email` (unique, login), `full_name`, `phone`, `role` (`student` / `admin` / `super_admin`), `is_active` |
-| `Student` | accounts | `user` (1:1), `student_number` (unique), `programme` FK, `level`, `expected_graduation_year`, `verification_status` (`pending`/`verified`/`rejected`), `verified_at` |
+| `Student` | accounts | `user` (1:1), `student_number` (unique), `programme` FK, `level`, `verification_status` (`pending`/`verified`/`rejected`), `verified_at` |
 | `Faculty` | academics | `code` (unique), `name` |
 | `Programme` | academics | `faculty` FK, `code` (unique), `name`, `duration_years`, `is_active` |
 | `AcademicTerm` | academics | `name` (unique), `start_date`, `end_date`, `is_current` |

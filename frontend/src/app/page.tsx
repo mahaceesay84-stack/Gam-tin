@@ -1,4 +1,4 @@
-import { ArrowRight, BadgeCheck, ClipboardCheck, CreditCard, FileUp, GraduationCap, ShieldCheck, Smartphone, UserCheck } from "lucide-react";
+import { ArrowRight, BadgeCheck, ClipboardCheck, CreditCard, FileUp, LogIn, ShieldCheck, Smartphone, UserCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,7 +7,7 @@ const STEPS = [
   { icon: FileUp, title: "Clear", text: "Pick your clearance categories and upload documents." },
   { icon: CreditCard, title: "Pay", text: "Settle the small digital service fee with mobile money." },
   { icon: BadgeCheck, title: "Get approved", text: "Staff review your submission and notify you instantly." },
-  { icon: GraduationCap, title: "Proceed", text: "Continue to the official UTG portal to finish up." },
+  { icon: LogIn, title: "Proceed", text: "Continue to the official UTG Students' Portal to complete your course registration." },
 ];
 
 const FEATURES = [
@@ -31,7 +31,7 @@ export default function Home() {
           UTG Digital Student Services
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base text-muted sm:text-lg">
-          Complete your graduation clearance online — no queues, no running between offices.
+          Complete your student clearance online, from wherever you are.
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
           <Link href="/register" className="btn btn-primary px-6 py-3">

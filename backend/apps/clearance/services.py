@@ -120,7 +120,7 @@ def decide(app, admin_user, decision: str, reason: str = "", request=None):
             ApplicationStatus.APPROVED,
             ItemStatus.CLEARED,
             "Clearance approved",
-            f"Your clearance {app.reference} was approved. Proceed to the official UTG portal.",
+            f"Your clearance {app.reference} was approved. Proceed to the official UTG Students' Portal to complete your course registration.",
         ),
         "reject": (
             ApplicationStatus.REJECTED,

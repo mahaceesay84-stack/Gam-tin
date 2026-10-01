@@ -112,9 +112,9 @@ class ApplicationSerializer(serializers.ModelSerializer):
         return {
             "portal_url": SystemSetting.get("official_portal_url", DEFAULT_PORTAL_URL),
             "instructions": (
-                "Your clearance has been approved. Please proceed to the official UTG portal "
-                "to complete your final clearance and graduation process. Quote your clearance "
-                f"reference {obj.reference} when asked. This platform is a prototype and is not "
+                "Your clearance has been approved. Please proceed to the official UTG Students' Portal "
+                "to complete your course registration. Quote your clearance "
+                f"reference {obj.reference} if asked. This platform is a prototype and is not "
                 "an official UTG service."
             ),
         }

@@ -23,13 +23,11 @@ FACULTIES = {
 # (code, name, faculty code or None, mandatory, requires_document, hint)
 REQUIREMENTS = [
     ("LIB", "Library Clearance", None, True, False, ""),
-    ("FIN", "Finance / Tuition Clearance", None, True, True, "Upload your final tuition fee receipt"),
+    ("FIN", "Finance / Tuition Clearance", None, True, True, "Upload your tuition fee receipt for this semester"),
     ("DEPT", "Department Clearance", None, True, False, ""),
-    ("ID", "Student ID Card Return", None, True, True, "Upload a photo of your student ID card"),
     ("HOSTEL", "Hostel Clearance", None, False, False, ""),
     ("SPORTS", "Sports & Equipment Clearance", None, False, False, ""),
     ("LAB", "Laboratory Clearance", "SCI", True, False, ""),
-    ("PROJECT", "Final Year Project Submission", "SCI", True, True, "Upload the signed project approval page"),
     ("TEACH", "Teaching Practice Report", "EDU", True, True, "Upload your teaching practice report"),
     ("MOOT", "Moot Court Clearance", "LAW", True, False, ""),
     ("CLINIC", "Clinical Placement Clearance", "HLT", True, True, "Upload your clinical logbook sign-off"),
@@ -100,7 +98,6 @@ class Command(BaseCommand):
                     "student_number": number,
                     "programme": programmes[prog],
                     "level": 4,
-                    "expected_graduation_year": 2026,
                     "verification_status": VerificationStatus.VERIFIED,
                     "verified_at": timezone.now(),
                 },

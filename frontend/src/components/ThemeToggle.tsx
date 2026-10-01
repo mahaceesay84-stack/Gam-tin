@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import "material-symbols/outlined.css";
 import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
@@ -29,7 +29,7 @@ export default function ThemeToggle() {
       title="Toggle dark mode"
       onClick={toggle}
     >
-      {dark === null ? <span className="h-4 w-4" /> : dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {dark === null ? <span className="h-5 w-5" /> : <span className="material-symbols-outlined !text-[20px]" aria-hidden="true">{dark ? "light_mode" : "dark_mode"}</span>}
     </button>
   );
 }

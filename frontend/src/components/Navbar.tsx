@@ -1,6 +1,7 @@
 "use client";
 
-import { Bell, GraduationCap, LayoutDashboard, LogOut, Menu, Settings, ShieldCheck, ClipboardCheck, X } from "lucide-react";
+import { Bell, LayoutDashboard, LogOut, Menu, Settings, ShieldCheck, ClipboardCheck, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -65,9 +66,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 border-b border-line bg-white/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-white shadow-sm">
-            <GraduationCap className="h-5 w-5" />
-          </span>
+          <Image src="/utg-crest.jpg" alt="UTG crest" width={53} height={38} priority className="h-[38px] w-auto" />
           <span className="leading-tight">
             <span className="block text-sm font-bold text-ink">UTG Digital</span>
             <span className="block text-xs font-medium text-muted">Student Services</span>

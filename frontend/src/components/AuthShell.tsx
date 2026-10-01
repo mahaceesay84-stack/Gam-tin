@@ -1,4 +1,4 @@
-import { GraduationCap } from "lucide-react";
+import Image from "next/image";
 
 export default function AuthShell({
   title,
@@ -14,9 +14,7 @@ export default function AuthShell({
   return (
     <div className={`animate-in mx-auto ${wide ? "max-w-xl" : "max-w-md"}`}>
       <div className="mb-6 text-center">
-        <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-600 text-white shadow-md">
-          <GraduationCap className="h-6 w-6" />
-        </span>
+        <Image src="/utg-crest.jpg" alt="UTG crest" width={89} height={64} priority className="mx-auto h-16 w-auto" />
         <h1 className="mt-4 text-2xl font-bold">{title}</h1>
         <p className="mt-1 text-sm text-muted">{subtitle}</p>
       </div>

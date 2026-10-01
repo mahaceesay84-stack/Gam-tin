@@ -1,4 +1,5 @@
 import { ArrowRight, BadgeCheck, ClipboardCheck, CreditCard, FileUp, GraduationCap, ShieldCheck, Smartphone, UserCheck } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const STEPS = [
@@ -22,6 +23,9 @@ export default function Home() {
         <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-brand-500/30 blur-3xl" />
         <div className="relative">
+          <div className="mx-auto mb-6 flex w-fit rounded-2xl bg-white p-3 shadow-lg">
+            <Image src="/utg-crest.jpg" alt="UTG crest" width={133} height={96} priority className="h-24 w-auto drop-shadow-md" />
+          </div>
           <span className="inline-flex items-center gap-2 rounded-full bg-amber-300/95 px-4 py-1.5 text-xs font-semibold text-amber-950">
             Prototype — Not an official UTG service.
           </span>

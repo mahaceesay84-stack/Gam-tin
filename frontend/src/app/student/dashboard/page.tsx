@@ -1,9 +1,11 @@
 "use client";
 
+import { ArrowRight, CalendarDays, CheckCircle2, ExternalLink, Hash, PartyPopper, Receipt, Wallet } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProgressTracker from "@/components/ProgressTracker";
 import StatusBadge from "@/components/StatusBadge";
+import { Alert, PageHeader, Spinner } from "@/components/ui";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { formatDate, formatMoney, METHOD_LABELS } from "@/lib/format";
@@ -20,7 +22,7 @@ export default function StudentDashboard() {
   }, []);
 
   if (!user) return null;
-  if (loading) return <p className="text-gray-500">Loading…</p>;
+  if (loading) return <Spinner />;
 
   let cta: { href: string; label: string; text: string } | null = null;
   if (!app || app.status === "draft") {
@@ -33,69 +35,95 @@ export default function StudentDashboard() {
     cta = { href: "/student/clearance", label: "Start a new application", text: "Your last application was rejected." };
   }
 
+  const first = user.full_name.split(" ")[0];
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Welcome, {user.full_name}</h1>
-        <p className="text-sm text-gray-600">
-          {user.student?.student_number} · {user.student?.programme_name} · {user.student?.faculty_name}
-        </p>
-      </div>
-      {error && <p className="rounded bg-red-50 p-2 text-sm text-red-700">{error}</p>}
+      <PageHeader
+        title={`Welcome, ${first}`}
+        subtitle={`${user.student?.student_number} · ${user.student?.programme_name} · ${user.student?.faculty_name}`}
+      />
+      {error && <Alert tone="error">{error}</Alert>}
 
       <ProgressTracker user={user} app={app} />
 
       {app?.handoff && (
-        <section className="rounded-lg border-2 border-green-600 bg-green-50 p-5">
-          <h2 className="text-lg font-semibold text-green-900">🎉 Clearance approved — next step</h2>
-          <p className="mt-2 text-sm text-green-900">{app.handoff.instructions}</p>
-          <a href={app.handoff.portal_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-4">
-            Go to the official UTG portal
-          </a>
-        </section>
-      )}
-
-      <section className="card">
-        <h2 className="mb-3 text-lg font-semibold">Clearance status</h2>
-        {app ? (
-          <dl className="grid gap-3 text-sm sm:grid-cols-2">
-            <div><dt className="text-gray-500">Reference</dt><dd className="font-mono">{app.reference ?? "Not yet submitted"}</dd></div>
-            <div><dt className="text-gray-500">Status</dt><dd><StatusBadge status={app.status} /></dd></div>
-            <div><dt className="text-gray-500">Term</dt><dd>{app.term_name}</dd></div>
-            <div><dt className="text-gray-500">Payment</dt><dd><StatusBadge status={app.payment_status} /></dd></div>
-            {app.decision_reason && (
-              <div className="sm:col-span-2">
-                <dt className="text-gray-500">Staff message</dt>
-                <dd className="rounded bg-amber-50 p-2 text-amber-900">{app.decision_reason}</dd>
-              </div>
-            )}
-          </dl>
-        ) : (
-          <p className="text-sm text-gray-600">You have not started a clearance yet.</p>
-        )}
-        {cta && (
-          <div className="mt-4 flex items-center gap-3">
-            <Link href={cta.href} className="btn btn-primary">{cta.label}</Link>
-            <span className="text-sm text-gray-600">{cta.text}</span>
+        <section className="relative overflow-hidden rounded-card border border-emerald-200 bg-gradient-to-br from-emerald-50 to-brand-50 p-6 shadow-card">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-600 text-white">
+              <PartyPopper className="h-6 w-6" />
+            </span>
+            <div className="flex-1">
+              <h2 className="text-lg font-bold text-brand-900">Clearance approved — your next step</h2>
+              <p className="mt-1 text-sm leading-relaxed text-brand-900/80">{app.handoff.instructions}</p>
+            </div>
+            <a href={app.handoff.portal_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary shrink-0">
+              Go to official portal <ExternalLink className="h-4 w-4" />
+            </a>
           </div>
-        )}
-      </section>
-
-      {payments.length > 0 && (
-        <section className="card">
-          <h2 className="mb-3 text-lg font-semibold">Payments</h2>
-          <ul className="divide-y text-sm">
-            {payments.map((p) => (
-              <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 py-2">
-                <span className="font-mono">{p.reference}</span>
-                <span>{formatMoney(p.amount, p.currency)} · {METHOD_LABELS[p.method] ?? p.method}</span>
-                <StatusBadge status={p.status} />
-                <span className="text-gray-500">{formatDate(p.paid_at ?? p.created_at)}</span>
-              </li>
-            ))}
-          </ul>
         </section>
       )}
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <section className="card lg:col-span-2">
+          <h2 className="text-lg font-semibold">Clearance status</h2>
+          {app ? (
+            <dl className="mt-4 grid gap-5 text-sm sm:grid-cols-2">
+              <div className="flex gap-3">
+                <Hash className="mt-0.5 h-4 w-4 text-slate-400" />
+                <div><dt className="text-muted">Reference</dt><dd className="mt-0.5 font-mono font-medium">{app.reference ?? "Not yet submitted"}</dd></div>
+              </div>
+              <div className="flex gap-3">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 text-slate-400" />
+                <div><dt className="text-muted">Status</dt><dd className="mt-0.5"><StatusBadge status={app.status} /></dd></div>
+              </div>
+              <div className="flex gap-3">
+                <CalendarDays className="mt-0.5 h-4 w-4 text-slate-400" />
+                <div><dt className="text-muted">Term</dt><dd className="mt-0.5 font-medium">{app.term_name}</dd></div>
+              </div>
+              <div className="flex gap-3">
+                <Wallet className="mt-0.5 h-4 w-4 text-slate-400" />
+                <div><dt className="text-muted">Payment</dt><dd className="mt-0.5"><StatusBadge status={app.payment_status} /></dd></div>
+              </div>
+              {app.decision_reason && (
+                <div className="sm:col-span-2">
+                  <Alert tone="warn"><strong>Staff message:</strong> {app.decision_reason}</Alert>
+                </div>
+              )}
+            </dl>
+          ) : (
+            <p className="mt-3 text-sm text-muted">You have not started a clearance yet.</p>
+          )}
+          {cta && (
+            <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-line pt-5">
+              <Link href={cta.href} className="btn btn-primary">{cta.label} <ArrowRight className="h-4 w-4" /></Link>
+              <span className="text-sm text-muted">{cta.text}</span>
+            </div>
+          )}
+        </section>
+
+        <section className="card">
+          <h2 className="flex items-center gap-2 text-lg font-semibold"><Receipt className="h-5 w-5 text-slate-400" /> Payments</h2>
+          {payments.length === 0 ? (
+            <p className="mt-3 text-sm text-muted">No payments yet.</p>
+          ) : (
+            <ul className="mt-4 divide-y divide-line text-sm">
+              {payments.map((p) => (
+                <li key={p.id} className="space-y-1 py-3 first:pt-0 last:pb-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-xs">{p.reference}</span>
+                    <StatusBadge status={p.status} />
+                  </div>
+                  <div className="flex justify-between text-muted">
+                    <span>{formatMoney(p.amount, p.currency)} · {METHOD_LABELS[p.method] ?? p.method}</span>
+                    <span className="text-xs">{formatDate(p.paid_at ?? p.created_at)}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      </div>
     </div>
   );
 }

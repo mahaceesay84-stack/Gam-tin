@@ -1,8 +1,10 @@
 "use client";
 
+import { ArrowLeft, ArrowRight, CheckCircle2, FileCheck2, Loader2, Paperclip, Send, Trash2, Upload } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import StatusBadge from "@/components/StatusBadge";
+import { Alert, DefRow, Spinner } from "@/components/ui";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { formatMoney } from "@/lib/format";
@@ -24,8 +26,8 @@ export default function ClearancePage() {
       .catch(() => setLoadError("Could not load categories."));
   }, []);
 
-  if (loadError) return <p className="rounded bg-red-50 p-2 text-sm text-red-700">{loadError}</p>;
-  if (loading || !requirements) return <p className="text-gray-500">Loading…</p>;
+  if (loadError) return <Alert tone="error">{loadError}</Alert>;
+  if (loading || !requirements) return <Spinner />;
   return (
     <Wizard
       key={round}
@@ -62,42 +64,43 @@ function Wizard({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState<Application | null>(null);
-  if (!user?.student) return <p className="text-gray-500">Loading…</p>;
+  if (!user?.student) return <Spinner />;
   const student = user.student;
 
   const current = app?.is_editable ? app : null;
   if (submitted) {
     return (
-      <div className="card mx-auto max-w-lg space-y-3 text-center">
-        <h1 className="text-2xl font-semibold text-green-800">Clearance submitted</h1>
-        <p>Your reference number</p>
-        <p className="font-mono text-3xl font-bold text-brand">{submitted.reference}</p>
-        <p className="text-sm text-gray-600">
+      <div className="animate-in card mx-auto max-w-lg space-y-4 p-8 text-center">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+          <CheckCircle2 className="h-8 w-8" />
+        </span>
+        <h1 className="text-2xl font-bold">Clearance submitted</h1>
+        <p className="text-sm text-muted">Your reference number</p>
+        <p className="rounded-xl bg-brand-50 py-4 font-mono text-3xl font-bold tracking-wide text-brand-700">{submitted.reference}</p>
+        <p className="text-sm text-muted">
           Next, pay the digital service fee of {formatMoney(submitted.fee_amount, submitted.fee_currency)} so staff can review it.
         </p>
-        <Link href="/student/payment" className="btn btn-primary">Continue to payment</Link>
+        <Link href="/student/payment" className="btn btn-primary w-full">Continue to payment <ArrowRight className="h-4 w-4" /></Link>
       </div>
     );
   }
 
   if (app && !app.is_editable && app.status !== "rejected") {
     return (
-      <div className="card space-y-3">
-        <h1 className="text-2xl font-semibold">Clearance {app.reference}</h1>
-        <p>Status: <StatusBadge status={app.status} /></p>
-        <p className="text-sm text-gray-600">Your application has been submitted and can no longer be edited.</p>
+      <div className="card mx-auto max-w-lg space-y-4">
+        <h1 className="text-2xl font-bold">Clearance <span className="font-mono">{app.reference}</span></h1>
+        <p className="flex items-center gap-2 text-sm">Status: <StatusBadge status={app.status} /></p>
+        <p className="text-sm text-muted">Your application has been submitted and can no longer be edited.</p>
         <Link href="/student/dashboard" className="btn btn-primary">Back to dashboard</Link>
       </div>
     );
   }
   if (app?.status === "rejected") {
     return (
-      <div className="card space-y-3">
-        <h1 className="text-2xl font-semibold">Application {app.reference} was rejected</h1>
-        {app.decision_reason && <p className="rounded bg-red-50 p-2 text-sm text-red-800">{app.decision_reason}</p>}
-        <button className="btn btn-primary" onClick={restart}>
-          Start a new application
-        </button>
+      <div className="card mx-auto max-w-lg space-y-4">
+        <h1 className="text-2xl font-bold">Application {app.reference} was rejected</h1>
+        {app.decision_reason && <Alert tone="error">{app.decision_reason}</Alert>}
+        <button className="btn btn-primary" onClick={restart}>Start a new application</button>
       </div>
     );
   }
@@ -169,36 +172,45 @@ function Wizard({
     setStep(step + 1);
   }
 
+  const stepper = (
+    <ol className="flex flex-wrap items-center gap-2 text-sm">
+      {STEPS.map((s, i) => (
+        <li key={s} className="flex items-center gap-2">
+          <span className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition ${i < step ? "bg-brand-600 text-white" : i === step ? "bg-brand-600 text-white ring-4 ring-brand-100" : "bg-slate-100 text-slate-400"}`}>
+            {i < step ? "✓" : i + 1}
+          </span>
+          <span className={`hidden sm:inline ${i === step ? "font-semibold text-ink" : "text-muted"}`}>{s}</span>
+          {i < STEPS.length - 1 && <span className="mx-1 hidden h-px w-6 bg-line sm:block" />}
+        </li>
+      ))}
+    </ol>
+  );
+
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <h1 className="text-2xl font-semibold">Clearance application</h1>
+      <div>
+        <h1 className="page-title">Clearance application</h1>
+        <p className="mt-1 text-sm text-muted">Step {step + 1} of {STEPS.length} — {STEPS[step]}</p>
+      </div>
       {app?.status === "correction_requested" && (
-        <p className="rounded bg-amber-50 p-3 text-sm text-amber-900">
-          <strong>Correction requested:</strong> {app.decision_reason}
-        </p>
+        <Alert tone="warn"><strong>Correction requested:</strong> {app.decision_reason}</Alert>
       )}
-      <ol className="flex flex-wrap gap-2 text-sm">
-        {STEPS.map((s, i) => (
-          <li key={s} className={`rounded-full px-3 py-1 ${i === step ? "bg-brand text-white" : i < step ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-500"}`}>
-            {i + 1}. {s}
-          </li>
-        ))}
-      </ol>
-      {error && <p role="alert" className="rounded bg-red-50 p-2 text-sm text-red-700">{error}</p>}
+      {stepper}
+      {error && <Alert tone="error">{error}</Alert>}
 
-      <div className="card space-y-4">
+      <div className="card space-y-5 p-7">
         {step === 0 && (
           <>
             <h2 className="text-lg font-semibold">Student information</h2>
-            <dl className="grid gap-3 text-sm sm:grid-cols-2">
-              <div><dt className="text-gray-500">Name</dt><dd>{user.full_name}</dd></div>
-              <div><dt className="text-gray-500">Student number</dt><dd>{student.student_number}</dd></div>
-              <div><dt className="text-gray-500">Email</dt><dd>{user.email}</dd></div>
-              <div><dt className="text-gray-500">Phone</dt><dd>{user.phone || "—"}</dd></div>
-              <div><dt className="text-gray-500">Programme</dt><dd>{student.programme_name}</dd></div>
-              <div><dt className="text-gray-500">Faculty</dt><dd>{student.faculty_name}</dd></div>
-              <div><dt className="text-gray-500">Level</dt><dd>{student.level}</dd></div>
-              <div><dt className="text-gray-500">Verification</dt><dd><StatusBadge status={student.verification_status === "verified" ? "paid" : "pending"} /> {student.verification_status}</dd></div>
+            <dl className="grid gap-x-8 sm:grid-cols-2">
+              <DefRow label="Name">{user.full_name}</DefRow>
+              <DefRow label="Student number">{student.student_number}</DefRow>
+              <DefRow label="Email">{user.email}</DefRow>
+              <DefRow label="Phone">{user.phone || "—"}</DefRow>
+              <DefRow label="Programme">{student.programme_name}</DefRow>
+              <DefRow label="Faculty">{student.faculty_name}</DefRow>
+              <DefRow label="Level">{student.level}</DefRow>
+              <DefRow label="Verification"><span className="capitalize">{student.verification_status}</span></DefRow>
             </dl>
             <div>
               <label htmlFor="notes" className="label">Notes for the reviewer (optional)</label>
@@ -209,89 +221,112 @@ function Wizard({
 
         {step === 1 && (
           <>
-            <h2 className="text-lg font-semibold">Clearance categories</h2>
-            <p className="text-sm text-gray-600">Mandatory categories are always included.</p>
-            <ul className="space-y-2">
-              {requirements.map((r) => (
-                <li key={r.id}>
-                  <label className="flex cursor-pointer items-start gap-3 rounded-md border border-gray-200 p-3 text-sm">
-                    <input type="checkbox" className="mt-1" checked={selected.includes(r.id)} disabled={r.is_mandatory} onChange={() => toggle(r)} />
-                    <span>
-                      <span className="font-medium">{r.name}</span>{" "}
-                      {r.is_mandatory && <span className="text-xs text-gray-500">(required)</span>}
-                      {r.requires_document && <span className="ml-1 text-xs text-amber-700">document needed</span>}
-                    </span>
-                  </label>
-                </li>
-              ))}
+            <div>
+              <h2 className="text-lg font-semibold">Clearance categories</h2>
+              <p className="mt-1 text-sm text-muted">Mandatory categories are always included.</p>
+            </div>
+            <ul className="space-y-2.5">
+              {requirements.map((r) => {
+                const on = selected.includes(r.id);
+                return (
+                  <li key={r.id}>
+                    <label className={`flex items-start gap-3 rounded-lg border-2 p-3.5 text-sm transition ${on ? "border-brand-500 bg-brand-50/60" : "border-line"} ${r.is_mandatory ? "cursor-default" : "cursor-pointer hover:border-slate-300"}`}>
+                      <input type="checkbox" className="mt-0.5 h-4 w-4 accent-brand-600" checked={on} disabled={r.is_mandatory} onChange={() => toggle(r)} />
+                      <span className="flex-1">
+                        <span className="font-medium">{r.name}</span>
+                        <span className="ml-2 inline-flex gap-1.5 align-middle">
+                          {r.is_mandatory && <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-slate-600">Required</span>}
+                          {r.requires_document && <span className="inline-flex items-center gap-1 rounded bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-800"><Paperclip className="h-3 w-3" />Document</span>}
+                        </span>
+                      </span>
+                    </label>
+                  </li>
+                );
+              })}
             </ul>
           </>
         )}
 
         {step === 2 && (
           <>
-            <h2 className="text-lg font-semibold">Document upload</h2>
-            <p className="text-sm text-gray-600">PDF, JPG or PNG, up to 5 MB each.</p>
-            {selectedReqs.filter((r) => r.requires_document || docsFor(r.id).length > 0).length === 0 && (
-              <p className="text-sm text-gray-500">No documents are required for your selection.</p>
+            <div>
+              <h2 className="text-lg font-semibold">Document upload</h2>
+              <p className="mt-1 text-sm text-muted">PDF, JPG or PNG, up to 5 MB each.</p>
+            </div>
+            {selectedReqs.filter((r) => r.requires_document).length === 0 && (
+              <p className="text-sm text-muted">No documents are required for your selection.</p>
             )}
-            {selectedReqs.filter((r) => r.requires_document).map((r) => (
-              <div key={r.id} className="rounded-md border border-gray-200 p-3 text-sm">
-                <p className="font-medium">{r.name} <span className="text-xs text-red-600">required</span></p>
-                {r.document_hint && <p className="text-xs text-gray-500">{r.document_hint}</p>}
-                <ul className="my-2 space-y-1">
-                  {docsFor(r.id).map((d) => (
-                    <li key={d.id} className="flex items-center justify-between rounded bg-gray-50 px-2 py-1">
-                      <span>{d.original_name}</span>
-                      <button type="button" className="text-xs text-red-600 underline" onClick={() => removeDoc(d.id)}>Remove</button>
-                    </li>
-                  ))}
-                </ul>
-                <input
-                  type="file"
-                  aria-label={`Upload ${r.name}`}
-                  accept=".pdf,.jpg,.jpeg,.png"
-                  onChange={(e) => {
-                    const f = e.target.files?.[0];
-                    if (f) upload(r.id, f);
-                    e.target.value = "";
-                  }}
-                />
-              </div>
-            ))}
+            {selectedReqs.filter((r) => r.requires_document).map((r) => {
+              const docs = docsFor(r.id);
+              return (
+                <div key={r.id} className="rounded-lg border border-line p-4 text-sm">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="font-semibold">{r.name}</p>
+                    {docs.length > 0 ? <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700"><FileCheck2 className="h-3.5 w-3.5" />Uploaded</span> : <span className="text-xs font-medium text-rose-600">Required</span>}
+                  </div>
+                  {r.document_hint && <p className="mt-0.5 text-xs text-muted">{r.document_hint}</p>}
+                  <ul className="my-3 space-y-1.5">
+                    {docs.map((d) => (
+                      <li key={d.id} className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
+                        <span className="flex items-center gap-2 truncate"><Paperclip className="h-3.5 w-3.5 text-slate-400" />{d.original_name}</span>
+                        <button type="button" aria-label={`Remove ${d.original_name}`} className="text-slate-400 transition hover:text-rose-600" onClick={() => removeDoc(d.id)}>
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-dashed border-line px-4 py-4 text-sm font-medium text-slate-600 transition hover:border-brand-500 hover:bg-brand-50/50 hover:text-brand-700">
+                    <Upload className="h-4 w-4" /> Choose a file
+                    <input
+                      type="file"
+                      className="sr-only"
+                      aria-label={`Upload ${r.name}`}
+                      accept=".pdf,.jpg,.jpeg,.png"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0];
+                        if (f) upload(r.id, f);
+                        e.target.value = "";
+                      }}
+                    />
+                  </label>
+                </div>
+              );
+            })}
           </>
         )}
 
         {step === 3 && (
           <>
             <h2 className="text-lg font-semibold">Review &amp; submit</h2>
-            <p className="text-sm">{user.full_name} · {student.student_number} · {student.programme_name}</p>
-            <ul className="space-y-1 text-sm">
+            <p className="text-sm text-muted">{user.full_name} · {student.student_number} · {student.programme_name}</p>
+            <ul className="divide-y divide-line rounded-lg border border-line text-sm">
               {selectedReqs.map((r) => (
-                <li key={r.id} className="flex justify-between rounded bg-gray-50 px-3 py-2">
-                  <span>{r.name}</span>
-                  <span className="text-gray-500">{docsFor(r.id).length} document(s)</span>
+                <li key={r.id} className="flex items-center justify-between px-4 py-3">
+                  <span className="font-medium">{r.name}</span>
+                  <span className="text-muted">{docsFor(r.id).length} document(s)</span>
                 </li>
               ))}
             </ul>
-            {notes && <p className="text-sm text-gray-600">Notes: {notes}</p>}
+            {notes && <p className="text-sm text-muted">Notes: {notes}</p>}
             {missingDocs.length > 0 && (
-              <p className="rounded bg-red-50 p-2 text-sm text-red-700">
-                Missing documents: {missingDocs.map((r) => r.name).join(", ")}
-              </p>
+              <Alert tone="error">Missing documents: {missingDocs.map((r) => r.name).join(", ")}</Alert>
             )}
-            <p className="text-xs text-gray-500">A reference number (CLR-YYYY-XXXXXX) is generated when you submit.</p>
+            <p className="text-xs text-muted">A reference number (CLR-YYYY-XXXXXX) is generated when you submit.</p>
           </>
         )}
 
-        <div className="flex justify-between pt-2">
-          <button className="btn btn-secondary" disabled={step === 0 || busy} onClick={() => setStep(step - 1)}>Back</button>
+        <div className="flex justify-between border-t border-line pt-5">
+          <button className="btn btn-secondary" disabled={step === 0 || busy} onClick={() => setStep(step - 1)}>
+            <ArrowLeft className="h-4 w-4" /> Back
+          </button>
           {step < 3 ? (
             <button className="btn btn-primary" disabled={busy || (step === 1 && selected.length === 0)} onClick={next}>
-              {busy ? "Saving…" : "Next"}
+              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+              {busy ? "Saving…" : "Next"} {!busy && <ArrowRight className="h-4 w-4" />}
             </button>
           ) : (
             <button className="btn btn-primary" disabled={busy || missingDocs.length > 0} onClick={submit}>
+              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               {busy ? "Submitting…" : "Submit clearance"}
             </button>
           )}

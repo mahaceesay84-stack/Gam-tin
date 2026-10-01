@@ -13,13 +13,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen antialiased">
+      <body className="flex min-h-screen flex-col antialiased">
         <AuthProvider>
           <PrototypeBanner />
           <Navbar />
-          <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
-          <footer className="py-6 text-center text-xs text-gray-500">
-            Prototype — Not an official UTG service.
+          <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 sm:py-10">{children}</main>
+          <footer className="border-t border-line bg-white py-6 text-center text-xs text-muted">
+            Prototype — Not an official UTG service. © 2026 UTG Digital Student Services
           </footer>
           <Toasts />
         </AuthProvider>

@@ -1,5 +1,6 @@
 "use client";
 
+import { BellRing, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
@@ -26,9 +27,7 @@ export default function Toasts() {
           const fresh = data.results.filter((n) => !seen.current!.has(n.id) && !n.is_read);
           if (fresh.length) {
             setToasts((t) => [...t, ...fresh]);
-            fresh.forEach((n) =>
-              setTimeout(() => setToasts((t) => t.filter((x) => x.id !== n.id)), 7000),
-            );
+            fresh.forEach((n) => setTimeout(() => setToasts((t) => t.filter((x) => x.id !== n.id)), 7000));
           }
         }
         seen.current = ids;
@@ -46,20 +45,27 @@ export default function Toasts() {
 
   if (!toasts.length) return null;
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex w-80 flex-col gap-2">
+    <div className="fixed bottom-4 right-4 z-50 flex w-[22rem] max-w-[calc(100vw-2rem)] flex-col gap-2">
       {toasts.map((n) => (
-        <div key={n.id} className="rounded-lg border border-green-200 bg-white p-3 shadow-lg">
-          <div className="flex justify-between gap-2">
-            <p className="text-sm font-semibold text-brand">{n.title}</p>
-            <button
-              aria-label="Dismiss"
-              className="text-gray-400 hover:text-gray-700"
-              onClick={() => setToasts((t) => t.filter((x) => x.id !== n.id))}
-            >
-              ×
-            </button>
+        <div
+          key={n.id}
+          className="flex gap-3 rounded-xl border border-line bg-white p-4 shadow-pop"
+          style={{ animation: "slide-in 0.3s ease-out both" }}
+        >
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+            <BellRing className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold">{n.title}</p>
+            <p className="mt-0.5 text-sm text-muted">{n.message}</p>
           </div>
-          <p className="text-sm text-gray-600">{n.message}</p>
+          <button
+            aria-label="Dismiss"
+            className="h-6 w-6 shrink-0 rounded text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+            onClick={() => setToasts((t) => t.filter((x) => x.id !== n.id))}
+          >
+            <X className="mx-auto h-4 w-4" />
+          </button>
         </div>
       ))}
     </div>

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { Spinner } from "@/components/ui";
 import { useAuth } from "@/lib/auth";
 
 export default function Guard({
@@ -21,8 +22,6 @@ export default function Guard({
     }
   }, [loading, allowed, area, router]);
 
-  if (loading || !allowed) {
-    return <p className="p-8 text-center text-gray-500">Loading…</p>;
-  }
-  return <>{children}</>;
+  if (loading || !allowed) return <Spinner />;
+  return <div className="animate-in">{children}</div>;
 }

@@ -1,0 +1,79 @@
+import { AlertCircle, CheckCircle2, Info, Loader2, TriangleAlert } from "lucide-react";
+
+type Tone = "error" | "success" | "warn" | "info";
+
+const TONES: Record<Tone, { box: string; icon: React.ReactNode }> = {
+  error: { box: "border-rose-200 bg-rose-50 text-rose-800", icon: <AlertCircle className="h-4 w-4 shrink-0" /> },
+  success: { box: "border-emerald-200 bg-emerald-50 text-emerald-800", icon: <CheckCircle2 className="h-4 w-4 shrink-0" /> },
+  warn: { box: "border-amber-200 bg-amber-50 text-amber-900", icon: <TriangleAlert className="h-4 w-4 shrink-0" /> },
+  info: { box: "border-sky-200 bg-sky-50 text-sky-800", icon: <Info className="h-4 w-4 shrink-0" /> },
+};
+
+export function Alert({ tone = "info", children }: { tone?: Tone; children: React.ReactNode }) {
+  const t = TONES[tone];
+  return (
+    <div role={tone === "error" ? "alert" : "status"} className={`flex items-start gap-2.5 rounded-lg border px-3.5 py-3 text-sm ${t.box}`}>
+      <span className="mt-0.5">{t.icon}</span>
+      <div>{children}</div>
+    </div>
+  );
+}
+
+export function Spinner({ label = "Loading…" }: { label?: string }) {
+  return (
+    <div className="flex items-center justify-center gap-2 py-16 text-sm text-muted">
+      <Loader2 className="h-4 w-4 animate-spin" /> {label}
+    </div>
+  );
+}
+
+export function PageHeader({
+  title,
+  subtitle,
+  action,
+}: {
+  title: string;
+  subtitle?: React.ReactNode;
+  action?: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h1 className="page-title">{title}</h1>
+        {subtitle && <p className="mt-1 text-sm text-muted">{subtitle}</p>}
+      </div>
+      {action}
+    </div>
+  );
+}
+
+export function Field({
+  label,
+  htmlFor,
+  hint,
+  children,
+}: {
+  label: string;
+  htmlFor: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <label htmlFor={htmlFor} className="label">
+        {label}
+      </label>
+      {children}
+      {hint && <p className="mt-1 text-xs text-muted">{hint}</p>}
+    </div>
+  );
+}
+
+export function DefRow({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex items-start justify-between gap-4 py-2 text-sm">
+      <dt className="text-muted">{label}</dt>
+      <dd className="text-right font-medium text-ink">{children}</dd>
+    </div>
+  );
+}

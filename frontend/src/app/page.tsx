@@ -19,33 +19,30 @@ const FEATURES = [
 export default function Home() {
   return (
     <div className="space-y-16">
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-800 via-brand-700 to-brand-600 px-6 py-16 text-center text-white shadow-pop sm:px-12 sm:py-20">
-        <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-brand-500/30 blur-3xl" />
-        <div className="relative">
-          <div className="mx-auto mb-6 flex w-fit rounded-2xl bg-white p-3 shadow-lg">
-            <Image src="/utg-crest.jpg" alt="UTG crest" width={133} height={96} priority className="h-24 w-auto drop-shadow-md" />
-          </div>
-          <span className="inline-flex items-center gap-2 rounded-full bg-amber-300/95 px-4 py-1.5 text-xs font-semibold text-amber-950">
-            Prototype — Not an official UTG service.
-          </span>
-          <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">
-            UTG Digital Student Services
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl text-base text-brand-100 sm:text-lg">
-            Complete your graduation clearance online — no queues, no running between offices.
-          </p>
-          <div className="mt-9 flex flex-wrap justify-center gap-3">
-            <Link href="/register" className="btn bg-white px-6 py-3 text-brand-800 shadow-md hover:bg-brand-50">
-              Create student account <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link href="/login" className="btn border border-white/40 px-6 py-3 text-white hover:bg-white/10">
-              Student login
-            </Link>
-            <Link href="/admin/login" className="btn px-6 py-3 text-brand-100 hover:bg-white/10">
-              <ShieldCheck className="h-4 w-4" /> Staff login
-            </Link>
-          </div>
+      <section className="relative px-4 py-12 text-center sm:py-20">
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,theme(colors.brand.500/0.12),transparent_65%)]" />
+        <div className="mx-auto flex w-fit rounded-2xl dark:bg-white dark:p-4 dark:shadow-pop">
+          <Image src="/utg-crest.jpg" alt="UTG crest" width={1080} height={778} priority className="h-44 w-auto sm:h-48" />
+        </div>
+        <span className="mt-8 inline-flex items-center gap-2 rounded-full bg-amber-300/95 px-4 py-1.5 text-xs font-semibold text-amber-950">
+          Prototype — Not an official UTG service.
+        </span>
+        <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">
+          UTG Digital Student Services
+        </h1>
+        <p className="mx-auto mt-4 max-w-xl text-base text-muted sm:text-lg">
+          Complete your graduation clearance online — no queues, no running between offices.
+        </p>
+        <div className="mt-9 flex flex-wrap justify-center gap-3">
+          <Link href="/register" className="btn btn-primary px-6 py-3">
+            Create student account <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link href="/login" className="btn btn-secondary px-6 py-3">
+            Student login
+          </Link>
+          <Link href="/admin/login" className="btn btn-ghost px-6 py-3">
+            <ShieldCheck className="h-4 w-4" /> Staff login
+          </Link>
         </div>
       </section>
 

@@ -1,13 +1,13 @@
-import { ArrowRight, BadgeCheck, ClipboardCheck, CreditCard, FileUp, LogIn, ShieldCheck, Smartphone, UserCheck } from "lucide-react";
+import { ArrowRight, ClipboardCheck, ShieldCheck, Smartphone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const STEPS = [
-  { icon: UserCheck, title: "Verify", text: "Create your account and confirm your student record." },
-  { icon: FileUp, title: "Clear", text: "Pick your clearance categories and upload documents." },
-  { icon: CreditCard, title: "Pay", text: "Settle the small digital service fee with mobile money." },
-  { icon: BadgeCheck, title: "Get approved", text: "Staff review your submission and notify you instantly." },
-  { icon: LogIn, title: "Proceed", text: "Continue to the official UTG Students' Portal to complete your course registration." },
+  { title: "Verify", text: "Create your account and confirm your student record." },
+  { title: "Clear", text: "Pick your clearance categories and upload documents." },
+  { title: "Pay", text: "Settle the small digital service fee with mobile money." },
+  { title: "Get approved", text: "Staff review your submission and notify you instantly." },
+  { title: "Proceed", text: "Continue to the official UTG Students' Portal to complete your course registration." },
 ];
 
 const FEATURES = [
@@ -19,53 +19,56 @@ const FEATURES = [
 export default function Home() {
   return (
     <div className="space-y-16">
-      <section className="relative px-4 py-12 text-center sm:py-20">
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,theme(colors.brand.500/0.12),transparent_65%)]" />
-        <div className="mx-auto flex w-fit rounded-2xl dark:bg-white dark:p-4 dark:shadow-pop">
-          <Image src="/utg-crest.jpg" alt="UTG crest" width={1080} height={778} priority className="h-44 w-auto sm:h-48" />
-        </div>
-        <span className="mt-8 inline-flex items-center gap-2 rounded-full bg-amber-300/95 px-4 py-1.5 text-xs font-semibold text-amber-950">
-          Prototype — Not an official UTG service.
+      <section className="flex flex-col items-center py-8 text-center sm:py-12">
+        <span className="crest p-4 shadow-card">
+          <Image src="/utg-crest.jpg" alt="UTG crest" width={267} height={192} priority className="h-44 w-auto sm:h-48" />
         </span>
-        <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">
-          UTG Digital Student Services
-        </h1>
-        <p className="mx-auto mt-4 max-w-xl text-base text-muted sm:text-lg">
+        <p className="eyebrow mt-10">Prototype — Not an official UTG service.</p>
+        <h1 className="mt-3 max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl">UTG Digital Student Services</h1>
+        <p className="mt-4 max-w-xl text-base text-muted sm:text-lg">
           Complete your student clearance online, from wherever you are.
         </p>
-        <div className="mt-9 flex flex-wrap justify-center gap-3">
-          <Link href="/register" className="btn btn-primary px-6 py-3">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Link href="/register" className="btn btn-primary">
             Create student account <ArrowRight className="h-4 w-4" />
           </Link>
-          <Link href="/login" className="btn btn-secondary px-6 py-3">
+          <Link href="/login" className="btn btn-secondary">
             Student login
           </Link>
-          <Link href="/admin/login" className="btn btn-ghost px-6 py-3">
-            <ShieldCheck className="h-4 w-4" /> Staff login
+          <Link href="/admin/login" className="btn btn-ghost">
+            Staff login
           </Link>
         </div>
       </section>
 
-      <section className="grid gap-5 sm:grid-cols-3">
+      <section className="grid gap-6 sm:grid-cols-3">
         {FEATURES.map(({ icon: Icon, title, text }) => (
-          <div key={title} className="card transition hover:-translate-y-0.5 hover:shadow-pop">
-            <Icon className="h-6 w-6 text-slate-400" />
-            <h3 className="mt-4 font-semibold">{title}</h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted">{text}</p>
+          <div key={title} className="card card-hover">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-line text-slate-500 dark:text-slate-400">
+              <Icon className="h-5 w-5" />
+            </span>
+            <h3 className="section-title mt-5">{title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted">{text}</p>
           </div>
         ))}
       </section>
 
       <section>
         <p className="eyebrow">How it works</p>
-        <h2 className="mt-1 text-2xl font-bold">Five steps from signup to the official portal</h2>
-        <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {STEPS.map(({ icon: Icon, title, text }, i) => (
-            <li key={title} className="card relative p-5">
-              <span className="absolute right-4 top-4 text-3xl font-extrabold text-slate-100 dark:text-slate-800">{i + 1}</span>
-              <Icon className="h-6 w-6 text-slate-400" />
-              <h3 className="mt-4 font-semibold">{title}</h3>
-              <p className="mt-1 text-sm leading-relaxed text-muted">{text}</p>
+        <h2 className="section-title mt-2">Five steps from signup to the official portal</h2>
+        <ol className="mt-8 grid gap-8 lg:grid-cols-5">
+          {STEPS.map(({ title, text }, i) => (
+            <li key={title} className="relative flex gap-4 lg:block">
+              {i < STEPS.length - 1 && (
+                <span aria-hidden className="absolute -bottom-6 left-4 top-10 w-px bg-line lg:-right-6 lg:bottom-auto lg:left-10 lg:top-4 lg:h-px lg:w-auto" />
+              )}
+              <span className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-sm font-semibold tabular-nums text-ink">
+                {i + 1}
+              </span>
+              <div className="lg:mt-4">
+                <h3 className="text-sm font-semibold text-ink">{title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted">{text}</p>
+              </div>
             </li>
           ))}
         </ol>

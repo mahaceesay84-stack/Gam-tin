@@ -7,6 +7,7 @@
 @theme {
   --font-sans: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
+  /* Brand green: primary actions, active nav, link hover, success moments only. */
   --color-brand-50: #ecfdf5;
   --color-brand-100: #d1fae5;
   --color-brand-200: #a7f3d0;
@@ -16,26 +17,27 @@
   --color-brand-800: #07583a;
   --color-brand-900: #064530;
 
+  /* Slate neutrals carry everything else. */
   --color-ink: #0f172a;
   --color-muted: #64748b;
   --color-line: #e2e8f0;
   --color-surface: #ffffff;
   --color-canvas: #f6f8fb;
 
-  --radius-card: 0.875rem;
+  --radius-card: 0.75rem;
 
+  /* Exactly two elevations: card (default) and pop (overlays, interactive hover). */
   --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 1px 3px rgb(15 23 42 / 0.06);
   --shadow-pop: 0 10px 30px -8px rgb(15 23 42 / 0.18);
-  --shadow-ring: 0 0 0 4px rgb(16 163 107 / 0.15);
 }
 
 .dark {
   color-scheme: dark;
-  --color-ink: #e5e7eb;
+  --color-ink: #e2e8f0;
   --color-muted: #94a3b8;
-  --color-line: #1e293b;
-  --color-surface: #111827;
-  --color-canvas: #0b1120;
+  --color-line: #243044;
+  --color-surface: #0f172a;
+  --color-canvas: #0a0f1e;
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.3);
   --shadow-pop: 0 10px 30px -8px rgb(0 0 0 / 0.6);
 }
@@ -51,71 +53,97 @@
   h1, h2, h3 {
     @apply tracking-tight;
   }
+  /* The one focus style, used by every focusable element. */
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-brand-500;
   }
 }
 
 @layer components {
+  /* Controls: h-10 / rounded-lg. Icon buttons: h-9 w-9. */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold
-      transition-all duration-150 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100;
+    @apply inline-flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 text-sm font-semibold
+      transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-sm {
+    @apply h-9 px-3;
+  }
+  .btn-icon {
+    @apply h-9 w-9 shrink-0 p-0;
   }
   .btn-primary {
-    @apply bg-brand-600 text-white shadow-sm hover:bg-brand-700 hover:shadow-md;
+    @apply bg-brand-600 text-white hover:bg-brand-700;
   }
   .btn-secondary {
-    @apply border border-line bg-surface text-slate-700 shadow-sm hover:border-slate-300 hover:bg-slate-50 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800;
+    @apply border border-line bg-surface text-slate-700 hover:border-slate-300 hover:bg-slate-50
+      dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800;
   }
   .btn-danger {
-    @apply bg-rose-600 text-white shadow-sm hover:bg-rose-700;
+    @apply bg-rose-600 text-white hover:bg-rose-700;
   }
   .btn-warn {
-    @apply bg-amber-500 text-white shadow-sm hover:bg-amber-600;
+    @apply border border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100
+      dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200 dark:hover:bg-amber-950/70;
   }
   .btn-ghost {
-    @apply text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800;
+    @apply text-slate-600 hover:bg-slate-100 hover:text-ink dark:text-slate-300 dark:hover:bg-slate-800;
   }
+
   .input {
-    @apply w-full rounded-lg border border-line bg-surface px-3.5 py-2.5 text-sm text-ink placeholder:text-slate-400
-      transition focus:border-brand-500 focus:outline-none focus:shadow-ring;
+    @apply h-10 w-full rounded-lg border border-line bg-surface px-3 text-sm text-ink placeholder:text-slate-400
+      transition-colors duration-150 hover:border-slate-300 focus:border-brand-500 dark:hover:border-slate-600;
+  }
+  textarea.input {
+    @apply h-auto py-2.5;
+  }
+  .input[aria-invalid="true"] {
+    @apply border-rose-400 dark:border-rose-500;
   }
   .label {
     @apply mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300;
   }
+
   .card {
     @apply rounded-card border border-line bg-surface p-6 shadow-card;
   }
+  /* Opt-in lift for cards that react to the pointer. */
+  .card-hover {
+    @apply transition-[transform,box-shadow,border-color] duration-200
+      hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-pop dark:hover:border-slate-600;
+  }
+  .crest {
+    @apply inline-flex shrink-0 rounded-lg bg-white p-1.5 ring-1 ring-slate-900/10;
+  }
+
+  /* Type scale */
   .page-title {
     @apply text-2xl font-bold tracking-tight text-ink sm:text-3xl;
+  }
+  .section-title {
+    @apply text-lg font-semibold text-ink;
   }
   .eyebrow {
     @apply text-xs font-semibold uppercase tracking-wider text-muted;
   }
+
+  .link {
+    @apply font-medium text-ink underline decoration-slate-300 underline-offset-4 transition-colors duration-150
+      hover:text-brand-700 hover:decoration-brand-700 dark:decoration-slate-600 dark:hover:text-brand-200 dark:hover:decoration-brand-200;
+  }
+
   .animate-in {
-    animation: fade-up 0.35s ease-out both;
+    animation: fade-up 0.2s ease-out both;
   }
 }
 
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes slide-in {
-  from {
-    opacity: 0;
-    transform: translateX(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
   }
 }
 

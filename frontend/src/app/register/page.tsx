@@ -76,12 +76,12 @@ export default function RegisterPage() {
 
   return (
     <AuthShell title="Create your student account" subtitle="Takes under a minute. Your record is verified instantly." wide>
-      <form onSubmit={submit} noValidate className="space-y-5">
+      <form onSubmit={submit} noValidate className="space-y-6">
         {error && <Alert tone="error">{error}</Alert>}
         <Field label="Full name" htmlFor="full_name" error={errors.full_name}>
           <input id="full_name" {...errorProps("full_name", errors.full_name)} className="input" value={form.full_name} onChange={set("full_name")} />
         </Field>
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2">
           <Field label="Email" htmlFor="email" error={errors.email}>
             <input id="email" {...errorProps("email", errors.email)} type="email" className="input" value={form.email} onChange={set("email")} />
           </Field>
@@ -108,12 +108,12 @@ export default function RegisterPage() {
         <Field label="Password" htmlFor="password" error={errors.password} hint="At least 8 characters.">
           <input id="password" {...errorProps("password", errors.password)} type="password" className="input" value={form.password} onChange={set("password")} />
         </Field>
-        <button className="btn btn-primary w-full py-3" disabled={busy}>
+        <button className="btn btn-primary w-full" disabled={busy}>
           {busy && <Loader2 className="h-4 w-4 animate-spin" />}
           {busy ? "Creating account…" : "Create account"}
         </button>
-        <p className="text-center text-sm text-muted">
-          Already registered? <Link href="/login" className="font-medium text-brand-700 dark:text-brand-200 hover:underline">Log in</Link>
+        <p className="pt-1 text-center text-sm text-muted">
+          Already registered? <Link href="/login" className="link">Log in</Link>
         </p>
       </form>
     </AuthShell>

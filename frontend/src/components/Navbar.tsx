@@ -59,16 +59,18 @@ export default function Navbar() {
         ];
 
   const linkClass = (href: string) =>
-    `relative inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-      pathname.startsWith(href) ? "bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-200" : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-ink"
+    `inline-flex h-9 items-center gap-2 rounded-lg px-3 text-sm font-medium transition-colors duration-150 ${
+      pathname.startsWith(href)
+        ? "bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-200"
+        : "text-slate-600 hover:bg-slate-100 hover:text-ink dark:text-slate-300 dark:hover:bg-slate-800"
     }`;
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-surface/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex rounded-lg bg-white px-1.5 py-1 ring-1 ring-black/5">
-            <Image src="/utg-crest.jpg" alt="UTG crest" width={53} height={38} priority className="h-[38px] w-auto" />
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+        <Link href="/" className="flex items-center gap-3">
+          <span className="crest">
+            <Image src="/utg-crest.jpg" alt="UTG crest" width={56} height={40} priority className="h-10 w-auto" />
           </span>
           <span className="leading-tight">
             <span className="block text-sm font-bold text-ink">UTG Digital</span>
@@ -76,7 +78,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <button className="btn btn-ghost px-2 md:hidden" aria-label="Toggle menu" onClick={() => setOpen(!open)}>
+        <button className="btn btn-ghost btn-icon md:hidden" aria-label="Toggle menu" onClick={() => setOpen(!open)}>
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
 
@@ -89,7 +91,7 @@ export default function Navbar() {
               {l.icon}
               {l.label}
               {l.badge && unread > 0 && (
-                <span className="ml-0.5 rounded-full bg-rose-500 px-1.5 py-px text-[10px] font-bold text-white">{unread}</span>
+                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-600 px-1.5 text-xs font-semibold text-white">{unread}</span>
               )}
             </Link>
           ))}
@@ -98,19 +100,20 @@ export default function Navbar() {
           </div>
           {user ? (
             <div className="mt-2 flex items-center gap-3 border-t border-line pt-3 md:ml-3 md:mt-0 md:border-0 md:border-l md:pl-4 md:pt-0">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 text-xs font-bold text-brand-800 dark:text-brand-200">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-200">
                 {user.full_name
                   .split(" ")
                   .map((p) => p[0])
                   .slice(0, 2)
-                  .join("")}
+                  .join("")
+                  .toUpperCase()}
               </span>
               <span className="hidden text-sm lg:block">
-                <span className="block font-medium leading-tight">{user.full_name}</span>
+                <span className="block font-medium leading-tight text-ink">{user.full_name}</span>
                 <span className="block text-xs capitalize text-muted">{user.role.replace("_", " ")}</span>
               </span>
               <button
-                className="btn btn-ghost px-2.5"
+                className="btn btn-ghost btn-icon"
                 aria-label="Log out"
                 title="Log out"
                 onClick={() => {
@@ -122,7 +125,7 @@ export default function Navbar() {
               </button>
             </div>
           ) : (
-            <div className="mt-2 flex items-center gap-2 md:mt-0">
+            <div className="mt-2 flex items-center gap-2 md:ml-2 md:mt-0">
               <Link href="/login" className="btn btn-ghost">
                 Student login
               </Link>

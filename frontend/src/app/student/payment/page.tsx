@@ -4,7 +4,7 @@ import { CheckCircle2, Loader2, Lock, Smartphone } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import StatusBadge from "@/components/StatusBadge";
-import { Alert, DefRow, errorProps, Field, Spinner } from "@/components/ui";
+import { Alert, DefList, DefRow, errorProps, Field, Spinner } from "@/components/ui";
 import { api, fieldError } from "@/lib/api";
 import { formatDate, formatMoney, METHOD_LABELS } from "@/lib/format";
 import type { Payment } from "@/lib/types";
@@ -24,9 +24,9 @@ export default function PaymentPage() {
   if (loading) return <Spinner />;
   if (!app || !app.reference) {
     return (
-      <div className="card mx-auto max-w-lg space-y-4 text-center">
-        <p>Submit your clearance first before paying the service fee.</p>
-        <Link href="/student/clearance" className="btn btn-primary">Go to clearance</Link>
+      <div className="card mx-auto max-w-lg space-y-6 text-center">
+        <p className="text-sm text-muted">Submit your clearance first before paying the service fee.</p>
+        <Link href="/student/clearance" className="btn btn-primary w-full">Go to clearance</Link>
       </div>
     );
   }
@@ -65,18 +65,18 @@ export default function PaymentPage() {
   if (paid || receipt?.status === "paid") {
     const p = paid ?? receipt!;
     return (
-      <div className="animate-in card mx-auto max-w-lg space-y-5 p-8">
+      <div className="animate-in card mx-auto max-w-lg space-y-6">
         <div className="text-center">
-          <CheckCircle2 className="mx-auto h-12 w-12 text-slate-400" />
-          <h1 className="mt-4 text-2xl font-bold">Payment successful</h1>
+          <CheckCircle2 className="mx-auto h-12 w-12 text-brand-600 dark:text-brand-200" />
+          <h1 className="page-title mt-4">Payment successful</h1>
+          <p className="mt-2 text-sm text-muted">Your clearance is now awaiting staff approval. This was a simulated payment.</p>
         </div>
-        <dl className="divide-y divide-line rounded-lg border border-line px-4">
+        <DefList>
           <DefRow label="Payment reference"><span className="font-mono">{p.reference}</span></DefRow>
           <DefRow label="Clearance reference"><span className="font-mono">{app.reference}</span></DefRow>
-          <DefRow label="Amount">{formatMoney(p.amount, p.currency)}</DefRow>
+          <DefRow label="Amount"><span className="tabular-nums">{formatMoney(p.amount, p.currency)}</span></DefRow>
           <DefRow label="Date">{formatDate(p.paid_at)}</DefRow>
-        </dl>
-        <p className="text-center text-sm text-muted">Your clearance is now awaiting staff approval. This was a simulated payment.</p>
+        </DefList>
         <Link href="/student/dashboard" className="btn btn-primary w-full">Back to dashboard</Link>
       </div>
     );
@@ -84,22 +84,23 @@ export default function PaymentPage() {
 
   if (app.status !== "submitted") {
     return (
-      <div className="card mx-auto max-w-lg space-y-4 text-center">
-        <p>Payment is not available while your application is <StatusBadge status={app.status} />.</p>
-        <Link href="/student/dashboard" className="btn btn-secondary">Back to dashboard</Link>
+      <div className="card mx-auto max-w-lg space-y-6 text-center">
+        <p className="text-sm text-muted">Payment is not available while your application is <StatusBadge status={app.status} />.</p>
+        <Link href="/student/dashboard" className="btn btn-secondary w-full">Back to dashboard</Link>
       </div>
     );
   }
 
   return (
-    <form onSubmit={pay} noValidate className="animate-in card mx-auto max-w-lg space-y-6 p-7">
+    <form onSubmit={pay} noValidate className="animate-in card mx-auto max-w-lg space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Digital service fee</h1>
-        <p className="mt-1 text-sm text-muted">Pay to send {app.reference} for staff review.</p>
+        <p className="eyebrow mb-2">Payment</p>
+        <h1 className="page-title">Digital service fee</h1>
+        <p className="mt-2 text-sm text-muted">Pay to send <span className="font-mono">{app.reference}</span> for staff review.</p>
       </div>
-      <div className="rounded-xl bg-gradient-to-br from-brand-700 to-brand-600 p-6 text-center text-white shadow-md">
-        <p className="text-xs font-medium uppercase tracking-wider text-brand-100">Amount due</p>
-        <p className="mt-1 text-4xl font-extrabold tracking-tight">{formatMoney(app.fee_amount, app.fee_currency)}</p>
+      <div className="rounded-xl bg-brand-700 p-6 text-white">
+        <p className="text-xs font-semibold uppercase tracking-wider text-brand-100">Amount due</p>
+        <p className="mt-2 text-4xl font-bold tabular-nums tracking-tight">{formatMoney(app.fee_amount, app.fee_currency)}</p>
       </div>
       <Alert tone="warn">
         Prototype: no real money moves. A number ending in <strong>0000</strong> simulates a failed payment.
@@ -109,9 +110,9 @@ export default function PaymentPage() {
         <legend className="label">Pay with</legend>
         <div className="grid grid-cols-2 gap-3">
           {METHODS.map((m) => (
-            <label key={m} className={`flex cursor-pointer items-center gap-3 rounded-lg border-2 p-3.5 text-sm font-medium transition ${method === m ? "border-brand-600 bg-brand-50 dark:bg-brand-900/30 text-brand-800 dark:text-brand-200" : "border-line hover:border-slate-300 dark:hover:border-slate-600"}`}>
+            <label key={m} className={`flex h-10 cursor-pointer items-center gap-2.5 rounded-lg border px-3 text-sm font-medium transition-colors duration-150 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand-500 ${method === m ? "border-brand-600 bg-brand-50 text-brand-800 ring-1 ring-brand-600 dark:bg-brand-900/30 dark:text-brand-200" : "border-line text-slate-700 hover:border-slate-300 dark:text-slate-200 dark:hover:border-slate-600"}`}>
               <input type="radio" name="method" value={m} checked={method === m} onChange={() => setMethod(m)} className="sr-only" />
-              <Smartphone className="h-4 w-4" />
+              <Smartphone className="h-4 w-4 shrink-0" />
               {METHOD_LABELS[m]}
             </label>
           ))}
@@ -120,7 +121,7 @@ export default function PaymentPage() {
       <Field label="Mobile number" htmlFor="phone" error={phoneError} hint="7-digit Gambian number, e.g. 7001001">
         <input id="phone" inputMode="numeric" className="input" placeholder="7001001" value={phone} {...errorProps("phone", phoneError)} onChange={(e) => { setPhone(e.target.value); setPhoneError(""); }} />
       </Field>
-      <button className="btn btn-primary w-full py-3" disabled={busy}>
+      <button className="btn btn-primary w-full" disabled={busy}>
         {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}
         {busy ? "Processing…" : `Pay ${formatMoney(app.fee_amount, app.fee_currency)}`}
       </button>

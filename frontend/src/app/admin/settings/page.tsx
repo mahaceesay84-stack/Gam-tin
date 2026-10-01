@@ -2,7 +2,7 @@
 
 import { Save, ScrollText } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Alert, errorProps, FieldError, PageHeader } from "@/components/ui";
+import { Alert, EmptyState, errorProps, FieldError, PageHeader } from "@/components/ui";
 import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { formatDate } from "@/lib/format";
@@ -58,17 +58,17 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader title="System settings" subtitle="Runtime configuration, including the digital service fee." />
       {message && <Alert tone="success">{message}</Alert>}
-      <div className="card space-y-5">
+      <div className="card space-y-6">
         {settings.map((s) => (
           <form key={s.key} noValidate onSubmit={(e) => { e.preventDefault(); save(s); }}>
             <label htmlFor={s.key} className="label">
               <span className="font-mono">{s.key}</span>
               <span className="ml-2 font-normal text-muted">{s.description}</span>
             </label>
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <input id={s.key} className="input" value={s.value} {...errorProps(s.key, errors[s.key])} onChange={(e) => { setSettings(settings.map((x) => (x.key === s.key ? { ...x, value: e.target.value } : x))); setErrors((p) => ({ ...p, [s.key]: "" })); }} />
               <button type="submit" className="btn btn-primary"><Save className="h-4 w-4" /> Save</button>
             </div>
@@ -77,16 +77,20 @@ export default function SettingsPage() {
         ))}
       </div>
       <section className="card">
-        <h2 className="flex items-center gap-2 font-semibold"><ScrollText className="h-4 w-4 text-slate-400" /> Recent audit log</h2>
-        <ul className="mt-3 divide-y divide-line text-sm">
-          {logs.slice(0, 30).map((l) => (
-            <li key={l.id} className="flex flex-wrap items-center justify-between gap-2 py-2.5">
-              <span className="rounded bg-slate-100 dark:bg-slate-800 px-2 py-0.5 font-mono text-xs">{l.action}</span>
-              <span className="text-slate-600 dark:text-slate-300">{l.actor_email ?? "system"} · {l.entity_type} {l.entity_id}</span>
-              <span className="text-xs text-muted">{formatDate(l.created_at)}</span>
-            </li>
-          ))}
-        </ul>
+        <h2 className="section-title">Recent audit log</h2>
+        {logs.length === 0 ? (
+          <EmptyState icon={ScrollText}>No audit events yet.</EmptyState>
+        ) : (
+          <ul className="mt-4 divide-y divide-line text-sm">
+            {logs.slice(0, 30).map((l) => (
+              <li key={l.id} className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 py-3 first:pt-0 last:pb-0">
+                <span className="font-mono text-xs text-ink">{l.action}</span>
+                <span className="min-w-0 flex-1 text-slate-600 dark:text-slate-300">{l.actor_email ?? "system"} · {l.entity_type} {l.entity_id}</span>
+                <time className="text-xs text-muted">{formatDate(l.created_at)}</time>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
     </div>
   );

@@ -53,7 +53,7 @@ export default function LoginForm({ portal }: { portal: "student" | "admin" }) {
       title={staff ? "Staff sign in" : "Welcome back"}
       subtitle={staff ? "Admins and Super Admins only." : "Sign in to continue your clearance."}
     >
-      <form onSubmit={submit} noValidate className="space-y-5">
+      <form onSubmit={submit} noValidate className="space-y-6">
         {error && <Alert tone="error">{error}</Alert>}
         <Field label="Email" htmlFor="email" error={errors.email}>
           <div className="relative">
@@ -67,18 +67,18 @@ export default function LoginForm({ portal }: { portal: "student" | "admin" }) {
             <input id="password" type="password" className="input pl-10" placeholder="••••••••" value={password} {...errorProps("password", errors.password)} onChange={(e) => { setPassword(e.target.value); clear("password"); }} />
           </div>
         </Field>
-        <button className="btn btn-primary w-full py-3" disabled={busy}>
+        <button className="btn btn-primary w-full" disabled={busy}>
           {busy && <Loader2 className="h-4 w-4 animate-spin" />}
           {busy ? "Signing in…" : "Sign in"}
         </button>
-        <p className="text-center text-sm text-muted">
+        <p className="pt-1 text-center text-sm text-muted">
           {staff ? (
-            <Link href="/login" className="font-medium text-brand-700 dark:text-brand-200 hover:underline">Student login</Link>
+            <Link href="/login" className="link">Student login</Link>
           ) : (
             <>
-              New here? <Link href="/register" className="font-medium text-brand-700 dark:text-brand-200 hover:underline">Create an account</Link>
+              New here? <Link href="/register" className="link">Create an account</Link>
               {" · "}
-              <Link href="/admin/login" className="font-medium text-brand-700 dark:text-brand-200 hover:underline">Staff login</Link>
+              <Link href="/admin/login" className="link">Staff login</Link>
             </>
           )}
         </p>

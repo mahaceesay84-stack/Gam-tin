@@ -2,7 +2,7 @@
 
 import { Bell, BellOff, CheckCheck, CreditCard, FileText, Gavel, UserCheck } from "lucide-react";
 import { useEffect, useState } from "react";
-import { PageHeader, Spinner } from "@/components/ui";
+import { EmptyState, PageHeader, Spinner } from "@/components/ui";
 import { api } from "@/lib/api";
 import { formatDate } from "@/lib/format";
 import type { AppNotification, Paginated } from "@/lib/types";
@@ -36,7 +36,7 @@ export default function NotificationList() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-3xl space-y-8">
       <PageHeader
         title="Notifications"
         subtitle="Clearance, payment and decision events."
@@ -54,36 +54,40 @@ export default function NotificationList() {
       />
       {loading && <Spinner />}
       {!loading && items.length === 0 && (
-        <div className="card flex flex-col items-center gap-2 py-14 text-center text-muted">
-          <BellOff className="h-8 w-8 text-slate-300" />
-          No notifications yet.
+        <div className="card">
+          <EmptyState icon={BellOff}>No notifications yet.</EmptyState>
         </div>
       )}
-      <ul className="space-y-3">
-        {items.map((n) => (
-          <li key={n.id} className={`card flex items-start gap-4 p-4 transition hover:shadow-pop ${n.is_read ? "" : "border-slate-300 dark:border-slate-600"}`}>
-            <span className={`mt-0.5 shrink-0 ${n.is_read ? "text-slate-400" : "text-ink"}`}>
-              {KIND_ICON[n.kind] ?? <Bell className="h-4 w-4" />}
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="font-semibold">{n.title}</p>
-              <p className="mt-0.5 text-sm text-slate-600 dark:text-slate-300">{n.message}</p>
-              <p className="mt-1.5 text-xs text-muted">{formatDate(n.created_at)}</p>
-            </div>
-            {!n.is_read && (
-              <button
-                className="shrink-0 text-xs font-medium text-brand-700 dark:text-brand-200 hover:underline"
-                onClick={async () => {
-                  await api.post(`/notifications/${n.id}/read/`);
-                  await reload();
-                }}
-              >
-                Mark read
-              </button>
-            )}
-          </li>
-        ))}
-      </ul>
+      {items.length > 0 && (
+        <ul className="card divide-y divide-line overflow-hidden p-0">
+          {items.map((n) => (
+            <li key={n.id} className={`relative flex items-start gap-4 px-6 py-4 ${n.is_read ? "" : "bg-slate-50 dark:bg-slate-800/40"}`}>
+              {!n.is_read && <span aria-label="Unread" className="absolute left-2.5 top-5.5 h-2 w-2 rounded-full bg-ink" />}
+              <span className={`mt-0.5 shrink-0 ${n.is_read ? "text-slate-400" : "text-ink"}`}>
+                {KIND_ICON[n.kind] ?? <Bell className="h-4 w-4" />}
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className={`text-sm text-ink ${n.is_read ? "font-medium" : "font-semibold"}`}>{n.title}</p>
+                <p className="mt-0.5 text-sm text-muted">{n.message}</p>
+              </div>
+              <div className="flex shrink-0 flex-col items-end gap-1 text-right">
+                <time className="text-xs text-muted">{formatDate(n.created_at)}</time>
+                {!n.is_read && (
+                  <button
+                    className="text-xs font-medium text-slate-600 transition-colors duration-150 hover:text-brand-700 dark:text-slate-300 dark:hover:text-brand-200"
+                    onClick={async () => {
+                      await api.post(`/notifications/${n.id}/read/`);
+                      await reload();
+                    }}
+                  >
+                    Mark read
+                  </button>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

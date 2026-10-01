@@ -16,6 +16,7 @@ UTG Digital Student Services clearance prototype. See `README.md` for setup, `do
 - Fee comes from `SystemSetting` (`digital_service_fee`), never hardcoded.
 - The eslint `react-hooks/set-state-in-effect` rule is on: fetch inside effects with `.then(...)`, not via helper that sets state synchronously.
 - The `venv/` at the repo root is untracked tooling; the repo has no remote DB, so tests use sqlite.
+- UI conventions live in `frontend/src/app/globals.css` (tokens, `.btn`/`.input`/`.card`/type classes) and `frontend/src/components/ui.tsx` (Alert, Spinner, EmptyState, PageHeader, DefList/DefRow). Reuse them; slate neutrals, brand green only for primary actions/active nav/success; two shadows (`shadow-card`, `shadow-pop`); controls `h-10`, icon buttons `h-9 w-9`.
 
 ## Maintaining this file
 Keep it short and project-intrinsic: record only knowledge useful to nearly every session, and point to authoritative files instead of copying detail. Update it when commands or conventions change.

@@ -1,10 +1,10 @@
 "use client";
 
-import { AlertTriangle, ArrowUpRight, CheckCircle2, Clock, Search, XCircle } from "lucide-react";
+import { ArrowUpRight, Inbox, Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import StatusBadge from "@/components/StatusBadge";
-import { Alert, PageHeader } from "@/components/ui";
+import { Alert, EmptyState, PageHeader, Spinner } from "@/components/ui";
 import { api } from "@/lib/api";
 import { formatDate } from "@/lib/format";
 import type { Application, Paginated } from "@/lib/types";
@@ -15,10 +15,10 @@ interface Faculty {
 }
 
 const STAT_CARDS = [
-  { key: "submitted", label: "Awaiting review", icon: Clock },
-  { key: "correction_requested", label: "Correction requested", icon: AlertTriangle },
-  { key: "approved", label: "Approved", icon: CheckCircle2 },
-  { key: "rejected", label: "Rejected", icon: XCircle },
+  { key: "submitted", label: "Awaiting review" },
+  { key: "correction_requested", label: "Correction requested" },
+  { key: "approved", label: "Approved" },
+  { key: "rejected", label: "Rejected" },
 ] as const;
 
 export default function AdminDashboard() {
@@ -59,90 +59,92 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader title="Clearance submissions" subtitle="Review, approve or return student clearance applications." />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {STAT_CARDS.map(({ key, label, icon: Icon }) => (
-          <div key={key} className="card flex items-center gap-4 p-5">
-            <Icon className="h-6 w-6 text-slate-400" />
-            <div>
-              <p className="text-2xl font-bold leading-none">{stats[key] ?? 0}</p>
-              <p className="mt-1 text-xs font-medium text-muted">{label}</p>
-            </div>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {STAT_CARDS.map(({ key, label }) => (
+          <div key={key} className="card">
+            <p className="eyebrow">{label}</p>
+            <p className="mt-3 text-3xl font-bold leading-none tabular-nums text-ink">{stats[key] ?? 0}</p>
           </div>
         ))}
       </div>
 
-      <div className="card grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-          <input aria-label="Search" className="input pl-9" placeholder="Name, number, reference…" value={filters.search} onChange={set("search")} />
+      <div className="space-y-4">
+        <div className="flex flex-col gap-3 lg:flex-row">
+          <div className="relative lg:flex-1">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <input aria-label="Search" className="input pl-10" placeholder="Name, number, reference…" value={filters.search} onChange={set("search")} />
+          </div>
+          <select aria-label="Status" className="input lg:w-48" value={filters.status} onChange={set("status")}>
+            <option value="">All statuses</option>
+            <option value="submitted">Submitted</option>
+            <option value="correction_requested">Correction requested</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          <select aria-label="Payment" className="input lg:w-48" value={filters.payment_status} onChange={set("payment_status")}>
+            <option value="">Any payment</option>
+            <option value="paid">Paid</option>
+            <option value="unpaid">Unpaid</option>
+            <option value="failed">Failed</option>
+          </select>
+          <select aria-label="Faculty" className="input lg:w-48" value={filters.faculty} onChange={set("faculty")}>
+            <option value="">All faculties</option>
+            {faculties.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
+          </select>
         </div>
-        <select aria-label="Status" className="input" value={filters.status} onChange={set("status")}>
-          <option value="">All statuses</option>
-          <option value="submitted">Submitted</option>
-          <option value="correction_requested">Correction requested</option>
-          <option value="approved">Approved</option>
-          <option value="rejected">Rejected</option>
-        </select>
-        <select aria-label="Payment" className="input" value={filters.payment_status} onChange={set("payment_status")}>
-          <option value="">Any payment</option>
-          <option value="paid">Paid</option>
-          <option value="unpaid">Unpaid</option>
-          <option value="failed">Failed</option>
-        </select>
-        <select aria-label="Faculty" className="input" value={filters.faculty} onChange={set("faculty")}>
-          <option value="">All faculties</option>
-          {faculties.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
-        </select>
-      </div>
 
-      {error && <Alert tone="error">{error}</Alert>}
-      <div className="card overflow-hidden p-0">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-line bg-slate-50/80 dark:bg-slate-800/80 text-xs uppercase tracking-wide text-muted">
-              <tr>
-                <th className="px-5 py-3 font-semibold">Reference</th>
-                <th className="px-5 py-3 font-semibold">Student</th>
-                <th className="px-5 py-3 font-semibold">Faculty</th>
-                <th className="px-5 py-3 font-semibold">Status</th>
-                <th className="px-5 py-3 font-semibold">Payment</th>
-                <th className="px-5 py-3 font-semibold">Submitted</th>
-                <th className="px-5 py-3" />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-line">
-              {apps.map((a) => (
-                <tr key={a.id} className="transition-colors hover:bg-slate-50/70 dark:hover:bg-slate-800/70">
-                  <td className="px-5 py-4 font-mono text-xs">{a.reference}</td>
-                  <td className="px-5 py-4">
-                    <p className="font-medium">{a.student.full_name}</p>
-                    <p className="text-xs text-muted">{a.student.student_number}</p>
-                  </td>
-                  <td className="px-5 py-4 text-slate-600 dark:text-slate-300">{a.student.faculty}</td>
-                  <td className="px-5 py-4"><StatusBadge status={a.status} /></td>
-                  <td className="px-5 py-4"><StatusBadge status={a.payment_status} /></td>
-                  <td className="px-5 py-4 text-muted">{formatDate(a.submitted_at)}</td>
-                  <td className="px-5 py-4 text-right">
-                    <Link href={`/admin/applications/${a.id}`} className="inline-flex items-center gap-1 font-medium text-brand-700 dark:text-brand-200 hover:underline">
-                      Review <ArrowUpRight className="h-3.5 w-3.5" />
-                    </Link>
-                  </td>
+        {error && <Alert tone="error">{error}</Alert>}
+        <div className="card overflow-hidden p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b border-line bg-slate-50 dark:bg-slate-800/50">
+                <tr className="eyebrow">
+                  <th className="h-11 px-6 font-semibold">Reference</th>
+                  <th className="h-11 px-6 font-semibold">Student</th>
+                  <th className="h-11 px-6 font-semibold">Faculty</th>
+                  <th className="h-11 px-6 font-semibold">Status</th>
+                  <th className="h-11 px-6 font-semibold">Payment</th>
+                  <th className="h-11 px-6 font-semibold">Submitted</th>
+                  <th className="h-11 px-6"><span className="sr-only">Actions</span></th>
                 </tr>
-              ))}
-              {!loading && apps.length === 0 && (
-                <tr><td colSpan={7} className="px-5 py-14 text-center text-muted">No submissions found.</td></tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div className="flex items-center justify-between border-t border-line px-5 py-3 text-sm">
-          <span className="text-muted">{count} result(s)</span>
-          <div className="flex gap-2">
-            <button className="btn btn-secondary px-3 py-1.5" disabled={page <= 1} onClick={() => setPage(page - 1)}>Previous</button>
-            <button className="btn btn-secondary px-3 py-1.5" disabled={page * 20 >= count} onClick={() => setPage(page + 1)}>Next</button>
+              </thead>
+              <tbody className="divide-y divide-line">
+                {apps.map((a) => (
+                  <tr key={a.id} className="transition-colors duration-150 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                    <td className="whitespace-nowrap px-6 py-4 font-mono text-xs text-ink">{a.reference}</td>
+                    <td className="px-6 py-4">
+                      <p className="font-medium text-ink">{a.student.full_name}</p>
+                      <p className="mt-0.5 font-mono text-xs text-muted">{a.student.student_number}</p>
+                    </td>
+                    <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{a.student.faculty}</td>
+                    <td className="px-6 py-4"><StatusBadge status={a.status} /></td>
+                    <td className="px-6 py-4"><StatusBadge status={a.payment_status} /></td>
+                    <td className="whitespace-nowrap px-6 py-4 text-muted">{formatDate(a.submitted_at)}</td>
+                    <td className="px-6 py-4 text-right">
+                      <Link href={`/admin/applications/${a.id}`} className="link inline-flex items-center gap-1 whitespace-nowrap">
+                        Review <ArrowUpRight className="h-3.5 w-3.5" />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+                {loading && (
+                  <tr><td colSpan={7}><Spinner /></td></tr>
+                )}
+                {!loading && apps.length === 0 && (
+                  <tr><td colSpan={7}><EmptyState icon={Inbox}>No submissions match these filters.</EmptyState></td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          <div className="flex items-center justify-between border-t border-line px-6 py-3 text-sm">
+            <span className="tabular-nums text-muted">{count} {count === 1 ? "result" : "results"}</span>
+            <div className="flex gap-2">
+              <button className="btn btn-secondary btn-sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>Previous</button>
+              <button className="btn btn-secondary btn-sm" disabled={page * 20 >= count} onClick={() => setPage(page + 1)}>Next</button>
+            </div>
           </div>
         </div>
       </div>

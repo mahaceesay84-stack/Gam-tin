@@ -47,22 +47,18 @@ export default function Toasts() {
   return (
     <div className="fixed bottom-4 right-4 z-50 flex w-[22rem] max-w-[calc(100vw-2rem)] flex-col gap-2">
       {toasts.map((n) => (
-        <div
-          key={n.id}
-          className="flex gap-3 rounded-xl border border-line bg-surface p-4 shadow-pop"
-          style={{ animation: "slide-in 0.3s ease-out both" }}
-        >
-          <BellRing className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
+        <div key={n.id} className="animate-in flex items-start gap-4 rounded-card border border-line bg-surface px-4 py-4 shadow-pop">
+          <BellRing className="mt-0.5 h-4 w-4 shrink-0 text-ink" />
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold">{n.title}</p>
+            <p className="text-sm font-semibold text-ink">{n.title}</p>
             <p className="mt-0.5 text-sm text-muted">{n.message}</p>
           </div>
           <button
             aria-label="Dismiss"
-            className="h-6 w-6 shrink-0 rounded text-slate-400 transition hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300"
+            className="btn btn-ghost btn-icon -mr-2 -mt-2 text-slate-400"
             onClick={() => setToasts((t) => t.filter((x) => x.id !== n.id))}
           >
-            <X className="mx-auto h-4 w-4" />
+            <X className="h-4 w-4" />
           </button>
         </div>
       ))}

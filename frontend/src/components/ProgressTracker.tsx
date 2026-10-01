@@ -23,32 +23,30 @@ export default function ProgressTracker({ user, app }: { user: User; app: Applic
   const current = currentStep(user, app);
   const rejected = app?.status === "rejected";
   return (
-    <ol className="card grid gap-5 p-6 sm:grid-cols-5 sm:gap-0">
+    <ol className="card grid gap-6 sm:grid-cols-5 sm:gap-0">
       {STEPS.map(({ label, icon: Icon }, i) => {
         const done = i < current;
         const active = i === current;
         const failed = active && rejected;
-        const circle = failed
-          ? "border-slate-900 dark:border-slate-200 bg-surface text-ink"
-          : done
-            ? "border-slate-700 dark:border-slate-300 bg-slate-700 dark:bg-slate-300 text-white dark:text-slate-900"
-            : active
-              ? "border-slate-900 dark:border-slate-200 bg-surface text-ink"
-              : "border-line bg-slate-50 dark:bg-slate-800 text-slate-400";
+        const circle = done
+          ? "border-slate-700 bg-slate-700 text-white dark:border-slate-300 dark:bg-slate-300 dark:text-slate-900"
+          : active
+            ? "border-slate-900 bg-surface text-ink dark:border-slate-200"
+            : "border-line bg-slate-50 text-slate-400 dark:bg-slate-800";
         return (
-          <li key={label} className="relative flex items-center gap-3 sm:flex-col sm:gap-2 sm:text-center">
+          <li key={label} className="relative flex items-center gap-4 sm:flex-col sm:items-center sm:gap-3 sm:text-center">
             {i > 0 && (
               <span
                 aria-hidden
                 className={`absolute right-1/2 top-5 hidden h-0.5 w-full sm:block ${i <= current ? "bg-slate-700 dark:bg-slate-300" : "bg-line"}`}
               />
             )}
-            <span className={`relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 transition ${circle}`}>
+            <span className={`relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-150 ${circle}`}>
               {done ? <Check className="h-5 w-5" /> : failed ? <X className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
             </span>
-            <span className={`px-1 text-xs font-medium leading-tight ${active || done ? "text-ink" : "text-muted"}`}>
+            <span className={`px-1 text-sm font-medium leading-snug ${active || done ? "text-ink" : "text-muted"}`}>
               {label}
-              {active && <span className="mt-0.5 block text-[10px] font-semibold uppercase tracking-wide text-ink">{failed ? "Rejected" : "Current"}</span>}
+              {active && <span className="mt-1 block text-xs font-semibold uppercase tracking-wider text-muted">{failed ? "Rejected" : "Current"}</span>}
             </span>
           </li>
         );

@@ -1,4 +1,4 @@
-import { AlertCircle, CheckCircle2, Info, Loader2, TriangleAlert } from "lucide-react";
+import { AlertCircle, CheckCircle2, Info, Loader2, TriangleAlert, type LucideIcon } from "lucide-react";
 
 type Tone = "error" | "success" | "warn" | "info";
 
@@ -12,7 +12,7 @@ const TONES: Record<Tone, { box: string; icon: React.ReactNode }> = {
 export function Alert({ tone = "info", children }: { tone?: Tone; children: React.ReactNode }) {
   const t = TONES[tone];
   return (
-    <div role={tone === "error" ? "alert" : "status"} className={`flex items-start gap-2.5 rounded-lg border px-3.5 py-3 text-sm ${t.box}`}>
+    <div role={tone === "error" ? "alert" : "status"} className={`flex items-start gap-2.5 rounded-lg border px-4 py-3 text-sm ${t.box}`}>
       <span className="mt-0.5">{t.icon}</span>
       <div>{children}</div>
     </div>
@@ -21,26 +21,46 @@ export function Alert({ tone = "info", children }: { tone?: Tone; children: Reac
 
 export function Spinner({ label = "Loading…" }: { label?: string }) {
   return (
-    <div className="flex items-center justify-center gap-2 py-16 text-sm text-muted">
+    <div role="status" className="flex items-center justify-center gap-2 py-16 text-sm text-muted">
       <Loader2 className="h-4 w-4 animate-spin" /> {label}
     </div>
   );
 }
 
+/** Neutral icon + one-line message for lists with nothing to show. */
+export function EmptyState({ icon: Icon, children }: { icon: LucideIcon; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col items-center gap-3 py-12 text-center text-sm text-muted">
+      <Icon className="h-6 w-6 text-slate-400" />
+      <p>{children}</p>
+    </div>
+  );
+}
+
 export function PageHeader({
+  eyebrow,
   title,
   subtitle,
   action,
+  badge,
+  mono = false,
 }: {
+  eyebrow?: string;
   title: string;
   subtitle?: React.ReactNode;
   action?: React.ReactNode;
+  badge?: React.ReactNode;
+  mono?: boolean;
 }) {
   return (
     <div className="flex flex-wrap items-end justify-between gap-4">
       <div>
-        <h1 className="page-title">{title}</h1>
-        {subtitle && <p className="mt-1 text-sm text-muted">{subtitle}</p>}
+        {eyebrow && <p className="eyebrow mb-2">{eyebrow}</p>}
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className={`page-title ${mono ? "font-mono" : ""}`}>{title}</h1>
+          {badge}
+        </div>
+        {subtitle && <p className="mt-2 text-sm text-muted">{subtitle}</p>}
       </div>
       {action}
     </div>
@@ -87,11 +107,16 @@ export function Field({
   );
 }
 
+/** Label/value list with hairline dividers. Wrap `DefRow`s in this. */
+export function DefList({ children }: { children: React.ReactNode }) {
+  return <dl className="divide-y divide-line">{children}</dl>;
+}
+
 export function DefRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex items-start justify-between gap-4 py-2 text-sm">
-      <dt className="text-muted">{label}</dt>
-      <dd className="text-right font-medium text-ink">{children}</dd>
+    <div className="flex items-baseline justify-between gap-6 py-3 text-sm">
+      <dt className="shrink-0 text-muted">{label}</dt>
+      <dd className="min-w-0 text-right font-medium text-ink">{children}</dd>
     </div>
   );
 }

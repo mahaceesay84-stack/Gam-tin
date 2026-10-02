@@ -1,5 +1,5 @@
 import { ArrowRight, ClipboardCheck, ShieldCheck, Smartphone } from "lucide-react";
-import Image from "next/image";
+import BrandMark from "@/components/BrandMark";
 import Link from "next/link";
 
 const STEPS = [
@@ -20,9 +20,7 @@ export default function Home() {
   return (
     <div className="space-y-16">
       <section className="flex flex-col items-center py-8 text-center sm:py-12">
-        <span className="crest p-4 shadow-card">
-          <Image src="/utg-crest.jpg" alt="UTG crest" width={267} height={192} priority className="h-44 w-auto sm:h-48" />
-        </span>
+        <BrandMark className="h-40 w-40 sm:h-48 sm:w-48" />
         <p className="eyebrow mt-10">Prototype — Not an official UTG service.</p>
         <h1 className="mt-3 max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl">UTG Digital Student Services</h1>
         <p className="mt-4 max-w-xl text-base text-muted sm:text-lg">

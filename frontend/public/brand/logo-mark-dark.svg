@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="90 50 620 620" width="620" height="620">
+  
+  <!-- badge ring -->
+  <circle cx="400" cy="360" r="290" fill="#ffffff" stroke="#E8EAF2" stroke-width="24"/>
+  <!-- open book, solid -->
+  <path d="M 400,275 C 335,242 262,242 205,262 V 462 C 262,442 335,442 400,475 C 465,442 538,442 595,462 V 262 C 538,242 465,242 400,275 Z" fill="#E8EAF2"/>
+  <!-- page lines -->
+  <g stroke="#1E2A6E" stroke-width="10" stroke-linecap="round" opacity="0.35">
+    <path d="M 245,320 C 290,306 335,306 370,318"/>
+    <path d="M 245,370 C 290,356 335,356 370,368"/>
+    <path d="M 430,318 C 465,306 510,306 555,320"/>
+    <path d="M 430,368 C 465,356 510,356 555,370"/>
+  </g>
+  <!-- clearance check as negative space over the spine -->
+  <path d="M 315,395 l 45,45 l 85,-100" fill="none" stroke="#ffffff" stroke-width="42" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 315,395 l 45,45 l 85,-100" fill="none" stroke="#007A3D" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>

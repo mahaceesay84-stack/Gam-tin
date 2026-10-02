@@ -1,7 +1,7 @@
 "use client";
 
 import { Bell, LayoutDashboard, LogOut, Menu, Settings, ShieldCheck, ClipboardCheck, X } from "lucide-react";
-import Image from "next/image";
+import BrandMark from "@/components/BrandMark";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -69,9 +69,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 border-b border-line bg-surface/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-3">
-          <span className="crest">
-            <Image src="/utg-crest.jpg" alt="UTG crest" width={56} height={40} priority className="h-10 w-auto" />
-          </span>
+          <BrandMark className="h-9 w-9" />
           <span className="leading-tight">
             <span className="block text-sm font-bold text-ink">UTG Digital</span>
             <span className="block text-xs font-medium text-muted">Student Services</span>

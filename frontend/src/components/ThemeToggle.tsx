@@ -3,7 +3,7 @@
 import "material-symbols/outlined.css";
 import { useEffect, useState } from "react";
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ labeled = false }: { labeled?: boolean }) {
   const [dark, setDark] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -21,6 +21,22 @@ export default function ThemeToggle() {
     setDark(next);
   };
 
+  const iconEl =
+    dark === null ? <span className="h-5 w-5" /> : <span className="material-symbols-outlined !text-[20px]" aria-hidden="true">{dark ? "light_mode" : "dark_mode"}</span>;
+
+  if (labeled) {
+    return (
+      <button
+        type="button"
+        className="flex min-h-12 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+        onClick={toggle}
+      >
+        {iconEl}
+        <span>{dark ? "Light mode" : "Dark mode"}</span>
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"
@@ -29,7 +45,7 @@ export default function ThemeToggle() {
       title="Toggle dark mode"
       onClick={toggle}
     >
-      {dark === null ? <span className="h-5 w-5" /> : <span className="material-symbols-outlined !text-[20px]" aria-hidden="true">{dark ? "light_mode" : "dark_mode"}</span>}
+      {iconEl}
     </button>
   );
 }

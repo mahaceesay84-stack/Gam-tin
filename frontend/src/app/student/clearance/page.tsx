@@ -242,7 +242,7 @@ function Wizard({
           <>
             <div>
               <h2 className="section-title">Clearance categories</h2>
-              <p className="mt-2 text-sm text-muted">Mandatory categories are always included.</p>
+              <p className="mt-2 text-sm text-muted">Finance / Tuition clearance is always included. Add any other categories that apply to you.</p>
             </div>
             <ul className="divide-y divide-line overflow-hidden rounded-lg border border-line">
               {requirements.map((r) => {

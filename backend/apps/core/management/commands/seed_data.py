@@ -22,15 +22,15 @@ FACULTIES = {
 
 # (code, name, faculty code or None, mandatory, requires_document, hint)
 REQUIREMENTS = [
-    ("LIB", "Library Clearance", None, True, False, ""),
+    ("LIB", "Library Clearance", None, False, False, ""),
     ("FIN", "Finance / Tuition Clearance", None, True, True, "Upload your tuition fee receipt for this semester"),
-    ("DEPT", "Department Clearance", None, True, False, ""),
+    ("DEPT", "Department Clearance", None, False, False, ""),
     ("HOSTEL", "Hostel Clearance", None, False, False, ""),
     ("SPORTS", "Sports & Equipment Clearance", None, False, False, ""),
-    ("LAB", "Laboratory Clearance", "SCI", True, False, ""),
-    ("TEACH", "Teaching Practice Report", "EDU", True, True, "Upload your teaching practice report"),
-    ("MOOT", "Moot Court Clearance", "LAW", True, False, ""),
-    ("CLINIC", "Clinical Placement Clearance", "HLT", True, True, "Upload your clinical logbook sign-off"),
+    ("LAB", "Laboratory Clearance", "SCI", False, False, ""),
+    ("TEACH", "Teaching Practice Report", "EDU", False, True, "Upload your teaching practice report"),
+    ("MOOT", "Moot Court Clearance", "LAW", False, False, ""),
+    ("CLINIC", "Clinical Placement Clearance", "HLT", False, True, "Upload your clinical logbook sign-off"),
 ]
 
 SETTINGS = [

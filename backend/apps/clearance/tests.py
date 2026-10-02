@@ -3,6 +3,7 @@ import tempfile
 from decimal import Decimal
 
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core import mail
 from django.core.management import call_command
 from django.test import override_settings
 from rest_framework.test import APITestCase
@@ -13,7 +14,7 @@ from apps.core.models import SystemSetting
 MEDIA = tempfile.mkdtemp()
 
 
-@override_settings(MEDIA_ROOT=MEDIA)
+@override_settings(MEDIA_ROOT=MEDIA, EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
 class ClearanceFlowTests(APITestCase):
     @classmethod
     def setUpTestData(cls):
@@ -167,3 +168,47 @@ class ClearanceFlowTests(APITestCase):
         other = User.objects.get(email="lamin.sanneh@example.com")
         self.client.force_authenticate(other)
         self.assertEqual(self.client.get(f"/api/clearance/documents/{doc_id}/download/").status_code, 404)
+
+    def test_emails_sent_on_submit_and_decisions(self):
+        mail.outbox.clear()
+        app = self.create_and_submit()
+        ref = app["reference"]
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["amie.jallow@example.com"])
+        self.assertIn(ref, mail.outbox[0].subject)
+
+        self.admin_login()
+        url = f"/api/clearance/admin/applications/{app['id']}"
+        mail.outbox.clear()
+        self.client.post(f"{url}/request-correction/", {"reason": "Blurry receipt"}, format="json")
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn(ref, mail.outbox[0].body)
+        self.assertIn("Blurry receipt", mail.outbox[0].body)
+
+        self.student_login()
+        self.client.post(f"/api/clearance/applications/{app['id']}/submit/")
+        self.assertEqual(len(mail.outbox), 2)
+
+        self.admin_login()
+        mail.outbox.clear()
+        self.client.post(f"{url}/reject/", {"reason": "Not eligible"}, format="json")
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn(ref, mail.outbox[0].body)
+        self.assertIn("Not eligible", mail.outbox[0].body)
+
+    def test_approval_email(self):
+        app = self.create_and_submit()
+        self.client.post(
+            f"/api/payments/applications/{app['id']}/pay/", {"method": "wave", "phone": "7001001"}, format="json"
+        )
+        self.admin_login()
+        mail.outbox.clear()
+        res = self.client.post(f"/api/clearance/admin/applications/{app['id']}/approve/")
+        self.assertEqual(res.status_code, 200, res.content)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn(app["reference"], mail.outbox[0].subject)
+        self.assertIn("https://", mail.outbox[0].body)
+
+    @override_settings(EMAIL_BACKEND="nonexistent.Backend")
+    def test_email_failure_does_not_break_submit(self):
+        self.create_and_submit()

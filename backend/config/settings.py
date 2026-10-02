@@ -133,6 +133,18 @@ MEDIA_ROOT = Path(env("MEDIA_ROOT", "media"))
 if not MEDIA_ROOT.is_absolute():
     MEDIA_ROOT = BASE_DIR / MEDIA_ROOT
 
+# Email: file-based by default (writes .log files under media/emails); switch to SMTP via env.
+EMAIL_BACKEND = env("EMAIL_BACKEND", "django.core.mail.backends.filebased.EmailBackend")
+EMAIL_FILE_PATH = env("EMAIL_FILE_PATH", str(BASE_DIR / "media" / "emails"))
+if not os.path.isabs(EMAIL_FILE_PATH):
+    EMAIL_FILE_PATH = str(BASE_DIR / EMAIL_FILE_PATH)
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", "no-reply@utg-dss-prototype.local")
+EMAIL_HOST = env("EMAIL_HOST", "localhost")
+EMAIL_PORT = int(env("EMAIL_PORT", "25"))
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = env_bool("EMAIL_USE_TLS", False)
+
 # Dotted path of the storage class used for uploaded clearance documents.
 # Swap for a cloud backend (S3, GCS...) without touching model code.
 DOCUMENT_STORAGE_BACKEND = env(

@@ -74,6 +74,15 @@ ruff check .
 - Student registration auto-verifies the record (prototype); a real deployment must check the
   university registry.
 
+## Email notifications
+
+Students are emailed when they submit (or resubmit) a clearance and when staff approve, reject, or
+request a correction. By default emails are written as files under `backend/media/emails/`
+(`EMAIL_BACKEND=django.core.mail.backends.filebased.EmailBackend`, `EMAIL_FILE_PATH`). To use a real
+provider set `EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend` plus `EMAIL_HOST`,
+`EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `EMAIL_USE_TLS` and `DEFAULT_FROM_EMAIL`
+(see `backend/.env.example`). Send failures are logged and never block the request.
+
 ## Frontend
 
 ```bash

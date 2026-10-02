@@ -6,7 +6,7 @@ from apps.academics.models import AcademicTerm
 from apps.core.audit import record
 from apps.core.models import SystemSetting
 from apps.core.references import generate_reference
-from apps.notifications.services import notify, notify_staff
+from apps.notifications.services import notify, notify_staff, send_student_email
 
 from .models import (
     ApplicationStatus,
@@ -97,6 +97,14 @@ def submit_application(app, request=None):
         "clearance",
         app,
     )
+    send_student_email(
+        app.student.user,
+        f"Clearance received — {app.reference}",
+        f"We have received your clearance application {app.reference}"
+        + (" (resubmitted after correction)" if resubmission else "")
+        + ".\n\nWhat happens next: pay the digital service fee, then clearance staff will "
+        "review your application. You will be emailed once a decision is made.",
+    )
     notify_staff(
         "Clearance resubmitted" if resubmission else "New clearance submitted",
         f"{app.student.user.full_name} ({app.student.student_number}) submitted {app.reference}.",
@@ -144,4 +152,20 @@ def decide(app, admin_user, decision: str, reason: str = "", request=None):
     app.items.update(status=item_status)
     record(request, admin_user, f"clearance.{decision}", app, reason=reason)
     notify(app.student.user, title, message, "decision", app)
+    if decision == "approve":
+        portal = SystemSetting.get("official_portal_url", "https://www.utg.edu.gm")
+        body = (
+            f"Your clearance {app.reference} has been approved.\n\n"
+            "Please proceed to the official UTG Students' Portal to complete your course "
+            f"registration. Quote your reference {app.reference} if asked.\n"
+            f"Portal: {portal}"
+        )
+    elif decision == "reject":
+        body = f"Your clearance {app.reference} was rejected.\n\nReason: {reason.strip()}"
+    else:
+        body = (
+            f"A correction is needed on your clearance {app.reference}.\n\n"
+            f"Reason: {reason.strip()}\n\nYou can edit your application and resubmit it."
+        )
+    send_student_email(app.student.user, f"{title} — {app.reference}", body)
     return app

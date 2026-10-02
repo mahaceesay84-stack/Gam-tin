@@ -51,7 +51,6 @@ export default function Home() {
             <Lock className="h-3.5 w-3.5" /> Documents stay private and every action is logged.
           </p>
         </div>
-        </div>
       </section>
 
       <section className="grid gap-6 sm:grid-cols-3">

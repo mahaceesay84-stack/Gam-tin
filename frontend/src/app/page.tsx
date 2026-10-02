@@ -1,5 +1,5 @@
 import {
-  ArrowRight, BadgeCheck, ClipboardCheck, CreditCard, FileUp, GraduationCap, Lock, ShieldCheck, Smartphone, UserCheck,
+  ArrowRight, BadgeCheck, ClipboardCheck, Clock, CreditCard, FileUp, GraduationCap, ShieldCheck, Smartphone, UserCheck,
 } from "lucide-react";
 import Link from "next/link";
 import BrandMark from "@/components/BrandMark";
@@ -27,30 +27,54 @@ const FAQ = [
 export default function Home() {
   return (
     <div className="space-y-20">
-      <section className="relative overflow-hidden rounded-3xl bg-cover bg-center px-6 py-14 text-center text-white shadow-card sm:px-12 sm:py-20" style={{ backgroundImage: "url(/hero-queue.jpg)" }}>
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-emerald-950/80" />
-        <div className="relative flex flex-col items-center">
-          <BrandMark className="h-24 w-24 sm:h-28 sm:w-28" />
-          <span className="badge mt-8">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand-500" /> Prototype · Not an official UTG service
-          </span>
-          <h1 className="mt-5 max-w-3xl text-4xl font-extrabold tracking-tight text-white sm:text-6xl">
-            Student clearance, <span className="text-brand-200">without the queues.</span>
+      <section className="grid items-center gap-10 py-6 sm:py-10 lg:grid-cols-2 lg:gap-16">
+        <div className="text-center lg:text-left">
+          <div className="flex flex-col items-center gap-4 sm:flex-row lg:justify-start sm:justify-center">
+            <BrandMark className="h-14 w-14" />
+            <span className="inline-flex items-center rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted">
+              Prototype — not an official UTG service
+            </span>
+          </div>
+          <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            Student clearance, without the queues.
           </h1>
-          <p className="mt-5 max-w-xl text-base text-slate-100 sm:text-lg">
-            Skip the long hallway lines. Verify, upload documents, pay the digital service fee and track approval, all from your phone.
+          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg lg:mx-0">
+            Submit documents, pay the digital service fee from your phone and track approval online, from wherever you are.
           </p>
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/register" className="btn btn-primary h-11 px-6">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+            <Link href="/register" className="btn btn-primary">
               Start Clearance <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link href="/login" className="btn h-11 border border-white/40 bg-white/10 px-6 text-white hover:bg-white/20">Student Login</Link>
-            <Link href="/admin/login" className="btn h-11 text-white hover:bg-white/10">Staff Portal</Link>
+            <Link href="/login" className="btn btn-secondary">
+              Student Login
+            </Link>
+            <Link href="/admin/login" className="btn btn-ghost">
+              Staff Portal
+            </Link>
           </div>
-          <p className="mt-6 inline-flex items-center gap-1.5 text-xs text-slate-200">
-            <Lock className="h-3.5 w-3.5" /> Documents stay private and every action is logged.
+          <p className="mt-6 flex items-center justify-center gap-2 text-sm text-muted lg:justify-start">
+            <ShieldCheck className="h-4 w-4 shrink-0 text-brand-600" />
+            Your documents stay private and every action is logged.
           </p>
         </div>
+
+        <figure className="relative mx-auto h-72 w-full max-w-md overflow-hidden rounded-3xl border border-line bg-surface shadow-pop sm:h-96 lg:h-[420px] lg:max-w-none">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/hero-queue.jpg"
+            alt="Students waiting in a long in-person queue"
+            className="h-full w-full object-cover object-top"
+          />
+          <div aria-hidden className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/70 to-transparent" />
+          <figcaption className="absolute inset-x-4 bottom-4 flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-slate-950/70 px-3 py-1.5 text-xs font-medium text-white backdrop-blur">
+              The old way: in-person hallway queues
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-semibold text-ink shadow-card">
+              <Clock className="h-3.5 w-3.5 text-brand-600" /> Online clearance: ~5 mins
+            </span>
+          </figcaption>
+        </figure>
       </section>
 
       <section className="grid gap-6 sm:grid-cols-3">

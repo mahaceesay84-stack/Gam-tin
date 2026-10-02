@@ -27,28 +27,30 @@ const FAQ = [
 export default function Home() {
   return (
     <div className="space-y-20">
-      <section className="hero-glow relative overflow-hidden rounded-3xl border border-line bg-surface px-6 py-14 text-center shadow-card sm:px-12 sm:py-20">
+      <section className="relative overflow-hidden rounded-3xl bg-cover bg-center px-6 py-14 text-center text-white shadow-card sm:px-12 sm:py-20" style={{ backgroundImage: "url(/hero-queue.jpg)" }}>
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-emerald-950/80" />
         <div className="relative flex flex-col items-center">
           <BrandMark className="h-24 w-24 sm:h-28 sm:w-28" />
           <span className="badge mt-8">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-500" /> Prototype · Not an official UTG service
           </span>
-          <h1 className="mt-5 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-6xl">
-            Student clearance, <span className="text-brand-600 dark:text-brand-200">without the queues.</span>
+          <h1 className="mt-5 max-w-3xl text-4xl font-extrabold tracking-tight text-white sm:text-6xl">
+            Student clearance, <span className="text-brand-200">without the queues.</span>
           </h1>
-          <p className="mt-5 max-w-xl text-base text-muted sm:text-lg">
-            Verify, upload documents, pay the digital service fee and track approval, all from your phone.
+          <p className="mt-5 max-w-xl text-base text-slate-100 sm:text-lg">
+            Skip the long hallway lines. Verify, upload documents, pay the digital service fee and track approval, all from your phone.
           </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <Link href="/register" className="btn btn-primary h-11 px-6">
               Start Clearance <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link href="/login" className="btn btn-secondary h-11 px-6">Student Login</Link>
-            <Link href="/admin/login" className="btn btn-ghost h-11">Staff Portal</Link>
+            <Link href="/login" className="btn h-11 border border-white/40 bg-white/10 px-6 text-white hover:bg-white/20">Student Login</Link>
+            <Link href="/admin/login" className="btn h-11 text-white hover:bg-white/10">Staff Portal</Link>
           </div>
-          <p className="mt-6 inline-flex items-center gap-1.5 text-xs text-muted">
+          <p className="mt-6 inline-flex items-center gap-1.5 text-xs text-slate-200">
             <Lock className="h-3.5 w-3.5" /> Documents stay private and every action is logged.
           </p>
+        </div>
         </div>
       </section>
 

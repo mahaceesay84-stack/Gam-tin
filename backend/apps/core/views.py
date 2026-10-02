@@ -8,6 +8,29 @@ from .models import AuditLog, SystemSetting
 from .permissions import IsSuperAdmin
 
 
+class ApiIndexView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        return Response({
+            "name": "UTG Digital Student Services API",
+            "status": "ok",
+            "prototype": True,
+            "note": "Prototype \u2014 Not an official UTG service.",
+            "endpoints": {
+                "health": "/api/health/",
+                "fee": "/api/fee/",
+                "auth": "/api/auth/",
+                "academics": "/api/academics/",
+                "clearance": "/api/clearance/",
+                "payments": "/api/payments/",
+                "notifications": "/api/notifications/",
+                "admin_settings": "/api/admin/settings/",
+                "admin_audit_logs": "/api/admin/audit-logs/",
+            },
+        })
+
+
 class HealthView(APIView):
     permission_classes = [AllowAny]
 

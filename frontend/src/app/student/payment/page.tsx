@@ -11,6 +11,12 @@ import type { Payment } from "@/lib/types";
 import { useMyApplication } from "@/lib/useMyApplication";
 
 const METHODS = ["wave", "mobile_money", "qmoney", "afrimoney"];
+const CARRIER_TINT: Record<string, string> = {
+  wave: "bg-sky-100 text-sky-700 dark:bg-sky-950/60 dark:text-sky-300",
+  mobile_money: "bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300",
+  qmoney: "bg-violet-100 text-violet-700 dark:bg-violet-950/60 dark:text-violet-300",
+  afrimoney: "bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300",
+};
 
 export default function PaymentPage() {
   const { app, loading, reload } = useMyApplication();
@@ -110,10 +116,11 @@ export default function PaymentPage() {
         <legend className="label">Pay with</legend>
         <div className="grid grid-cols-2 gap-3">
           {METHODS.map((m) => (
-            <label key={m} className={`flex h-10 cursor-pointer items-center gap-2.5 rounded-lg border px-3 text-sm font-medium transition-colors duration-150 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand-500 ${method === m ? "border-brand-600 bg-brand-50 text-brand-800 ring-1 ring-brand-600 dark:bg-brand-900/30 dark:text-brand-200" : "border-line text-slate-700 hover:border-slate-300 dark:text-slate-200 dark:hover:border-slate-600"}`}>
+            <label key={m} className={`flex h-16 cursor-pointer items-center gap-3 rounded-xl border px-3 text-sm font-medium transition-colors duration-150 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand-500 ${method === m ? "border-brand-600 bg-brand-50 text-brand-800 ring-1 ring-brand-600 dark:bg-brand-900/30 dark:text-brand-200" : "border-line text-slate-700 hover:border-slate-300 dark:text-slate-200 dark:hover:border-slate-600"}`}>
               <input type="radio" name="method" value={m} checked={method === m} onChange={() => setMethod(m)} className="sr-only" />
-              <Smartphone className="h-4 w-4 shrink-0" />
-              {METHOD_LABELS[m]}
+              <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${CARRIER_TINT[m]}`}><Smartphone className="h-4 w-4" /></span>
+              <span className="min-w-0 flex-1 truncate">{METHOD_LABELS[m]}</span>
+              {method === m && <CheckCircle2 className="h-4 w-4 shrink-0 text-brand-600 dark:text-brand-200" />}
             </label>
           ))}
         </div>

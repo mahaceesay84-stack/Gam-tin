@@ -64,10 +64,16 @@ export default function AdminDashboard() {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {STAT_CARDS.map(({ key, label }) => (
-          <div key={key} className="card">
+          <button
+            key={key}
+            type="button"
+            aria-pressed={filters.status === key}
+            onClick={() => { setPage(1); setFilters({ ...filters, status: filters.status === key ? "" : key }); }}
+            className={`card card-hover text-left ${filters.status === key ? "border-brand-600 ring-1 ring-brand-600" : ""}`}
+          >
             <p className="eyebrow">{label}</p>
             <p className="mt-3 text-3xl font-bold leading-none tabular-nums text-ink">{stats[key] ?? 0}</p>
-          </div>
+          </button>
         ))}
       </div>
 

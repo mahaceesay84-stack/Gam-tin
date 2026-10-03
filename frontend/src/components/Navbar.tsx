@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, LayoutDashboard, LogOut, Menu, Settings, ShieldCheck, ClipboardCheck, X } from "lucide-react";
+import { Bell, LayoutDashboard, LogOut, Settings, ShieldCheck, ClipboardCheck, X } from "lucide-react";
 import BrandMark from "@/components/BrandMark";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";

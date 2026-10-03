@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-/** Allowed Gambian mobile prefixes (first two digits of the 8-digit number). */
+/** Allowed Gambian mobile prefixes (first two digits of the 9-digit number). */
 export const GM_PREFIXES = ["87", "83", "86"] as const;
 
 /** Student number format: 6-10 digits. Adjust here when the real format is known. */
@@ -9,13 +9,13 @@ export const STUDENT_NUMBER_REGEX = /^\d{6,10}$/;
 const stripPhone = (phone: string) =>
   phone.replace(/[\s-]/g, "").replace(/^(\+220|00220)/, "");
 
-const PHONE_REGEX = new RegExp(`^(${GM_PREFIXES.join("|")})\\d{6}$`);
+const PHONE_REGEX = new RegExp(`^(${GM_PREFIXES.join("|")})\\d{7}$`);
 
 export function isValidGmPhone(phone: string): boolean {
   return PHONE_REGEX.test(stripPhone(phone));
 }
 
-/** Format a valid Gambian mobile number as +220XXXXXXXX. */
+/** Format a valid Gambian mobile number as +220XXXXXXXXX. */
 export function normalizePhone(phone: string): string {
   return `+220${stripPhone(phone)}`;
 }
@@ -27,7 +27,7 @@ export const registerSchema = z.object({
     .string()
     .trim()
     .min(1, "Mobile number is required.")
-    .refine(isValidGmPhone, `Enter an 8-digit Gambian mobile number starting with ${GM_PREFIXES.join(", ")}.`),
+    .refine(isValidGmPhone, `Enter a 9-digit Gambian mobile number starting with ${GM_PREFIXES.join(", ")}.`),
   studentNumber: z
     .string()
     .trim()

@@ -75,7 +75,7 @@ export default function RegisterForm({ programmes }: { programmes: { id: number;
           type="tel"
           autoComplete="tel"
           inputMode="tel"
-          hint="e.g. 87 123 456 or +220 87 123 456"
+          hint="e.g. 87 123 4567 or +220 87 123 4567"
           error={errors.phone?.message}
           {...register("phone")}
         />

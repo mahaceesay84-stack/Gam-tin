@@ -22,7 +22,15 @@ const FIELD_MAP: Record<string, keyof RegisterValues> = {
 
 const LEVELS = [1, 2, 3, 4, 5, 6];
 
-export default function RegisterForm({ programmes }: { programmes: { id: number; name: string }[] }) {
+type ProgrammeOption = { id: number; name: string; faculty_name: string };
+
+export default function RegisterForm({ programmes, loadFailed }: { programmes: ProgrammeOption[]; loadFailed: boolean }) {
+  const groups = new Map<string, ProgrammeOption[]>();
+  for (const p of programmes) groups.set(p.faculty_name, [...(groups.get(p.faculty_name) ?? []), p]);
+  const sortedGroups = [...groups.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([faculty, ps]) => [faculty, [...ps].sort((a, b) => a.name.localeCompare(b.name))] as const);
+  const unavailable = loadFailed || programmes.length === 0;
   const router = useRouter();
   const [formError, setFormError] = useState("");
   const {
@@ -89,10 +97,14 @@ export default function RegisterForm({ programmes }: { programmes: { id: number;
         </Select>
       </div>
       <Select label="Programme" placeholder="Select programme" error={errors.programme?.message} {...register("programme")}>
-        {programmes.map((p) => (
-          <option key={p.id} value={p.id}>
-            {p.name}
-          </option>
+        {sortedGroups.map(([faculty, ps]) => (
+          <optgroup key={faculty} label={faculty}>
+            {ps.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
+          </optgroup>
         ))}
       </Select>
       <PasswordInput
@@ -103,6 +115,13 @@ export default function RegisterForm({ programmes }: { programmes: { id: number;
         {...register("password")}
       />
 
+      {unavailable && (
+        <div role="alert" className="flex items-start gap-2 rounded-lg border border-red-300 bg-red-50 p-3 text-sm font-medium text-red-800 dark:border-red-800 dark:bg-red-950/40 dark:text-red-200">
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          <span>Programmes couldn&apos;t be loaded. Refresh the page.</span>
+        </div>
+      )}
+
       {formError && (
         <div role="alert" className="flex items-start gap-2 rounded-lg border border-red-300 bg-red-50 p-3 text-sm font-medium text-red-800 dark:border-red-800 dark:bg-red-950/40 dark:text-red-200">
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
@@ -112,7 +131,7 @@ export default function RegisterForm({ programmes }: { programmes: { id: number;
 
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitting || unavailable}
         className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-amber-400 px-4 text-sm font-semibold text-slate-900 transition-colors hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 dark:focus:ring-offset-slate-900"
       >
         {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}

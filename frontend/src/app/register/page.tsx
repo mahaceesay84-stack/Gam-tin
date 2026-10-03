@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AuthShell from "@/components/AuthShell";
-import { Alert, errorProps, Field } from "@/components/ui";
+import { Alert } from "@/components/ui";
+import { Input, PasswordInput, Select } from "@/components/ui/field";
 import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import type { Programme } from "@/lib/types";
@@ -78,36 +79,21 @@ export default function RegisterPage() {
     <AuthShell title="Create your student account" subtitle="Takes under a minute. Your record is verified instantly." wide>
       <form onSubmit={submit} noValidate className="space-y-6">
         {error && <Alert tone="error">{error}</Alert>}
-        <Field label="Full name" htmlFor="full_name" error={errors.full_name}>
-          <input id="full_name" {...errorProps("full_name", errors.full_name)} className="input" value={form.full_name} onChange={set("full_name")} />
-        </Field>
+        <Input label="Full name" autoComplete="name" error={errors.full_name} value={form.full_name} onChange={set("full_name")} />
         <div className="grid gap-6 sm:grid-cols-2">
-          <Field label="Email" htmlFor="email" error={errors.email}>
-            <input id="email" {...errorProps("email", errors.email)} type="email" className="input" value={form.email} onChange={set("email")} />
-          </Field>
-          <Field label="Phone" htmlFor="phone" error={errors.phone}>
-            <input id="phone" {...errorProps("phone", errors.phone)} className="input" value={form.phone} onChange={set("phone")} />
-          </Field>
-          <Field label="Student number" htmlFor="student_number" error={errors.student_number}>
-            <input id="student_number" {...errorProps("student_number", errors.student_number)} className="input" value={form.student_number} onChange={set("student_number")} />
-          </Field>
-          <Field label="Level (year)" htmlFor="level" error={errors.level}>
-            <select id="level" {...errorProps("level", errors.level)} className="input" value={form.level} onChange={set("level")}>
-              {[1, 2, 3, 4, 5, 6].map((l) => <option key={l}>{l}</option>)}
-            </select>
-          </Field>
+          <Input label="Email" type="email" autoComplete="email" error={errors.email} value={form.email} onChange={set("email")} />
+          <Input label="Phone" type="tel" autoComplete="tel" error={errors.phone} value={form.phone} onChange={set("phone")} />
+          <Input label="Student number" error={errors.student_number} value={form.student_number} onChange={set("student_number")} />
+          <Select label="Level (year)" error={errors.level} value={form.level} onChange={set("level")}>
+            {[1, 2, 3, 4, 5, 6].map((l) => <option key={l} value={l}>{l}</option>)}
+          </Select>
         </div>
-        <Field label="Programme" htmlFor="programme" error={errors.programme}>
-          <select id="programme" {...errorProps("programme", errors.programme)} className="input" value={form.programme} onChange={set("programme")}>
-            <option value="">Select programme…</option>
-            {programmes.map((p) => (
-              <option key={p.id} value={p.id}>{p.name} — {p.faculty_name}</option>
-            ))}
-          </select>
-        </Field>
-        <Field label="Password" htmlFor="password" error={errors.password} hint="At least 8 characters.">
-          <input id="password" {...errorProps("password", errors.password)} type="password" className="input" value={form.password} onChange={set("password")} />
-        </Field>
+        <Select label="Programme" placeholder="Select programme…" error={errors.programme} value={form.programme} onChange={set("programme")}>
+          {programmes.map((p) => (
+            <option key={p.id} value={p.id}>{p.name} — {p.faculty_name}</option>
+          ))}
+        </Select>
+        <PasswordInput label="Password" autoComplete="new-password" hint="At least 8 characters." error={errors.password} value={form.password} onChange={set("password")} />
         <button
           type="submit"
           disabled={busy}

@@ -1,11 +1,12 @@
 "use client";
 
-import { Loader2, Lock, Mail } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import AuthShell from "@/components/AuthShell";
-import { Alert, errorProps, Field } from "@/components/ui";
+import { Alert } from "@/components/ui";
+import { Input, PasswordInput } from "@/components/ui/field";
 import { fieldError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 
@@ -55,18 +56,8 @@ export default function LoginForm({ portal }: { portal: "student" | "admin" }) {
     >
       <form onSubmit={submit} noValidate className="space-y-6">
         {error && <Alert tone="error">{error}</Alert>}
-        <Field label="Email" htmlFor="email" error={errors.email}>
-          <div className="relative">
-            <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600 dark:text-slate-300" />
-            <input id="email" type="email" className="input pl-10" placeholder="you@example.com" value={email} {...errorProps("email", errors.email)} onChange={(e) => { setEmail(e.target.value); clear("email"); }} />
-          </div>
-        </Field>
-        <Field label="Password" htmlFor="password" error={errors.password}>
-          <div className="relative">
-            <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600 dark:text-slate-300" />
-            <input id="password" type="password" className="input pl-10" placeholder="••••••••" value={password} {...errorProps("password", errors.password)} onChange={(e) => { setPassword(e.target.value); clear("password"); }} />
-          </div>
-        </Field>
+        <Input label="Email" type="email" autoComplete="email" placeholder="you@example.com" error={errors.email} value={email} onChange={(e) => { setEmail(e.target.value); clear("email"); }} />
+        <PasswordInput label="Password" autoComplete="current-password" placeholder="••••••••" error={errors.password} value={password} onChange={(e) => { setPassword(e.target.value); clear("password"); }} />
         <button className="btn btn-primary w-full" disabled={busy}>
           {busy && <Loader2 className="h-4 w-4 animate-spin" />}
           {busy ? "Signing in…" : "Sign in"}

@@ -99,13 +99,13 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
 };
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, hint, error, placeholder, children, className = "", ...props }, ref) => (
+  ({ label, hint, error, placeholder, children, className = "", value, defaultValue, ...props }, ref) => (
     <Field label={label} hint={hint} error={error}>
       {({ id, describedBy, cls }) => (
         <select
           ref={ref}
           id={id}
-          defaultValue=""
+          {...(value === undefined ? { defaultValue: defaultValue ?? "" } : { value })}
           aria-invalid={!!error}
           aria-describedby={describedBy}
           className={`${base} ${cls} ${className}`}

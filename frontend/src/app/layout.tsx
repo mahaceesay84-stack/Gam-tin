@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import PrototypeBanner from "@/components/PrototypeBanner";
+import Link from "next/link";
 import Toasts from "@/components/Toasts";
 import { AuthProvider } from "@/lib/auth";
 
@@ -23,8 +24,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <PrototypeBanner />
           <Navbar />
           <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 sm:py-12">{children}</main>
-          <footer className="border-t border-line bg-surface py-6 text-center text-xs text-slate-600 dark:text-slate-300">
-            Prototype — Not an official UTG service. © 2026 UTG Digital Student Services
+          <footer className="border-t border-line bg-surface py-6 text-center text-sm text-muted">
+            <Link href="/admin/login" className="link">Staff Portal</Link>
+            <span className="mt-2 block">© 2026 UTG Digital Student Services</span>
           </footer>
           <Toasts />
         </AuthProvider>

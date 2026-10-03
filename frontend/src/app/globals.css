@@ -26,11 +26,15 @@
   --color-navy-900: #0b1437;
 
   /* Slate neutrals carry everything else. */
+  --color-navy: #0b1f4b;
+  --color-navy-600: #1d3f8f;
+  --color-gold: #e8a920;
+
   --color-ink: #0f172a;
-  --color-muted: #475569;
+  --color-muted: #334155;
   --color-line: #e2e8f0;
   --color-surface: #ffffff;
-  --color-canvas: #f6f8fb;
+  --color-canvas: #f8fafc;
 
   --radius-card: 0.75rem;
 
@@ -41,11 +45,11 @@
 
 .dark {
   color-scheme: dark;
-  --color-ink: #f4f6fb;
+  --color-ink: #f1f5f9;
   --color-muted: #cbd5e1;
-  --color-line: #1e2c69;
-  --color-surface: #111c44;
-  --color-canvas: #0b1437;
+  --color-line: #22345e;
+  --color-surface: #0b1f4b;
+  --color-canvas: #070f26;
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.3);
   --shadow-pop: 0 10px 30px -8px rgb(0 0 0 / 0.6);
 }
@@ -56,7 +60,7 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-canvas font-sans text-ink;
+    @apply bg-canvas font-sans text-base leading-relaxed text-ink;
   }
   h1, h2, h3 {
     @apply tracking-tight;
@@ -71,15 +75,18 @@
   }
   /* The one focus style, used by every focusable element. */
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-brand-500;
+    @apply outline-2 outline-offset-2 outline-navy-600 dark:outline-sky-300;
   }
 }
 
 @layer components {
   /* Controls: h-10 / rounded-lg. Icon buttons: h-9 w-9. */
   .btn {
-    @apply inline-flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 text-sm font-semibold
+    @apply inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 text-base font-semibold
       transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-lg {
+    @apply min-h-12 px-6;
   }
   .btn-sm {
     @apply h-9 px-3;
@@ -88,11 +95,11 @@
     @apply h-9 w-9 shrink-0 p-0;
   }
   .btn-primary {
-    @apply bg-brand-500 text-navy-900 hover:bg-brand-300;
+    @apply bg-navy text-white hover:bg-navy-700 dark:bg-navy-600 dark:hover:bg-navy-700;
   }
   .btn-secondary {
     @apply border border-line bg-surface text-slate-700 hover:border-slate-300 hover:bg-slate-50
-      dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800;
+      dark:text-slate-100 dark:hover:border-slate-500 dark:hover:bg-navy-700;
   }
   .btn-danger {
     @apply bg-rose-600 text-white hover:bg-rose-700;
@@ -102,7 +109,7 @@
       dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200 dark:hover:bg-amber-950/70;
   }
   .btn-ghost {
-    @apply text-slate-600 hover:bg-slate-100 hover:text-ink dark:text-slate-300 dark:hover:bg-slate-800;
+    @apply text-slate-700 hover:bg-slate-100 hover:text-ink dark:text-slate-200 dark:hover:bg-navy-700;
   }
 
   .input {
@@ -136,7 +143,7 @@
     @apply text-lg font-semibold text-ink;
   }
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-wider text-muted;
+    @apply text-sm font-semibold uppercase tracking-wider text-muted;
   }
 
   .link {
@@ -144,6 +151,9 @@
       hover:text-brand-700 hover:decoration-brand-500 dark:decoration-slate-600 dark:hover:text-brand-200 dark:hover:decoration-brand-200;
   }
 
+  .hero-in {
+    animation: fade-up 0.4s ease-out both;
+  }
   .badge {
     @apply inline-flex h-7 items-center gap-2 rounded-full border border-line bg-canvas px-3 text-xs font-medium text-slate-600 dark:text-slate-300;
   }
@@ -163,96 +173,9 @@
   }
 }
 
-@keyframes glow-shift {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: scale(1);
-    filter: hue-rotate(0deg);
-  }
-  50% {
-    opacity: 0.9;
-    transform: scale(1.025);
-    filter: hue-rotate(-18deg);
-  }
-}
-
 .hero-rise {
   animation: hero-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: var(--d, 0ms);
-}
-
-/* Reusable travelling-streak border with glow.
-   Usage: <div class="streak-border-card"><div class="streak-border-card__content">…</div></div>
-   ::before = crisp ring, ::after = blurred duplicate (glow). Both are the same registered-@property
-   conic-gradient, masked to a ring, so no oversized rotating elements. The wrapper has no overflow
-   clipping, so the blur can spill outside. Keep ancestors free of overflow:hidden. */
-@property --angle {
-  syntax: "<angle>";
-  inherits: true;
-  initial-value: 0deg;
-}
-.streak-border-card {
-  --border-radius: 1.5rem;
-  --border-width: 3px;
-  --border-c1: #1d4ed8;
-  --border-c2: #06b6d4;
-  --border-head: #ffb400;
-  --glow-opacity: 0.85;
-  --glow-color: rgb(29 78 216);
-  --ambient-glow: 0 0 36px 4px rgb(29 78 216 / 0.28), 0 0 90px 12px rgb(6 182 212 / 0.2);
-  --streak-gradient: conic-gradient(
-    from var(--angle),
-    transparent 0deg,
-    transparent 216deg,
-    var(--border-c1) 216deg,
-    var(--border-c2) 290deg,
-    var(--border-head) 360deg
-  );
-  position: relative;
-  isolation: isolate;
-  padding: var(--border-width);
-  border-radius: var(--border-radius);
-  box-shadow: var(--ambient-glow);
-  animation: streak-spin 3s linear infinite;
-}
-.dark .streak-border-card {
-  --border-c1: #00e5ff;
-  --border-c2: #ffd23f;
-  --border-head: #ffffff;
-  --glow-opacity: 1;
-  --glow-color: #00e5ff;
-  --ambient-glow: 0 0 40px 6px rgb(0 229 255 / 0.4), 0 0 110px 16px rgb(255 210 63 / 0.22);
-}
-.streak-border-card::before,
-.streak-border-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: var(--border-width);
-  background: var(--streak-gradient);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-  pointer-events: none;
-}
-.streak-border-card::after {
-  z-index: -1;
-  filter: blur(24px) saturate(1.4) brightness(1.15);
-  opacity: var(--glow-opacity);
-}
-.streak-border-card__content {
-  position: relative;
-  overflow: hidden;
-  border-radius: calc(var(--border-radius) - var(--border-width));
-  background: var(--color-surface, #fff);
-}
-
-@keyframes streak-spin {
-  to {
-    --angle: 360deg;
-  }
 }
 
 @keyframes fade-up {
@@ -273,9 +196,5 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-  }
-  .streak-border-card {
-    animation: none;
-    --streak-gradient: conic-gradient(from 0deg, var(--border-c1), var(--border-c2), var(--border-head));
   }
 }

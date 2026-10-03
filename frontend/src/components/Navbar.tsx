@@ -76,10 +76,10 @@ export default function Navbar() {
         ];
 
   const linkClass = (href: string) =>
-    `inline-flex h-9 items-center gap-2 rounded-lg px-3 text-sm font-medium transition-colors duration-150 ${
+    `inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-[15px] font-medium transition-colors duration-150 ${
       pathname.startsWith(href)
-        ? "bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300"
-        : "text-slate-600 hover:bg-slate-100 hover:text-ink dark:text-slate-300 dark:hover:bg-slate-800"
+        ? "bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-200"
+        : "text-slate-700 hover:bg-slate-100 hover:text-ink dark:text-slate-200 dark:hover:bg-navy-700"
     }`;
 
   return (
@@ -90,7 +90,7 @@ export default function Navbar() {
           <BrandMark className="h-9 w-9" />
           <span className="leading-tight">
             <span className="block text-sm font-bold text-ink">UTG Digital</span>
-            <span className="block text-xs font-medium text-muted">Student Services</span>
+            <span className="block text-sm font-medium text-muted">Student Services</span>
           </span>
         </Link>
 
@@ -153,14 +153,14 @@ export default function Navbar() {
           ) : (
             <div className="ml-2 flex items-center gap-2">
               <Link href="/login" className="btn btn-ghost">
-                Student login
+                Student Login
               </Link>
               <Link href="/admin/login" className="btn btn-ghost">
-                <ShieldCheck className="h-4 w-4" /> Staff
+                <ShieldCheck className="h-4 w-4" /> Staff Portal
               </Link>
               {pathname !== "/register" && (
                 <Link href="/register" className="btn btn-primary">
-                  Register
+                  Start Clearance
                 </Link>
               )}
             </div>

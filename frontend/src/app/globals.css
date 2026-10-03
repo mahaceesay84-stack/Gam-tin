@@ -182,73 +182,73 @@
   animation-delay: var(--d, 0ms);
 }
 
-/* Reusable rotating gold border + ambient glow.
-   Usage: <div class="rotating-border-glow"><div class="rotating-border-glow__content">…</div></div>
-   A rotating oversized conic-gradient pseudo-element (transform, not @property) is masked by
-   overflow:hidden; the box-shadow glow is drawn outside the box so it is not clipped by it. */
-.rotating-border-glow {
-  --rbg-radius: 1.5rem;
-  --rbg-width: 2px;
-  --rbg-glow: rgb(232 169 32 / 0.45);
-  --rbg-tail: conic-gradient(
-    from 0deg,
+/* Reusable travelling-streak border with glow.
+   Usage: <div class="streak-border-card"><div class="streak-border-card__content">…</div></div>
+   ::before = crisp ring, ::after = blurred duplicate (glow). Both are the same registered-@property
+   conic-gradient, masked to a ring, so no oversized rotating elements. The wrapper has no overflow
+   clipping, so the blur can spill outside. Keep ancestors free of overflow:hidden. */
+@property --angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+.streak-border-card {
+  --border-radius: 1.5rem;
+  --border-width: 6px;
+  --border-c1: #1d4ed8;
+  --border-c2: #06b6d4;
+  --border-head: #ffb400;
+  --glow-opacity: 0.4;
+  --glow-color: rgb(29 78 216);
+  --streak-gradient: conic-gradient(
+    from var(--angle),
     transparent 0deg,
-    transparent 180deg,
-    #1f2328 230deg,
-    #e8a920 310deg,
-    #fff3c4 360deg
+    transparent 216deg,
+    var(--border-c1) 216deg,
+    var(--border-c2) 290deg,
+    var(--border-head) 360deg
   );
   position: relative;
   isolation: isolate;
-  overflow: hidden;
-  padding: var(--rbg-width);
-  border-radius: var(--rbg-radius);
-  box-shadow: 0 0 40px 4px var(--rbg-glow);
+  padding: var(--border-width);
+  border-radius: var(--border-radius);
+  animation: streak-spin 3s linear infinite;
 }
-.dark .rotating-border-glow {
-  --rbg-glow: rgb(245 197 66 / 0.3);
-  --rbg-tail: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    transparent 180deg,
-    #f5c542 290deg,
-    #fff3c4 360deg
-  );
+.dark .streak-border-card {
+  --border-c1: #00e5ff;
+  --border-c2: #ffd23f;
+  --border-head: #ffffff;
+  --glow-opacity: 0.7;
+  --glow-color: #00e5ff;
 }
-.rotating-border-glow::before {
+.streak-border-card::before,
+.streak-border-card::after {
   content: "";
   position: absolute;
-  inset: -100%;
-  z-index: -1;
-  background: var(--rbg-tail);
-  animation: rbg-spin 4s linear infinite;
-  will-change: transform;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--border-width);
+  background: var(--streak-gradient);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
 }
-.rotating-border-glow__content {
+.streak-border-card::after {
+  z-index: -1;
+  filter: blur(24px);
+  opacity: var(--glow-opacity);
+}
+.streak-border-card__content {
   position: relative;
-  z-index: 1;
   overflow: hidden;
-  border-radius: calc(var(--rbg-radius) - var(--rbg-width));
+  border-radius: calc(var(--border-radius) - var(--border-width));
   background: var(--color-surface, #fff);
 }
 
-@keyframes rbg-spin {
-  from {
-    transform: rotate(0deg);
-  }
+@keyframes streak-spin {
   to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rotating-border-glow::before {
-    animation: none;
-    inset: 0;
-    background: #e8a920;
-  }
-  .dark .rotating-border-glow::before {
-    background: #f5c542;
+    --angle: 360deg;
   }
 }
 
@@ -271,11 +271,8 @@
     transition-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
-  .rotating-border-glow::before {
+  .streak-border-card {
     animation: none;
-    background: #e8a920;
-  }
-  .dark .rotating-border-glow::before {
-    background: #f5c542;
+    --streak-gradient: conic-gradient(from 0deg, var(--border-c1), var(--border-c2), var(--border-head));
   }
 }

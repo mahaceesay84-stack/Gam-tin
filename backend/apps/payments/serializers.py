@@ -32,6 +32,6 @@ class PayRequestSerializer(serializers.Serializer):
 
     def validate_phone(self, value):
         value = re.sub(r"[\s-]", "", value)
-        if not re.fullmatch(r"(\+?220)?\d{7}", value):
-            raise serializers.ValidationError("Enter a valid Gambian mobile number (7 digits).")
+        if not re.fullmatch(r"(\+?220)?\d{9}", value):
+            raise serializers.ValidationError("Enter a valid Gambian mobile number (9 digits).")
         return value

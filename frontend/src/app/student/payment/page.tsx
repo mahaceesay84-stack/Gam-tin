@@ -48,8 +48,8 @@ export default function PaymentPage() {
       setPhoneError("Mobile number is required.");
       return;
     }
-    if (!/^(\+?220)?\d{7}$/.test(digits)) {
-      setPhoneError("Enter a valid 7-digit Gambian mobile number.");
+    if (!/^(\+?220)?\d{9}$/.test(digits)) {
+      setPhoneError("Enter a valid 9-digit Gambian mobile number.");
       return;
     }
     setPhoneError("");
@@ -125,8 +125,8 @@ export default function PaymentPage() {
           ))}
         </div>
       </fieldset>
-      <Field label="Mobile number" htmlFor="phone" error={phoneError} hint="7-digit Gambian number, e.g. 7001001">
-        <input id="phone" inputMode="numeric" className="input" placeholder="7001001" value={phone} {...errorProps("phone", phoneError)} onChange={(e) => { setPhone(e.target.value); setPhoneError(""); }} />
+      <Field label="Mobile number" htmlFor="phone" error={phoneError} hint="9-digit Gambian number, e.g. 871234567 or 700100101">
+        <input id="phone" inputMode="numeric" className="input" placeholder="871234567" value={phone} {...errorProps("phone", phoneError)} onChange={(e) => { setPhone(e.target.value); setPhoneError(""); }} />
       </Field>
       <button className="btn btn-primary w-full" disabled={busy}>
         {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}

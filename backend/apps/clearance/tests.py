@@ -109,7 +109,7 @@ class ClearanceFlowTests(APITestCase):
 
         self.student_login()
         res = self.client.post(
-            f"/api/payments/applications/{app['id']}/pay/", {"method": "wave", "phone": "7001001"}, format="json"
+            f"/api/payments/applications/{app['id']}/pay/", {"method": "wave", "phone": "700100101"}, format="json"
         )
         self.assertEqual(res.status_code, 201, res.content)
         self.assertRegex(res.data["reference"], r"^PAY-\d{4}-\d{6}$")
@@ -142,10 +142,10 @@ class ClearanceFlowTests(APITestCase):
     def test_failed_payment_and_duplicate_protection(self):
         app = self.create_and_submit()
         url = f"/api/payments/applications/{app['id']}/pay/"
-        res = self.client.post(url, {"method": "wave", "phone": "7000000"}, format="json")
+        res = self.client.post(url, {"method": "wave", "phone": "700000000"}, format="json")
         self.assertEqual(res.status_code, 402)
-        first = self.client.post(url, {"method": "wave", "phone": "7001001"}, format="json")
-        second = self.client.post(url, {"method": "qmoney", "phone": "7001001"}, format="json")
+        first = self.client.post(url, {"method": "wave", "phone": "700100101"}, format="json")
+        second = self.client.post(url, {"method": "qmoney", "phone": "700100101"}, format="json")
         self.assertEqual(first.data["reference"], second.data["reference"])
 
     def test_upload_validation_and_privacy(self):
@@ -199,7 +199,7 @@ class ClearanceFlowTests(APITestCase):
     def test_approval_email(self):
         app = self.create_and_submit()
         self.client.post(
-            f"/api/payments/applications/{app['id']}/pay/", {"method": "wave", "phone": "7001001"}, format="json"
+            f"/api/payments/applications/{app['id']}/pay/", {"method": "wave", "phone": "700100101"}, format="json"
         )
         self.admin_login()
         mail.outbox.clear()

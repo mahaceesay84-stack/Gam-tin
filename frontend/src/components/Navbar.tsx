@@ -94,15 +94,22 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <button
-          className="btn btn-ghost btn-icon md:hidden"
-          aria-label="Open menu"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          onClick={() => setOpen(true)}
-        >
-          <Menu className="h-5 w-5" />
-        </button>
+        <div className="flex items-center gap-1 md:hidden">
+          <ThemeToggle />
+          <button
+            className="btn btn-ghost btn-icon"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen(!open)}
+          >
+            <span className="relative block h-5 w-5" aria-hidden="true">
+              <span className={`absolute left-0 top-1/2 h-0.5 w-5 rounded bg-current transition-all duration-300 ease-in-out ${open ? "translate-y-0 rotate-45" : "-translate-y-[7px]"}`} />
+              <span className={`absolute left-0 top-1/2 h-0.5 w-5 rounded bg-current transition-all duration-300 ease-in-out ${open ? "scale-x-0 opacity-0" : "opacity-100"}`} />
+              <span className={`absolute left-0 top-1/2 h-0.5 w-5 rounded bg-current transition-all duration-300 ease-in-out ${open ? "translate-y-0 -rotate-45" : "translate-y-[7px]"}`} />
+            </span>
+          </button>
+        </div>
 
         <nav className="hidden md:flex md:flex-row md:items-center md:gap-1">
           {links.map((l) => (
@@ -163,7 +170,7 @@ export default function Navbar() {
       {/* Mobile drawer */}
       <div className={`fixed inset-0 z-50 md:hidden ${open ? "" : "pointer-events-none"}`} aria-hidden={!open}>
         <div
-          className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-200 ${open ? "opacity-100" : "opacity-0"}`}
+          className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"}`}
           onClick={() => setOpen(false)}
         />
         <aside
@@ -171,7 +178,7 @@ export default function Navbar() {
           role="dialog"
           aria-modal="true"
           aria-label="Main menu"
-          className={`absolute inset-y-0 right-0 flex w-[85%] max-w-sm flex-col bg-surface shadow-pop transition-transform duration-200 ease-out ${open ? "translate-x-0" : "translate-x-full"}`}
+          className={`absolute inset-y-0 right-0 flex w-[85%] max-w-sm flex-col bg-surface shadow-pop transition-transform duration-300 ease-out ${open ? "translate-x-0" : "translate-x-full"}`}
         >
           <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-4">
             <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>

@@ -4,7 +4,7 @@ type Tone = "error" | "success" | "warn" | "info";
 
 const TONES: Record<Tone, { box: string; icon: React.ReactNode }> = {
   error: { box: "border-rose-200 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300", icon: <AlertCircle className="h-4 w-4 shrink-0" /> },
-  success: { box: "border-emerald-200 dark:border-emerald-900 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300", icon: <CheckCircle2 className="h-4 w-4 shrink-0" /> },
+  success: { box: "border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300", icon: <CheckCircle2 className="h-4 w-4 shrink-0" /> },
   warn: { box: "border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-300", icon: <TriangleAlert className="h-4 w-4 shrink-0" /> },
   info: { box: "border-sky-200 dark:border-sky-900 bg-sky-50 dark:bg-sky-950/40 text-sky-800 dark:text-sky-300", icon: <Info className="h-4 w-4 shrink-0" /> },
 };

@@ -78,7 +78,7 @@ export default function Navbar() {
   const linkClass = (href: string) =>
     `inline-flex h-9 items-center gap-2 rounded-lg px-3 text-sm font-medium transition-colors duration-150 ${
       pathname.startsWith(href)
-        ? "bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-200"
+        ? "bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300"
         : "text-slate-600 hover:bg-slate-100 hover:text-ink dark:text-slate-300 dark:hover:bg-slate-800"
     }`;
 
@@ -189,7 +189,7 @@ export default function Navbar() {
           <div className="flex-1 overflow-y-auto px-4 py-5">
             {user && (
               <div className="mb-5 flex items-center gap-3 rounded-xl border border-line bg-slate-50 p-3 dark:bg-slate-800/50">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold text-brand-700 dark:bg-brand-900/30 dark:text-brand-200">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold text-brand-700 dark:bg-brand-500/15 dark:text-brand-300">
                   {user.full_name
                     .split(" ")
                     .map((p) => p[0])
@@ -217,11 +217,11 @@ export default function Navbar() {
                       aria-current={active ? "page" : undefined}
                       className={`relative flex min-h-12 items-center gap-3 rounded-xl px-3 text-sm font-medium transition-colors ${
                         active
-                          ? "bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-200"
+                          ? "bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300"
                           : "text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
                       }`}
                     >
-                      {active && <span className="absolute inset-y-2 left-0 w-1 rounded-full bg-brand-600" />}
+                      {active && <span className="absolute inset-y-2 left-0 w-1 rounded-full bg-brand-500" />}
                       {l.icon}
                       <span className="flex-1">{l.label}</span>
                       {l.badge && unread > 0 && (

@@ -69,7 +69,7 @@ export default function AdminDashboard() {
             type="button"
             aria-pressed={filters.status === key}
             onClick={() => { setPage(1); setFilters({ ...filters, status: filters.status === key ? "" : key }); }}
-            className={`card card-hover text-left ${filters.status === key ? "border-brand-600 ring-1 ring-brand-600" : ""}`}
+            className={`card card-hover text-left ${filters.status === key ? "border-brand-500 ring-1 ring-brand-500" : ""}`}
           >
             <p className="eyebrow">{label}</p>
             <p className="mt-3 text-3xl font-bold leading-none tabular-nums text-ink">{stats[key] ?? 0}</p>

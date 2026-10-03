@@ -49,7 +49,7 @@ export default function StudentDashboard() {
       <ProgressTracker user={user} app={app} />
 
       {app?.handoff && (
-        <section className="flex flex-col gap-4 rounded-card border border-brand-200 bg-brand-50 p-6 shadow-card sm:flex-row sm:items-center dark:border-brand-900 dark:bg-brand-900/20">
+        <section className="flex flex-col gap-4 rounded-card border border-brand-200 bg-brand-50 p-6 shadow-card sm:flex-row sm:items-center dark:border-brand-500/30 dark:bg-brand-500/10">
           <CheckCircle2 className="h-6 w-6 shrink-0 text-brand-600 dark:text-brand-200" />
           <div className="flex-1">
             <h2 className="section-title">Clearance approved — your next step</h2>

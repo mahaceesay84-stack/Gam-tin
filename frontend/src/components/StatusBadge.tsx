@@ -1,7 +1,7 @@
 import { STATUS_LABELS } from "@/lib/format";
 
 const NEUTRAL = "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 ring-slate-200 dark:ring-slate-700";
-const GOOD = "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 ring-emerald-200 dark:ring-emerald-900";
+const GOOD = "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 ring-amber-200 dark:ring-amber-900";
 const BAD = "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 ring-rose-200 dark:ring-rose-900";
 const WARN = "bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 ring-amber-200 dark:ring-amber-900";
 const INFO = "bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 ring-sky-200 dark:ring-sky-900";
@@ -23,9 +23,9 @@ const COLORS: Record<string, string> = {
 const DOTS: Record<string, string> = {
   submitted: "bg-sky-500",
   correction_requested: "bg-amber-500",
-  approved: "bg-emerald-500",
-  paid: "bg-emerald-500",
-  cleared: "bg-emerald-500",
+  approved: "bg-amber-500",
+  paid: "bg-amber-500",
+  cleared: "bg-amber-500",
   rejected: "bg-rose-500",
   failed: "bg-rose-500",
 };

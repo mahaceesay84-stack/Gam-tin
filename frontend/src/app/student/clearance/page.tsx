@@ -250,7 +250,7 @@ function Wizard({
                 return (
                   <li key={r.id}>
                     <label className={`flex items-center gap-3 px-4 py-3 text-sm transition-colors duration-150 has-focus-visible:outline-2 has-focus-visible:-outline-offset-2 has-focus-visible:outline-brand-500 ${r.is_mandatory ? "cursor-default" : "cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50"}`}>
-                      <input type="checkbox" className="h-4 w-4 shrink-0 accent-brand-600" checked={on} disabled={r.is_mandatory} onChange={() => toggle(r)} />
+                      <input type="checkbox" className="h-4 w-4 shrink-0 accent-brand-500" checked={on} disabled={r.is_mandatory} onChange={() => toggle(r)} />
                       <span className="flex-1 font-medium text-ink">{r.name}</span>
                       <span className="flex items-center gap-3 text-xs text-muted">
                         {r.requires_document && <span className="inline-flex items-center gap-1"><Paperclip className="h-3 w-3" />Document</span>}
@@ -284,7 +284,7 @@ function Wizard({
                           {r.document_hint && <p className="mt-1 text-xs text-muted">{r.document_hint}</p>}
                         </div>
                         {docs.length > 0 ? (
-                          <span className="inline-flex shrink-0 items-center gap-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-300"><FileCheck2 className="h-4 w-4" />Uploaded</span>
+                          <span className="inline-flex shrink-0 items-center gap-1.5 text-xs font-medium text-brand-700 dark:text-brand-200"><FileCheck2 className="h-4 w-4" />Uploaded</span>
                         ) : (
                           <span className="shrink-0 text-xs font-medium text-rose-600 dark:text-rose-400">Required</span>
                         )}

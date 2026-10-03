@@ -7,15 +7,23 @@
 @theme {
   --font-sans: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  /* Brand green: primary actions, active nav, link hover, success moments only. */
-  --color-brand-50: #ecfdf5;
-  --color-brand-100: #d1fae5;
-  --color-brand-200: #a7f3d0;
-  --color-brand-500: #10a36b;
-  --color-brand-600: #0b8a5a;
-  --color-brand-700: #086f49;
-  --color-brand-800: #07583a;
-  --color-brand-900: #064530;
+  /* Amber/gold brand: primary actions, active nav, highlights. Navy: deep surfaces. */
+  --color-brand-50: #fff8e6;
+  --color-brand-100: #ffeec2;
+  --color-brand-200: #ffe08f;
+  --color-brand-300: #ffcf66;
+  --color-brand-400: #ffcf66;
+  --color-brand-500: #f5b93a;
+  --color-brand-600: #d99a14;
+  --color-brand-700: #9a6a07;
+  --color-brand-800: #6f4c05;
+  --color-brand-900: #4a3203;
+
+  --color-navy-50: #f4f6fb;
+  --color-navy-700: #1e2c69;
+  --color-navy-800: #152259;
+  --color-navy-850: #111c44;
+  --color-navy-900: #0b1437;
 
   /* Slate neutrals carry everything else. */
   --color-ink: #0f172a;
@@ -33,11 +41,11 @@
 
 .dark {
   color-scheme: dark;
-  --color-ink: #e2e8f0;
+  --color-ink: #f4f6fb;
   --color-muted: #94a3b8;
-  --color-line: #243044;
-  --color-surface: #0f172a;
-  --color-canvas: #0a0f1e;
+  --color-line: #1e2c69;
+  --color-surface: #111c44;
+  --color-canvas: #0b1437;
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.3);
   --shadow-pop: 0 10px 30px -8px rgb(0 0 0 / 0.6);
 }
@@ -72,7 +80,7 @@
     @apply h-9 w-9 shrink-0 p-0;
   }
   .btn-primary {
-    @apply bg-brand-600 text-white hover:bg-brand-700;
+    @apply bg-brand-500 text-navy-900 hover:bg-brand-300;
   }
   .btn-secondary {
     @apply border border-line bg-surface text-slate-700 hover:border-slate-300 hover:bg-slate-50
@@ -125,7 +133,7 @@
 
   .link {
     @apply font-medium text-ink underline decoration-slate-300 underline-offset-4 transition-colors duration-150
-      hover:text-brand-700 hover:decoration-brand-700 dark:decoration-slate-600 dark:hover:text-brand-200 dark:hover:decoration-brand-200;
+      hover:text-brand-700 hover:decoration-brand-500 dark:decoration-slate-600 dark:hover:text-brand-200 dark:hover:decoration-brand-200;
   }
 
   .badge {
@@ -136,8 +144,8 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(60% 50% at 50% 0%, rgb(16 163 107 / 0.12), transparent 70%),
-      linear-gradient(to bottom, transparent 60%, rgb(16 163 107 / 0.04));
+      radial-gradient(60% 50% at 50% 0%, rgb(245 185 58 / 0.12), transparent 70%),
+      linear-gradient(to bottom, transparent 60%, rgb(245 185 58 / 0.04));
     pointer-events: none;
   }
   .animate-in {
@@ -181,7 +189,7 @@
   inset: -6px;
   z-index: -1;
   border-radius: 1.75rem;
-  background: linear-gradient(135deg, rgb(16 185 129 / 0.4), rgb(20 184 166 / 0.25) 50%, rgb(5 150 105 / 0.15));
+  background: linear-gradient(135deg, rgb(245 185 58 / 0.35), rgb(255 207 102 / 0.2) 50%, rgb(11 20 55 / 0.5));
   filter: blur(18px);
   animation: glow-shift 6s ease-in-out infinite;
 }

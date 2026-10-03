@@ -59,7 +59,7 @@ export default function Home() {
         </div>
 
         <div style={{ "--d": "200ms" } as React.CSSProperties} className="hero-rise hero-glow isolate relative mx-auto w-full max-w-md lg:max-w-none">
-        <figure className="relative h-72 w-full overflow-hidden rounded-3xl border border-emerald-500/30 bg-surface shadow-pop sm:h-96 lg:h-[420px]">
+        <figure className="relative h-72 w-full overflow-hidden rounded-3xl border border-amber-400/30 bg-surface shadow-pop sm:h-96 lg:h-[420px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/hero-queue.jpg"
@@ -82,7 +82,7 @@ export default function Home() {
       <section className="grid gap-6 sm:grid-cols-3">
         {FEATURES.map(({ icon: Icon, title, text }) => (
           <div key={title} className="card card-hover">
-            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-700 dark:bg-brand-900/40 dark:text-brand-200">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-200">
               <Icon className="h-5 w-5" />
             </span>
             <h3 className="section-title mt-5">{title}</h3>
@@ -100,7 +100,7 @@ export default function Home() {
               {i < STEPS.length - 1 && (
                 <span aria-hidden className="absolute -bottom-6 left-5 top-12 w-px bg-line lg:-right-6 lg:bottom-auto lg:left-12 lg:top-5 lg:h-px lg:w-auto" />
               )}
-              <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-slate-500 shadow-card transition-colors duration-200 group-hover:border-brand-500 group-hover:bg-brand-600 group-hover:text-white dark:text-slate-300">
+              <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-slate-500 shadow-card transition-colors duration-200 group-hover:border-brand-500 group-hover:bg-brand-500 group-hover:text-navy-900 dark:text-slate-300">
                 <Icon className="h-4.5 w-4.5" />
               </span>
               <div className="lg:mt-4">

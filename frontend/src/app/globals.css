@@ -198,8 +198,9 @@
   --border-c1: #1d4ed8;
   --border-c2: #06b6d4;
   --border-head: #ffb400;
-  --glow-opacity: 0.4;
+  --glow-opacity: 0.85;
   --glow-color: rgb(29 78 216);
+  --ambient-glow: 0 0 36px 4px rgb(29 78 216 / 0.28), 0 0 90px 12px rgb(6 182 212 / 0.2);
   --streak-gradient: conic-gradient(
     from var(--angle),
     transparent 0deg,
@@ -212,14 +213,16 @@
   isolation: isolate;
   padding: var(--border-width);
   border-radius: var(--border-radius);
+  box-shadow: var(--ambient-glow);
   animation: streak-spin 3s linear infinite;
 }
 .dark .streak-border-card {
   --border-c1: #00e5ff;
   --border-c2: #ffd23f;
   --border-head: #ffffff;
-  --glow-opacity: 0.7;
+  --glow-opacity: 1;
   --glow-color: #00e5ff;
+  --ambient-glow: 0 0 40px 6px rgb(0 229 255 / 0.4), 0 0 110px 16px rgb(255 210 63 / 0.22);
 }
 .streak-border-card::before,
 .streak-border-card::after {
@@ -236,7 +239,7 @@
 }
 .streak-border-card::after {
   z-index: -1;
-  filter: blur(24px);
+  filter: blur(24px) saturate(1.4) brightness(1.15);
   opacity: var(--glow-opacity);
 }
 .streak-border-card__content {

@@ -108,9 +108,21 @@ export default function RegisterPage() {
         <Field label="Password" htmlFor="password" error={errors.password} hint="At least 8 characters.">
           <input id="password" {...errorProps("password", errors.password)} type="password" className="input" value={form.password} onChange={set("password")} />
         </Field>
-        <button className="btn btn-primary w-full" disabled={busy}>
-          {busy && <Loader2 className="h-4 w-4 animate-spin" />}
-          {busy ? "Creating account…" : "Create account"}
+        <button
+          type="submit"
+          disabled={busy}
+          className="w-full rounded-xl bg-amber-400 px-4 py-3 font-semibold text-slate-900 shadow-sm transition
+                     hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2
+                     disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {busy ? (
+            <span className="inline-flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Creating account...
+            </span>
+          ) : (
+            "Create account"
+          )}
         </button>
         <p className="pt-1 text-center text-sm text-muted">
           Already registered? <Link href="/login" className="link">Log in</Link>

@@ -194,7 +194,7 @@
 }
 .streak-border-card {
   --border-radius: 1.5rem;
-  --border-width: 6px;
+  --border-width: 3px;
   --border-c1: #1d4ed8;
   --border-c2: #06b6d4;
   --border-head: #ffb400;

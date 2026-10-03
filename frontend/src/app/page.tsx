@@ -29,19 +29,19 @@ export default function Home() {
     <div className="space-y-20">
       <section className="grid items-center gap-10 py-6 sm:py-10 lg:grid-cols-2 lg:gap-16">
         <div className="text-center lg:text-left">
-          <div className="flex flex-col items-center gap-4 sm:flex-row lg:justify-start sm:justify-center">
+          <div style={{ "--d": "0ms" } as React.CSSProperties} className="hero-rise flex flex-col items-center gap-4 sm:flex-row lg:justify-start sm:justify-center">
             <BrandMark className="h-14 w-14" />
             <span className="inline-flex items-center rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted">
               Prototype — not an official UTG service
             </span>
           </div>
-          <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+          <h1 style={{ "--d": "100ms" } as React.CSSProperties} className="hero-rise mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
             Student clearance, without the queues.
           </h1>
-          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg lg:mx-0">
+          <p style={{ "--d": "180ms" } as React.CSSProperties} className="hero-rise mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg lg:mx-0">
             Submit documents, pay the digital service fee from your phone and track approval online, from wherever you are.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+          <div style={{ "--d": "260ms" } as React.CSSProperties} className="hero-rise mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
             <Link href="/register" className="btn btn-primary">
               Start Clearance <ArrowRight className="h-4 w-4" />
             </Link>
@@ -52,13 +52,14 @@ export default function Home() {
               Staff Portal
             </Link>
           </div>
-          <p className="mt-6 flex items-center justify-center gap-2 text-sm text-muted lg:justify-start">
+          <p style={{ "--d": "340ms" } as React.CSSProperties} className="hero-rise mt-6 flex items-center justify-center gap-2 text-sm text-muted lg:justify-start">
             <ShieldCheck className="h-4 w-4 shrink-0 text-brand-600" />
             Your documents stay private and every action is logged.
           </p>
         </div>
 
-        <figure className="relative mx-auto h-72 w-full max-w-md overflow-hidden rounded-3xl border border-line bg-surface shadow-pop sm:h-96 lg:h-[420px] lg:max-w-none">
+        <div style={{ "--d": "200ms" } as React.CSSProperties} className="hero-rise hero-glow isolate relative mx-auto w-full max-w-md lg:max-w-none">
+        <figure className="relative h-72 w-full overflow-hidden rounded-3xl border border-emerald-500/30 bg-surface shadow-pop sm:h-96 lg:h-[420px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/hero-queue.jpg"
@@ -67,14 +68,15 @@ export default function Home() {
           />
           <div aria-hidden className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/70 to-transparent" />
           <figcaption className="absolute inset-x-4 bottom-4 flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-slate-950/70 px-3 py-1.5 text-xs font-medium text-white backdrop-blur">
+            <span style={{ "--d": "600ms" } as React.CSSProperties} className="hero-rise cursor-default rounded-full bg-slate-950/70 px-3 py-1.5 text-xs font-medium text-white backdrop-blur transition duration-200 hover:-translate-y-0.5 hover:bg-slate-950/85">
               The old way: in-person hallway queues
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-semibold text-ink shadow-card">
+            <span style={{ "--d": "720ms" } as React.CSSProperties} className="hero-rise inline-flex cursor-default items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-semibold text-ink shadow-card transition duration-200 hover:-translate-y-0.5 hover:shadow-pop">
               <Clock className="h-3.5 w-3.5 text-brand-600" /> Online clearance: ~5 mins
             </span>
           </figcaption>
         </figure>
+        </div>
       </section>
 
       <section className="grid gap-6 sm:grid-cols-3">

@@ -158,9 +158,11 @@ export default function Navbar() {
               <Link href="/admin/login" className="btn btn-ghost">
                 <ShieldCheck className="h-4 w-4" /> Staff
               </Link>
-              <Link href="/register" className="btn btn-primary">
-                Register
-              </Link>
+              {pathname !== "/register" && (
+                <Link href="/register" className="btn btn-primary">
+                  Register
+                </Link>
+              )}
             </div>
           )}
         </nav>

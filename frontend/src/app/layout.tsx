@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <PrototypeBanner />
           <Navbar />
           <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 sm:py-12">{children}</main>
-          <footer className="border-t border-line bg-surface py-6 text-center text-xs text-muted">
+          <footer className="border-t border-line bg-surface py-6 text-center text-xs text-slate-600 dark:text-slate-300">
             Prototype — Not an official UTG service. © 2026 UTG Digital Student Services
           </footer>
           <Toasts />

@@ -58,8 +58,8 @@ export default function Home() {
           </p>
         </div>
 
-        <div style={{ "--d": "200ms" } as React.CSSProperties} className="hero-rise hero-glow isolate relative mx-auto w-full max-w-md lg:max-w-none">
-        <figure className="relative h-72 w-full overflow-hidden rounded-3xl border border-amber-400/30 bg-surface shadow-pop sm:h-96 lg:h-[420px]">
+        <div style={{ "--d": "200ms" } as React.CSSProperties} className="hero-rise rotating-border-glow mx-auto w-full max-w-md lg:max-w-none">
+        <figure className="rotating-border-glow__content h-72 w-full sm:h-96 lg:h-[420px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/hero-queue.jpg"

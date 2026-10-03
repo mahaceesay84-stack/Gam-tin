@@ -147,15 +147,6 @@
   .badge {
     @apply inline-flex h-7 items-center gap-2 rounded-full border border-line bg-canvas px-3 text-xs font-medium text-slate-600 dark:text-slate-300;
   }
-  .hero-glow::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(60% 50% at 50% 0%, rgb(245 185 58 / 0.12), transparent 70%),
-      linear-gradient(to bottom, transparent 60%, rgb(245 185 58 / 0.04));
-    pointer-events: none;
-  }
   .animate-in {
     animation: fade-up 0.2s ease-out both;
   }
@@ -191,15 +182,63 @@
   animation-delay: var(--d, 0ms);
 }
 
-.hero-glow::before {
+/* Reusable rotating gold border + ambient glow.
+   Usage: <div class="rotating-border-glow"><div class="rotating-border-glow__content">…</div></div>
+   Parents must not set overflow:hidden or the glow will clip. */
+@property --rbg-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.rotating-border-glow {
+  --rbg-radius: 1.5rem;
+  --rbg-width: 2px;
+  --rbg-glow: rgb(232 169 32 / 0.45);
+  --rbg-tail: conic-gradient(
+    from var(--rbg-angle),
+    transparent 0deg,
+    transparent 180deg,
+    #1f2328 230deg,
+    #e8a920 310deg,
+    #fff3c4 360deg
+  );
+  position: relative;
+  isolation: isolate;
+  padding: var(--rbg-width);
+  border-radius: var(--rbg-radius);
+  box-shadow: 0 0 40px 4px var(--rbg-glow);
+}
+.dark .rotating-border-glow {
+  --rbg-glow: rgb(245 197 66 / 0.3);
+  --rbg-tail: conic-gradient(
+    from var(--rbg-angle),
+    transparent 0deg,
+    transparent 180deg,
+    #f5c542 290deg,
+    #fff3c4 360deg
+  );
+}
+.rotating-border-glow::before {
   content: "";
   position: absolute;
-  inset: -6px;
+  inset: 0;
   z-index: -1;
-  border-radius: 1.75rem;
-  background: linear-gradient(135deg, rgb(245 185 58 / 0.35), rgb(255 207 102 / 0.2) 50%, rgb(11 20 55 / 0.5));
-  filter: blur(18px);
-  animation: glow-shift 6s ease-in-out infinite;
+  border-radius: inherit;
+  background: var(--rbg-tail);
+  animation: rbg-spin 4s linear infinite;
+}
+.rotating-border-glow__content {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--rbg-radius) - var(--rbg-width));
+  background: var(--color-surface, #fff);
+}
+
+@keyframes rbg-spin {
+  to {
+    --rbg-angle: 360deg;
+  }
 }
 
 @keyframes fade-up {
@@ -221,8 +260,11 @@
     transition-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
-  .hero-glow::before {
+  .rotating-border-glow::before {
     animation: none;
-    opacity: 0.7;
+    background: #e8a920;
+  }
+  .dark .rotating-border-glow::before {
+    background: #f5c542;
   }
 }

@@ -61,6 +61,14 @@
   h1, h2, h3 {
     @apply tracking-tight;
   }
+  /* Native select popups: explicit theme colors so options are legible. */
+  select, select option, select optgroup {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+  }
+  select option:disabled, select option[value=""] {
+    color: var(--color-muted);
+  }
   /* The one focus style, used by every focusable element. */
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-brand-500;

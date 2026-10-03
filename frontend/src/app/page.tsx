@@ -31,14 +31,14 @@ export default function Home() {
         <div className="text-center lg:text-left">
           <div style={{ "--d": "0ms" } as React.CSSProperties} className="hero-rise flex flex-col items-center gap-4 sm:flex-row lg:justify-start sm:justify-center">
             <BrandMark className="h-14 w-14" />
-            <span className="inline-flex items-center rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted">
-              Prototype — not an official UTG service
+            <span className="inline-flex items-center text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded-full px-3 py-1">
+              Prototype, not an official UTG service
             </span>
           </div>
           <h1 style={{ "--d": "100ms" } as React.CSSProperties} className="hero-rise mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
             Student clearance, without the queues.
           </h1>
-          <p style={{ "--d": "180ms" } as React.CSSProperties} className="hero-rise mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg lg:mx-0">
+          <p style={{ "--d": "180ms" } as React.CSSProperties} className="hero-rise mx-auto mt-5 max-w-xl text-slate-600 dark:text-slate-300 text-lg leading-relaxed lg:mx-0">
             Submit documents, pay the digital service fee from your phone and track approval online, from wherever you are.
           </p>
           <div style={{ "--d": "260ms" } as React.CSSProperties} className="hero-rise mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
@@ -52,8 +52,8 @@ export default function Home() {
               Staff Portal
             </Link>
           </div>
-          <p style={{ "--d": "340ms" } as React.CSSProperties} className="hero-rise mt-6 flex items-center justify-center gap-2 text-sm text-muted lg:justify-start">
-            <ShieldCheck className="h-4 w-4 shrink-0 text-brand-600" />
+          <p style={{ "--d": "340ms" } as React.CSSProperties} className="hero-rise mt-6 flex items-center justify-center gap-2 text-sm text-slate-600 dark:text-slate-300 lg:justify-start">
+            <ShieldCheck className="h-4 w-4 shrink-0 text-amber-600" />
             Your documents stay private and every action is logged.
           </p>
         </div>
@@ -100,7 +100,7 @@ export default function Home() {
               {i < STEPS.length - 1 && (
                 <span aria-hidden className="absolute -bottom-6 left-5 top-12 w-px bg-line lg:-right-6 lg:bottom-auto lg:left-12 lg:top-5 lg:h-px lg:w-auto" />
               )}
-              <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-slate-500 shadow-card transition-colors duration-200 group-hover:border-brand-500 group-hover:bg-brand-500 group-hover:text-navy-900 dark:text-slate-300">
+              <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-slate-600 shadow-card transition-colors duration-200 group-hover:border-brand-500 group-hover:bg-brand-500 group-hover:text-navy-900 dark:text-slate-300">
                 <Icon className="h-4.5 w-4.5" />
               </span>
               <div className="lg:mt-4">

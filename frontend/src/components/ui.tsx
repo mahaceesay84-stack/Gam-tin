@@ -31,7 +31,7 @@ export function Spinner({ label = "Loading…" }: { label?: string }) {
 export function EmptyState({ icon: Icon, children }: { icon: LucideIcon; children: React.ReactNode }) {
   return (
     <div className="flex flex-col items-center gap-3 py-12 text-center text-sm text-muted">
-      <Icon className="h-6 w-6 text-slate-400" />
+      <Icon className="h-6 w-6 text-slate-600 dark:text-slate-300" />
       <p>{children}</p>
     </div>
   );

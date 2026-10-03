@@ -293,9 +293,9 @@ function Wizard({
                         <ul className="space-y-2">
                           {docs.map((d) => (
                             <li key={d.id} className="flex items-center gap-3 rounded-lg bg-slate-50 py-1.5 pl-3 pr-1.5 dark:bg-slate-800/50">
-                              <Paperclip className="h-4 w-4 shrink-0 text-slate-400" />
+                              <Paperclip className="h-4 w-4 shrink-0 text-slate-600 dark:text-slate-300" />
                               <span className="min-w-0 flex-1 truncate" title={d.original_name}>{d.original_name}</span>
-                              <button type="button" aria-label={`Remove ${d.original_name}`} title="Remove" className="btn btn-ghost btn-icon text-slate-400 hover:text-rose-600 dark:hover:text-rose-400" onClick={() => removeDoc(d.id)}>
+                              <button type="button" aria-label={`Remove ${d.original_name}`} title="Remove" className="btn btn-ghost btn-icon text-slate-600 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400" onClick={() => removeDoc(d.id)}>
                                 <Trash2 className="h-4 w-4" />
                               </button>
                             </li>

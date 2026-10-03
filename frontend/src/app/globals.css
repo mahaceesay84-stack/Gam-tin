@@ -27,7 +27,7 @@
 
   /* Slate neutrals carry everything else. */
   --color-ink: #0f172a;
-  --color-muted: #64748b;
+  --color-muted: #475569;
   --color-line: #e2e8f0;
   --color-surface: #ffffff;
   --color-canvas: #f6f8fb;
@@ -42,7 +42,7 @@
 .dark {
   color-scheme: dark;
   --color-ink: #f4f6fb;
-  --color-muted: #94a3b8;
+  --color-muted: #cbd5e1;
   --color-line: #1e2c69;
   --color-surface: #111c44;
   --color-canvas: #0b1437;
@@ -98,7 +98,7 @@
   }
 
   .input {
-    @apply h-10 w-full rounded-lg border border-line bg-surface px-3 text-sm text-ink placeholder:text-slate-400
+    @apply h-10 w-full rounded-lg border border-line bg-surface px-3 text-sm text-ink placeholder:text-slate-500 dark:placeholder:text-slate-300
       transition-colors duration-150 hover:border-slate-300 focus:border-brand-500 dark:hover:border-slate-600;
   }
   textarea.input {

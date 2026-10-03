@@ -57,13 +57,13 @@ export default function LoginForm({ portal }: { portal: "student" | "admin" }) {
         {error && <Alert tone="error">{error}</Alert>}
         <Field label="Email" htmlFor="email" error={errors.email}>
           <div className="relative">
-            <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600 dark:text-slate-300" />
             <input id="email" type="email" className="input pl-10" placeholder="you@example.com" value={email} {...errorProps("email", errors.email)} onChange={(e) => { setEmail(e.target.value); clear("email"); }} />
           </div>
         </Field>
         <Field label="Password" htmlFor="password" error={errors.password}>
           <div className="relative">
-            <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600 dark:text-slate-300" />
             <input id="password" type="password" className="input pl-10" placeholder="••••••••" value={password} {...errorProps("password", errors.password)} onChange={(e) => { setPassword(e.target.value); clear("password"); }} />
           </div>
         </Field>

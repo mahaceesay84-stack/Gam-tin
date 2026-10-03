@@ -32,7 +32,7 @@ export default function ProgressTracker({ user, app }: { user: User; app: Applic
           ? "border-slate-700 bg-slate-700 text-white dark:border-slate-300 dark:bg-slate-300 dark:text-slate-900"
           : active
             ? "border-slate-900 bg-surface text-ink dark:border-slate-200"
-            : "border-line bg-slate-50 text-slate-400 dark:bg-slate-800";
+            : "border-line bg-slate-50 text-slate-600 dark:text-slate-300 dark:bg-slate-800";
         return (
           <li key={label} className="relative flex items-center gap-4 sm:flex-col sm:items-center sm:gap-3 sm:text-center">
             {i > 0 && (

@@ -63,7 +63,7 @@ export default function NotificationList() {
           {items.map((n) => (
             <li key={n.id} className={`relative flex items-start gap-4 px-6 py-4 ${n.is_read ? "" : "bg-slate-50 dark:bg-slate-800/40"}`}>
               {!n.is_read && <span aria-label="Unread" className="absolute left-2.5 top-5.5 h-2 w-2 rounded-full bg-ink" />}
-              <span className={`mt-0.5 shrink-0 ${n.is_read ? "text-slate-400" : "text-ink"}`}>
+              <span className={`mt-0.5 shrink-0 ${n.is_read ? "text-slate-600 dark:text-slate-300" : "text-ink"}`}>
                 {KIND_ICON[n.kind] ?? <Bell className="h-4 w-4" />}
               </span>
               <div className="min-w-0 flex-1">

@@ -124,7 +124,7 @@ export default function ApplicationReview() {
                     <ul className="space-y-2">
                       {i.documents.map((d) => (
                         <li key={d.id} className="flex items-center gap-3 rounded-lg bg-slate-50 py-1.5 pl-3 pr-1.5 dark:bg-slate-800/50">
-                          <Paperclip className="h-4 w-4 shrink-0 text-slate-400" />
+                          <Paperclip className="h-4 w-4 shrink-0 text-slate-600 dark:text-slate-300" />
                           <span className="min-w-0 flex-1 truncate" title={d.original_name}>{d.original_name}</span>
                           <button className="btn btn-ghost btn-sm" aria-label={`View ${d.original_name}`} onClick={() => api.openFile(`/clearance/documents/${d.id}/download/`).catch((e) => setError(e.message))}>
                             View <ExternalLink className="h-3.5 w-3.5" />

@@ -55,7 +55,7 @@ export default function Toasts() {
           </div>
           <button
             aria-label="Dismiss"
-            className="btn btn-ghost btn-icon -mr-2 -mt-2 text-slate-400"
+            className="btn btn-ghost btn-icon -mr-2 -mt-2 text-slate-600 dark:text-slate-300"
             onClick={() => setToasts((t) => t.filter((x) => x.id !== n.id))}
           >
             <X className="h-4 w-4" />

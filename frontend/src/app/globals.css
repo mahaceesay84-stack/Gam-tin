@@ -184,19 +184,14 @@
 
 /* Reusable rotating gold border + ambient glow.
    Usage: <div class="rotating-border-glow"><div class="rotating-border-glow__content">…</div></div>
-   Parents must not set overflow:hidden or the glow will clip. */
-@property --rbg-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
+   A rotating oversized conic-gradient pseudo-element (transform, not @property) is masked by
+   overflow:hidden; the box-shadow glow is drawn outside the box so it is not clipped by it. */
 .rotating-border-glow {
   --rbg-radius: 1.5rem;
   --rbg-width: 2px;
   --rbg-glow: rgb(232 169 32 / 0.45);
   --rbg-tail: conic-gradient(
-    from var(--rbg-angle),
+    from 0deg,
     transparent 0deg,
     transparent 180deg,
     #1f2328 230deg,
@@ -205,6 +200,7 @@
   );
   position: relative;
   isolation: isolate;
+  overflow: hidden;
   padding: var(--rbg-width);
   border-radius: var(--rbg-radius);
   box-shadow: 0 0 40px 4px var(--rbg-glow);
@@ -212,7 +208,7 @@
 .dark .rotating-border-glow {
   --rbg-glow: rgb(245 197 66 / 0.3);
   --rbg-tail: conic-gradient(
-    from var(--rbg-angle),
+    from 0deg,
     transparent 0deg,
     transparent 180deg,
     #f5c542 290deg,
@@ -222,22 +218,37 @@
 .rotating-border-glow::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -100%;
   z-index: -1;
-  border-radius: inherit;
   background: var(--rbg-tail);
   animation: rbg-spin 4s linear infinite;
+  will-change: transform;
 }
 .rotating-border-glow__content {
   position: relative;
+  z-index: 1;
   overflow: hidden;
   border-radius: calc(var(--rbg-radius) - var(--rbg-width));
   background: var(--color-surface, #fff);
 }
 
 @keyframes rbg-spin {
+  from {
+    transform: rotate(0deg);
+  }
   to {
-    --rbg-angle: 360deg;
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rotating-border-glow::before {
+    animation: none;
+    inset: 0;
+    background: #e8a920;
+  }
+  .dark .rotating-border-glow::before {
+    background: #f5c542;
   }
 }
 
